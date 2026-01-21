@@ -201,27 +201,31 @@ comments: True
   .form-group { margin-bottom: 20px; }
 
   .form-label {
-    display: block;
-    color: rgba(103,232,249,0.9);
-    margin-bottom: 8px;
-    font-size: 11px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-  }
+  color: #e5f6ff !important;  /* bright neon blue */
+  text-shadow: 0 0 8px rgba(125,211,252,0.5);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+
 
   .form-input {
-    width: 100%;
-    padding: 14px 16px;
-    border-radius: 12px;
-    border: 1px solid rgba(6,182,212,0.3);
-    background: rgba(2, 6, 23, 0.5);
-    color: #ffffff;
-    outline: none;
-    transition: all 0.2s ease;
-  }
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(6,182,212,0.3);
+  background: rgba(2, 6, 23, 0.5);
+  color: #ffffff;
+  outline: none;
+  transition: all 0.2s ease;
+}
 
-  .form-input::placeholder { color: rgba(148,163,184,0.5); }
+
+  .form-input::placeholder {
+  color: rgba(200,220,255,0.6);
+}
+
 
   .form-input:focus {
     border-color: #06b6d4;
@@ -338,6 +342,14 @@ comments: True
     .panel { padding: 32px 24px; }
     .title { font-size: 24px; }
   }
+  
+  input {
+  background: rgba(2, 6, 23, 0.5) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(6,182,212,0.3) !important;
+  border-radius: 12px !important;
+}
+
 </style>
 
 <!-- Stars background -->
@@ -380,7 +392,7 @@ comments: True
           </div>
 
           <div class="form-group">
-            <label class="form-label">Access Code</label>
+            <label class="form-label">Access Code (Password)</label>
             <input type="password" class="form-input" id="reg-password" placeholder="Create access code" required>
           </div>
 
@@ -431,7 +443,10 @@ comments: True
   </div>
 </div>
 
-<script>
+<script type="module">
+  import { robopURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
+
+  const API_URL = `${robopURI}/api/robop`;
   // Generate stars
   const starsContainer = document.getElementById('stars');
   for (let i = 0; i < 100; i++) {
@@ -443,10 +458,6 @@ comments: True
     star.style.opacity = Math.random() * 0.7 + 0.3;
     starsContainer.appendChild(star);
   }
-
-  const API_URL = (location.hostname === "localhost")
-      ? "http://localhost:8587/api"
-      : `${window.location.origin}/api`;
 
   function switchTab(tab, ev) {
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -511,7 +522,7 @@ comments: True
     const userData = { FirstName: firstName, LastName: lastName, GitHubID: githubId, Password: password };
 
     try {
-      const response = await fetch(`${API_URL}/rpg/data`, {
+      await fetch(`${API_URL}/register`,  {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)
@@ -543,39 +554,43 @@ comments: True
 
   // --- RPG LOGIN ---
   async function handleLogin(event) {
-    event.preventDefault();
-    hideMessage();
-    showLoading();
+  event.preventDefault();
+  hideMessage();
+  showLoading();
 
-    const githubId = document.getElementById('login-github').value.trim();
-    const password = document.getElementById('login-password').value;
+  const githubId = document.getElementById('login-github').value.trim();
+  const password = document.getElementById('login-password').value;
 
-    try {
-      const response = await fetch(`${API_URL}/rpg/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ GitHubID: githubId, Password: password })
-      });
+  try {
+    const response = await fetch(`${API_URL}/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        GitHubID: githubId,
+        Password: password
+      })
+    });
 
-      const data = await response.json().catch(() => ({}));
-      hideLoading();
+    const data = await response.json();
+    hideLoading();
 
-      if (!response.ok) {
-        showMessage(`⚠️ ${data.message || 'Access denied. Check credentials.'}`, 'error');
-        return;
-      }
-
-      setSession(githubId, { name: data?.user?.name });
-
-      showMessage(`✅ Welcome, Cadet ${githubId}. Accessing station...`, 'success');
-      setTimeout(() => window.location.href = '/learninggame/home', 750);
-
-    } catch (error) {
-      hideLoading();
-      showMessage('⚠️ Connection failed. Station systems offline.', 'error');
-      console.error(error);
+    if (!response.ok) {
+      showMessage(data.message || "Invalid credentials", "error");
+      return;
     }
+
+    // success
+    setSession(githubId, data.user);
+    showMessage("✅ Access granted. Welcome cadet.", "success");
+    setTimeout(() => window.location.href = "/learninggame/home", 800);
+
+  } catch (error) {
+    hideLoading();
+    showMessage("⚠️ Connection failed. Station systems offline.", "error");
+    console.error(error);
   }
+}
+
 
   window.addEventListener('load', () => {
     const s = getSession();
@@ -597,4 +612,12 @@ comments: True
     showMessage('✅ Signed out. Clearance revoked.', 'success');
     setTimeout(() => location.reload(), 650);
   }
+
+  // Expose functions for inline onclick handlers (module scope -> global)
+window.switchTab = switchTab;
+window.handleRegister = handleRegister;
+window.handleLogin = handleLogin;
+window.continueToGame = continueToGame;
+window.signOut = signOut;
+
 </script>

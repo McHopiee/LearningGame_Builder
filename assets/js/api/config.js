@@ -10,6 +10,14 @@ if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
 
 }
 
+export var robopURI;
+if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+    robopURI = "http://localhost:8320";
+} else {
+    robopURI = "https://robop.opencodingsociety.com";
+}
+
+
 export var javaURI;
 // 127.0.0.1:8585 does not work for some machines
 if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
