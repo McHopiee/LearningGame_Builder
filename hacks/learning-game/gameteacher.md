@@ -88,7 +88,7 @@ permalink: /learninggame/gameteacher
     const teacherData = {
         1: {
             title: "Stop 1: Training",
-            msg: "Welcome! Use the Arrow Keys to guide your robot. Reaching a stop triggers a knowledge test! Make sure you stay on the path.",
+            msg: "Stop 1 briefing: Robot Code Basics. Objective: learn how to give step-by-step commands to move through the maze (MOVE_FORWARD, ROTATE_LEFT/RIGHT) and use CAN_MOVE(direction) to avoid walls. Run your solution, observe what happens, and iterate until the robot reaches the goal.",
             // Each question at this stop has a unique hint
             hints: [
                 "Hint for Question 1: Think about basic directional commands!",
@@ -98,7 +98,7 @@ permalink: /learninggame/gameteacher
         },
         2: {
             title: "Stop 2: Training",
-            msg: "In this Stop, we transition to Pseudo Code. Logic is key here. Ensure your robot follows the code exactly.",
+            msg: "Stop 2 briefing: Pseudocode (AP CSP style). Objective: write clear, College Board–level pseudocode that makes the algorithm work as intended using variables, conditionals, and logical flow. Test your logic in the code runner—small changes in order and conditions can change the outcome.",
             hints: [
                 "Hint for Question 1: Pseudo code doesn't need semicolons!",
                 "Hint for Question 2: What command draws a circle?",

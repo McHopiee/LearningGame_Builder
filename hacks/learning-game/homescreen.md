@@ -521,12 +521,28 @@ permalink: /learninggame/home
                 </div>
 
                 <div class="question-content">
-                    <div class="question-type" id="questionType">
-                        <span>📡</span>
-                        <span id="questionTypeText">Navigation Systems</span>
-                    </div>
-                    <div class="question-text" id="questionText">Configure robot navigation protocols</div>
+
+                <div class="question-type" id="questionType">
+                    <span>📡</span>
+                    <span id="questionTypeText">Navigation Systems</span>
                 </div>
+
+                <div class="question-text" id="questionText">Configure robot navigation protocols</div>
+
+                <!-- CODE RUNNER (shows only on every 2nd question) -->
+                <div id="codeRunner" style="display:none; margin-top:16px;">
+                    <textarea id="codeInput" rows="5" style="width:100%; border-radius:8px; padding:10px; font-family:monospace;">
+            // write code here
+                    </textarea>
+
+                    <button id="runCodeBtn" style="margin-top:10px; padding:10px 14px; border-radius:8px; cursor:pointer;">
+                        Run Code
+                    </button>
+
+                    <pre id="codeOutput" style="margin-top:10px; background:#020617; padding:10px; border-radius:8px;"></pre>
+                </div>
+            </div>
+
 
                 <div class="question-nav">
                     <button class="btn btn-next" id="nextBtn">Next Module →</button>
@@ -566,6 +582,11 @@ permalink: /learninggame/home
         const questionText = document.getElementById('questionText');
         const nextBtn = document.getElementById('nextBtn');
         const backBtn = document.getElementById('backBtn');
+        const codeRunner = document.getElementById('codeRunner');
+        const codeInput = document.getElementById('codeInput');
+        const codeOutput = document.getElementById('codeOutput');
+        const runCodeBtn = document.getElementById('runCodeBtn');
+
 
         let currentQuestion = 0;
         let currentSectorNum = 0;
@@ -685,6 +706,15 @@ permalink: /learninggame/home
             const currentQ = questions[currentQuestion];
             questionType.textContent = currentQ.type;
             questionText.textContent = currentQ.text;
+            // Show code runner only on every 2nd question (question #2, #4, #6...)
+            if (currentQuestion % 2 === 1) {
+                codeRunner.style.display = 'block';
+                questionText.style.display = 'none';
+            } else {
+                codeRunner.style.display = 'none';
+                questionText.style.display = 'block';
+            }
+
             
             document.querySelector('.question-type span:first-child').textContent = currentQ.icon;
             
@@ -729,6 +759,14 @@ permalink: /learninggame/home
             if(e.key === 'ArrowDown') movePlayer(0, 1);
             if(e.key === 'ArrowLeft') movePlayer(-1, 0);
             if(e.key === 'ArrowRight') movePlayer(1, 0);
+        });
+        runCodeBtn.addEventListener('click', () => {
+            try {
+                const result = eval(codeInput.value);
+                codeOutput.textContent = result !== undefined ? result : "Code ran successfully.";
+            } catch (err) {
+                codeOutput.textContent = err.message;
+            }
         });
 
         createMaze();
