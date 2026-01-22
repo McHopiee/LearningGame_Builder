@@ -18,10 +18,12 @@ permalink: /learninggame/home
             background: linear-gradient(135deg, #020617 0%, #0f172a 50%, #1e1b4b 100%);
             height: 100vh;
             display: flex; 
-            justify-content: center; 
+            justify-content: flex-start; /* Adjusted to move content down */
             align-items: center;
             overflow: hidden;
             position: relative;
+            margin: 0; /* Ensure no extra margin */
+            padding-top: 50px; /* Added padding to move content further down */
         }
 
         /* Animated stars background */
@@ -73,10 +75,10 @@ permalink: /learninggame/home
 
         .container {
             position: relative; 
-            width: 95vw; 
-            max-width: 1000px; 
-            height: 95vh; 
-            max-height: 700px;
+            width: 90vw; /* Adjusted for better centering */
+            max-width: 800px; /* Reduced max width for better fit */
+            height: 90vh; /* Adjusted for better centering */
+            max-height: 600px; /* Reduced max height for better fit */
             background: rgba(15, 23, 42, 0.85); 
             backdrop-filter: blur(20px);
             border-radius: 24px; 
@@ -84,6 +86,10 @@ permalink: /learninggame/home
             box-shadow: 0 0 60px rgba(6,182,212,0.25); 
             overflow: hidden;
             z-index: 1;
+            display: flex; /* Added flexbox for centering content */
+            flex-direction: column; /* Stack children vertically */
+            justify-content: center; /* Center children vertically */
+            align-items: center; /* Center children horizontally */
         }
 
         .title-section {
@@ -141,7 +147,7 @@ permalink: /learninggame/home
         .maze-container {
             width: 100%; 
             height: 100%; 
-            padding: 100px 20px 20px 20px;
+            padding: 20px; /* Reduced padding for better fit */
             display: flex; 
             justify-content: center; 
             align-items: center;
@@ -150,9 +156,9 @@ permalink: /learninggame/home
         .maze {
             position: relative; 
             width: 100%; 
-            max-width: 800px; 
+            max-width: 700px; /* Adjusted for better centering */
             height: 100%; 
-            max-height: 600px;
+            max-height: 500px; /* Adjusted for better centering */
             background: rgba(2, 6, 23, 0.5);
             backdrop-filter: blur(10px);
             border-radius: 20px; 
@@ -185,6 +191,8 @@ permalink: /learninggame/home
             position: relative; 
             z-index: 20;
             animation: playerPulse 1.5s infinite;
+            width: 30px; /* Adjusted width for symmetry */
+            height: 30px; /* Adjusted height for symmetry */
         }
 
         @keyframes playerPulse {
@@ -200,7 +208,9 @@ permalink: /learninggame/home
             align-items: center;
             color: #fbbf24; 
             font-weight: 900; 
-            font-size: 11px; 
+            font-size: 10px; /* Reduced font size for better symmetry */
+            width: 40px; /* Adjusted width for symmetry */
+            height: 40px; /* Adjusted height for symmetry */
             z-index: 10;
             position: relative;
             overflow: hidden;
@@ -234,6 +244,8 @@ permalink: /learninggame/home
             font-size: 10px;
             font-weight: 900;
             box-shadow: 0 0 15px rgba(16,185,129,0.5);
+            width: 40px; /* Adjusted width for symmetry */
+            height: 40px; /* Adjusted height for symmetry */
         }
 
         .end { 
@@ -246,6 +258,8 @@ permalink: /learninggame/home
             font-size: 10px;
             font-weight: 900;
             box-shadow: 0 0 15px rgba(168,85,247,0.5);
+            width: 40px; /* Adjusted width for symmetry */
+            height: 40px; /* Adjusted height for symmetry */
         }
 
         .controls-hint {
@@ -631,15 +645,25 @@ permalink: /learninggame/home
         function movePlayer(dx, dy) {
             const newX = playerPos.x + dx;
             const newY = playerPos.y + dy;
-            
+
             if (newY >= 0 && newY < mazeLayout.length && 
                 newX >= 0 && newX < mazeLayout[0].length && 
                 mazeLayout[newY][newX] !== 0) {
-                
+
+                const cellValue = mazeLayout[newY][newX];
+
+                // Prevent moving forward without completing the previous task
+                if (cellValue >= 4 && cellValue <= 8) {
+                    const sectorNum = cellValue - 3;
+                    if (!completedSectors.has(sectorNum - 1) && sectorNum > 1) {
+                        alert("Complete the previous sector first!");
+                        return;
+                    }
+                }
+
                 playerPos.x = newX;
                 playerPos.y = newY;
-                
-                const cellValue = mazeLayout[newY][newX];
+
                 if (cellValue >= 4 && cellValue <= 8) {
                     const sectorNum = cellValue - 3;
                     if (!completedSectors.has(sectorNum)) {
@@ -648,7 +672,7 @@ permalink: /learninggame/home
                         initTeacher(sectorNum, 0);
                     }
                 }
-                
+
                 createMaze();
             }
         }
