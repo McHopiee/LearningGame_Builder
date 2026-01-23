@@ -71,12 +71,14 @@ permalink: /learninggame/home
 
                 <div id="codeRunner" style="display:none;">
                     <textarea id="codeInput" style="width: 100%; height: 80px; background: #0f172a; color: white; padding: 10px; border: 1px solid #06b6d4;"></textarea>
-                    <button class="run-btn">Run Robot Code</button>
+                    <button class="run-btn" id="runRobotBtn">Run Robot Code</button>
+                    <pre id="robotOutput" style="margin-top:10px; background:#020617; padding:10px; border-radius:8px; white-space:pre-wrap;"></pre>
                 </div>
 
                 <div id="pseudoRunner" style="display:none;">
                     <textarea id="pseudoInput" style="width: 100%; height: 80px; background: #0f172a; color: white; padding: 10px; border: 1px solid #06b6d4;"></textarea>
-                    <button class="run-btn">Run Pseudocode</button>
+                    <button class="run-btn" id="runPseudoBtn">Run Pseudocode</button>
+                    <pre id="pseudoOutput" style="margin-top:10px; background:#020617; padding:10px; border-radius:8px; white-space:pre-wrap;"></pre>
                 </div>
             </div>
             <button class="run-btn" id="nextBtn" style="display:none;">Next Module →</button>
@@ -180,6 +182,9 @@ permalink: /learninggame/home
             document.getElementById('sectorTitle').innerText = `SECTOR ${currentSectorNum}`;
             document.getElementById('questionTypeText').innerText = currentQ.type;
             document.getElementById('questionText').innerText = currentQ.text;
+            document.getElementById('robotOutput').textContent = '';
+            document.getElementById('pseudoOutput').textContent = '';
+
             
             if (typeof updateHint === "function") updateHint(currentQuestion);
 
@@ -220,6 +225,31 @@ permalink: /learninggame/home
             if(e.key === 'ArrowLeft') movePlayer(-1, 0);
             if(e.key === 'ArrowRight') movePlayer(1, 0);
         });
+
+        // --- CODE RUNNER LOGIC (Robot + Pseudocode) ---
+        const runRobotBtn = document.getElementById('runRobotBtn');
+        const runPseudoBtn = document.getElementById('runPseudoBtn');
+
+        runRobotBtn.onclick = () => {
+            const code = document.getElementById('codeInput').value;
+            const out = document.getElementById('robotOutput');
+
+            try {
+                // Very simple JS runner (placeholder)
+                const result = eval(code);
+                out.textContent = result !== undefined ? String(result) : "Robot code ran.";
+            } catch (err) {
+                out.textContent = "Error: " + err.message;
+            }
+        };
+
+        runPseudoBtn.onclick = () => {
+            const pseudo = document.getElementById('pseudoInput').value;
+            const out = document.getElementById('pseudoOutput');
+
+            // Placeholder runner: just echoes what they typed
+            out.textContent = "Pseudocode submitted:\n" + pseudo;
+        };
 
         createMaze();
     </script>
