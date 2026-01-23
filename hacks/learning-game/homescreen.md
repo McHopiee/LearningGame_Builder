@@ -791,6 +791,123 @@ function showQuestion() {
         });
 
         createMaze();
+        // 添加正确答案数组
+const correctAnswers = [
+    `function Average(nums) {
+  let sum = 0;
+  for (let i = 0; i < nums.length; i++) {
+    sum += nums[i];
+  }
+  return sum / nums.length;
+}`,
+    `function findMax(arr) {
+  let max = arr[0];
+  for (let i = 1; i < arr.length; i++) {
+    if (arr[i] > max) {
+      max = arr[i];
+    }
+  }
+  return max;
+}`,
+    `function reverseString(str) {
+  let reversed = '';
+  for (let i = str.length - 1; i >= 0; i--) {
+    reversed += str[i];
+  }
+  return reversed;
+}`,
+    `function isPrime(num) {
+  if (num < 2) return false;
+  for (let i = 2; i <= Math.sqrt(num); i++) {
+    if (num % i === 0) return false;
+  }
+  return true;
+}`,
+    `function countVowels(str) {
+  const vowels = 'aeiouAEIOU';
+  let count = 0;
+  for (let i = 0; i < str.length; i++) {
+    if (vowels.includes(str[i])) {
+      count++;
+    }
+  }
+  return count;
+}`
+];
+
+// 修改runCodeBtn的点击事件
+runCodeBtn.addEventListener('click', () => {
+    try {
+        const userCode = codeInput.value;
+        const qIndex = Math.floor(currentQuestion / 2);
+        const correctAnswer = correctAnswers[qIndex];
+        
+        // 执行用户代码
+        eval(userCode);
+        
+        // 测试用户代码
+        let testPassed = false;
+        
+        if (qIndex === 0) {
+            // 测试平均数函数
+            if (typeof Average !== 'undefined') {
+                const test1 = Average([1, 2, 3, 4, 5]);
+                const test2 = Average([10, 20, 30]);
+                if (test1 === 3 && test2 === 20) {
+                    testPassed = true;
+                }
+            }
+        } else if (qIndex === 1) {
+            // 测试找最大值函数
+            if (typeof findMax !== 'undefined') {
+                const test1 = findMax([1, 5, 3, 9, 2]);
+                const test2 = findMax([-10, -5, -8]);
+                if (test1 === 9 && test2 === -5) {
+                    testPassed = true;
+                }
+            }
+        } else if (qIndex === 2) {
+            // 测试反转字符串函数
+            if (typeof reverseString !== 'undefined') {
+                const test1 = reverseString("hello");
+                const test2 = reverseString("abc");
+                if (test1 === "olleh" && test2 === "cba") {
+                    testPassed = true;
+                }
+            }
+        } else if (qIndex === 3) {
+            // 测试质数检查函数
+            if (typeof isPrime !== 'undefined') {
+                const test1 = isPrime(7);
+                const test2 = isPrime(4);
+                const test3 = isPrime(1);
+                if (test1 === true && test2 === false && test3 === false) {
+                    testPassed = true;
+                }
+            }
+        } else if (qIndex === 4) {
+            // 测试统计元音函数
+            if (typeof countVowels !== 'undefined') {
+                const test1 = countVowels("hello world");
+                const test2 = countVowels("AEIOU");
+                if (test1 === 3 && test2 === 5) {
+                    testPassed = true;
+                }
+            }
+        }
+        
+        if (testPassed) {
+            codeOutput.textContent = "✅ Correct! All tests passed!";
+            // 可以添加额外逻辑，比如解锁下一题或给予奖励
+        } else {
+            codeOutput.textContent = "❌ Incorrect. Some tests failed. Try again!";
+        }
+        
+    } catch (err) {
+        codeOutput.textContent = "❌ Error: " + err.message + "\nPlease check your code syntax.";
+    }
+});
     </script>
+    
 </body>
 </html>
