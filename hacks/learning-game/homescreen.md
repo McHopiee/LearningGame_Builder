@@ -602,8 +602,13 @@ permalink: /learninggame/home
 
         const questions = [
             { type: "Navigation Systems", text: "Configure robot navigation protocols", icon: "📡" },
+            { type: "Programming Task", text: "Configure robot navigation protocols", icon: "💻" },
             { type: "Logic Core", text: "Program decision algorithms", icon: "⚡" },
-            { type: "Simulation Bay", text: "Interactive training module", icon: "🎮" }
+            { type: "Programming Task", text: "Program decision algorithms", icon: "💻" },
+            { type: "Simulation Bay", text: "Interactive training module", icon: "🎮" },
+            { type: "Programming Task", text: "Interactive training module", icon: "💻" },
+            { type: "Programming Task", text: "Advanced programming challenge", icon: "💻" },
+            { type: "Programming Task", text: "Final coding assessment", icon: "💻" }
         ];
 
         const mazeLayout = [
@@ -698,47 +703,56 @@ permalink: /learninggame/home
             }
         }
 
-        function showQuestion() {
-            sectorNumber.textContent = currentSectorNum;
-            sectorTitle.textContent = `SECTOR ${currentSectorNum}`;
-            sectorName.textContent = sectorNames[currentSectorNum - 1] || "Training Module";
-            
-            const currentQ = questions[currentQuestion];
-            questionType.textContent = currentQ.type;
-            questionText.textContent = currentQ.text;
-            // Show code runner only on every 2nd question (question #2, #4, #6...)
-            if (currentQuestion % 2 === 1) {
-                codeRunner.style.display = 'block';
-                questionText.style.display = 'none';
-            } else {
-                codeRunner.style.display = 'none';
-                questionText.style.display = 'block';
-            }
+function showQuestion() {
+    sectorNumber.textContent = currentSectorNum;
+    sectorTitle.textContent = `SECTOR ${currentSectorNum}`;
+    sectorName.textContent = sectorNames[currentSectorNum - 1] || "Training Module";
+    
+    const currentQ = questions[currentQuestion];
+    questionType.textContent = currentQ.type;
+    questionText.style.display = 'block';
+    
+    if (currentQuestion % 2 === 1) {
+        codeRunner.style.display = 'block';
+        
+        const qTexts = [
+            "Task: Write a procedure `Average(nums)` that returns the average (mean) of the numbers in list `nums`",
+            "Write a function findMax that returns the maximum value in an array.",
+            "Create a function to reverse a string without using built-in reverse methods.",
+            "Write a function to check if a number is prime.",
+            "Implement a function to count vowels in a string."
+        ];
+        
+        const qIndex = Math.floor(currentQuestion / 2);
+        questionText.textContent = qTexts[qIndex] || currentQ.text;
+        
 
-            
-            document.querySelector('.question-type span:first-child').textContent = currentQ.icon;
-            
-            // Update progress indicators
-            const progressBars = document.querySelectorAll('.progress-bar');
-            progressBars.forEach((bar, idx) => {
-                bar.classList.remove('active', 'completed');
-                if (idx === currentQuestion) {
-                    bar.classList.add('active');
-                } else if (idx < currentQuestion) {
-                    bar.classList.add('completed');
-                }
-            });
-            
-            if (typeof updateHint === "function") updateHint(currentQuestion);
+        
+        codeOutput.textContent = codeQs[qIndex] || "";
+        codeInput.value = "// write code here\n\nfunction solution() {\n  // your code here\n}";
+    } else {
+        codeRunner.style.display = 'none';
+        questionText.textContent = currentQ.text;
+    }
+    
+    document.querySelector('.question-type span:first-child').textContent = currentQ.icon;
+    
+    const progressBars = document.querySelectorAll('.progress-bar');
+    progressBars.forEach((bar, idx) => {
+        bar.classList.remove('active', 'completed');
+        if (idx === currentQuestion) bar.classList.add('active');
+        else if (idx < currentQuestion) bar.classList.add('completed');
+    });
+    
+    if (currentQuestion === questions.length - 1) {
+        nextBtn.style.display = 'none';
+        backBtn.style.display = 'block';
+    } else {
+        nextBtn.style.display = 'block';
+        backBtn.style.display = 'none';
+    }
+}
 
-            if (currentQuestion === questions.length - 1) {
-                nextBtn.style.display = 'none';
-                backBtn.style.display = 'block';
-            } else {
-                nextBtn.style.display = 'block';
-                backBtn.style.display = 'none';
-            }
-        }
 
         nextBtn.addEventListener('click', () => {
             currentQuestion++;
