@@ -10,12 +10,37 @@ if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
 
 }
 
-export var robopURI;
-if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-    robopURI = "http://localhost:8320";
-} else {
-    robopURI = "https://robop.opencodingsociety.com";
+const ROBOP_LOCAL = "http://localhost:8320";
+const ROBOP_PROD = "https://robop.opencodingsociety.com";
+const isLocalHost = ["localhost", "127.0.0.1"].includes(location.hostname);
+
+/**
+ * Returns the correct Robop base URL.
+ * - If frontend is running on localhost AND local backend responds, use localhost.
+ * - Otherwise fall back to production.
+ */
+export async function getRobopURI() {
+  if (isLocalHost) {
+    try {
+      // Any HTTP response (even 401) proves the backend is up.
+      const r = await fetch(`${ROBOP_LOCAL}/api/robop/me`, {
+        method: "GET",
+        credentials: "omit",
+      });
+      if (r) return ROBOP_LOCAL;
+    } catch (e) {
+      // local backend is down -> fall back to prod
+    }
+  }
+  return ROBOP_PROD;
 }
+
+// Keep compatibility if other files import robopURI directly:
+// we set it asynchronously after module load.
+export var robopURI = ROBOP_PROD;
+getRobopURI().then((uri) => {
+  robopURI = uri;
+});
 
 
 export var javaURI;

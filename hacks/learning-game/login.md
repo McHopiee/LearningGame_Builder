@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Learning Game Login
+authors: Lilian
 permalink: /learninggame/login
 comments: True
 ---
@@ -444,9 +445,15 @@ comments: True
 </div>
 
 <script type="module">
-  import { robopURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
+  import { getRobopURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js?v=20260123_1';
 
+  const robopURI = await getRobopURI();
   const API_URL = `${robopURI}/api/robop`;
+
+  console.log("Using robopURI:", robopURI);
+  console.log("API_URL:", API_URL);
+
+
   // Generate stars
   const starsContainer = document.getElementById('stars');
   for (let i = 0; i < 100; i++) {
@@ -509,48 +516,71 @@ comments: True
   }
 
   // --- RPG REGISTER ---
-  async function handleRegister(event) {
-    event.preventDefault();
-    hideMessage();
-    showLoading();
+async function handleRegister(event) {
+  event.preventDefault();
+  hideMessage();
+  showLoading();
 
-    const firstName = document.getElementById('reg-firstname').value.trim();
-    const lastName = document.getElementById('reg-lastname').value.trim();
-    const githubId = document.getElementById('reg-github').value.trim();
-    const password = document.getElementById('reg-password').value;
+  const firstName = document.getElementById('reg-firstname').value.trim();
+  const lastName = document.getElementById('reg-lastname').value.trim();
+  const githubId = document.getElementById('reg-github').value.trim();
+  const password = document.getElementById('reg-password').value;
 
-    const userData = { FirstName: firstName, LastName: lastName, GitHubID: githubId, Password: password };
+  const userData = {
+    FirstName: firstName,
+    LastName: lastName,
+    GitHubID: githubId,
+    Password: password
+  };
 
+  try {
+    // ✅ store the fetch result
+    const response = await fetch(`${API_URL}/register`, {
+      ...fetchOptions,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(userData),
+    });
+
+
+    // ✅ safely parse JSON even if body is empty / not JSON
+    const text = await response.text();
+    let data = {};
     try {
-      await fetch(`${API_URL}/register`,  {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userData)
-      });
-
-      const data = await response.json().catch(() => ({}));
-      hideLoading();
-
-      if (response.ok) {
-        showMessage(`✅ Cadet ${firstName} registered! Access granted.`, 'success');
-        document.getElementById('reg-firstname').value = '';
-        document.getElementById('reg-lastname').value = '';
-        document.getElementById('reg-github').value = '';
-        document.getElementById('reg-password').value = '';
-        setTimeout(() => document.querySelectorAll('.tab-btn')[1].click(), 900);
-      } else {
-        if (response.status === 409 || (data.message && data.message.includes('already exists'))) {
-          showMessage(`⚠️ Cadet profile exists. Please login.`, 'error');
-        } else {
-          showMessage(`⚠️ ${data.message || 'Registration failed. Please try again.'}`, 'error');
-        }
-      }
-    } catch (error) {
-      hideLoading();
-      showMessage('⚠️ Connection failed. Station systems offline.', 'error');
-      console.error(error);
+      data = text ? JSON.parse(text) : {};
+    } catch {
+      data = {};
     }
+
+    hideLoading();
+
+    // ✅ response.ok will be true for 201 too
+    if (response.ok) {
+      showMessage(`✅ Cadet ${firstName} registered! Access granted.`, 'success');
+
+      document.getElementById('reg-firstname').value = '';
+      document.getElementById('reg-lastname').value = '';
+      document.getElementById('reg-github').value = '';
+      document.getElementById('reg-password').value = '';
+
+      setTimeout(() => document.querySelectorAll('.tab-btn')[1].click(), 900);
+      return;
+    }
+
+    // error cases
+    if (response.status === 409 || (data.message && data.message.includes('already exists'))) {
+      showMessage('⚠️ Cadet profile exists. Please login.', 'error');
+    } else {
+      showMessage(`⚠️ ${data.message || 'Registration failed. Please try again.'}`, 'error');
+    }
+
+  } catch (error) {
+    hideLoading();
+    showMessage('⚠️ Connection failed. Station systems offline.', 'error');
+    console.error(error);
   }
+}
+
 
   // --- RPG LOGIN ---
   async function handleLogin(event) {
@@ -563,13 +593,12 @@ comments: True
 
   try {
     const response = await fetch(`${API_URL}/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        GitHubID: githubId,
-        Password: password
-      })
+      ...fetchOptions,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ GitHubID: githubId, Password: password }),
     });
+
 
     const data = await response.json();
     hideLoading();

@@ -16,17 +16,15 @@ permalink: /learninggame/home
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #020617 0%, #0f172a 50%, #1e1b4b 100%);
-            height: 100vh;
-            display: flex; 
-            justify-content: flex-start; /* Adjusted to move content down */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
-            margin: 0; /* Ensure no extra margin */
-            padding-top: 50px; /* Added padding to move content further down */
+            padding: 20px;
         }
 
-        /* Animated stars background */
         @keyframes twinkle {
             0%, 100% { opacity: 0.3; }
             50% { opacity: 1; }
@@ -48,7 +46,6 @@ permalink: /learninggame/home
             animation: twinkle 3s infinite;
         }
 
-        /* Ambient glow effects */
         body::before {
             content: '';
             position: fixed;
@@ -73,52 +70,35 @@ permalink: /learninggame/home
             z-index: 0;
         }
 
-        .container {
-            position: relative; 
-            width: 90vw; /* Adjusted for better centering */
-            max-width: 800px; /* Reduced max width for better fit */
-            height: 90vh; /* Adjusted for better centering */
-            max-height: 600px; /* Reduced max height for better fit */
-            background: rgba(15, 23, 42, 0.85); 
-            backdrop-filter: blur(20px);
-            border-radius: 24px; 
-            border: 2px solid rgba(6,182,212,0.4);
-            box-shadow: 0 0 60px rgba(6,182,212,0.25); 
-            overflow: hidden;
-            z-index: 1;
-            display: flex; /* Added flexbox for centering content */
-            flex-direction: column; /* Stack children vertically */
-            justify-content: center; /* Center children vertically */
-            align-items: center; /* Center children horizontally */
-        }
-
         .title-section {
-            position: absolute; 
-            top: 0; 
-            left: 0;
-            right: 0;
+            position: relative;
+            width: 100%;
+            max-width: 900px;
             background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(30,41,59,0.95));
-            backdrop-filter: blur(10px);
-            padding: 20px;
-            border-bottom: 2px solid rgba(6,182,212,0.3);
-            z-index: 50;
+            backdrop-filter: blur(20px);
+            padding: 24px;
+            border-radius: 20px;
+            border: 2px solid rgba(6,182,212,0.4);
+            box-shadow: 0 0 40px rgba(6,182,212,0.25);
+            margin-bottom: 24px;
+            z-index: 10;
         }
 
         .title-header {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 16px;
             margin-bottom: 8px;
         }
 
         .title-icon {
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 32px;
             animation: pulse 2s infinite;
         }
 
@@ -129,8 +109,8 @@ permalink: /learninggame/home
 
         .title {
             color: #06b6d4;
-            font-size: 28px; 
-            font-weight: 900; 
+            font-size: 36px;
+            font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 4px;
             text-shadow: 0 0 20px rgba(6,182,212,0.5);
@@ -139,60 +119,97 @@ permalink: /learninggame/home
         .subtitle {
             text-align: center;
             color: rgba(103,232,249,0.7);
-            font-size: 12px;
-            letter-spacing: 0.8px;
+            font-size: 14px;
+            letter-spacing: 1px;
             font-family: 'Courier New', monospace;
         }
 
+        .badge-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.3;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .badge.earned {
+            opacity: 1;
+            box-shadow: 0 0 20px currentColor;
+        }
+
+        .badge.easy { background: linear-gradient(135deg, #10b981, #059669); color: white; border-color: #10b981; }
+        .badge.medium { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border-color: #3b82f6; }
+        .badge.hard { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border-color: #f59e0b; }
+        .badge.difficult { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border-color: #ef4444; }
+        .badge.hacker { background: linear-gradient(135deg, #a855f7, #9333ea); color: white; border-color: #a855f7; }
+
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 2px solid rgba(6,182,212,0.4);
+            box-shadow: 0 0 60px rgba(6,182,212,0.25);
+            padding: 24px;
+            z-index: 10;
+        }
+
         .maze-container {
-            width: 100%; 
-            height: 100%; 
-            padding: 20px; /* Reduced padding for better fit */
-            display: flex; 
-            justify-content: center; 
+            width: 100%;
+            display: flex;
+            flex-direction: column;
             align-items: center;
+            gap: 16px;
         }
 
         .maze {
-            position: relative; 
-            width: 100%; 
-            max-width: 700px; /* Adjusted for better centering */
-            height: 100%; 
-            max-height: 500px; /* Adjusted for better centering */
+            width: 100%;
+            max-width: 750px;
+            aspect-ratio: 15/11;
             background: rgba(2, 6, 23, 0.5);
             backdrop-filter: blur(10px);
-            border-radius: 20px; 
+            border-radius: 20px;
             border: 2px solid rgba(16,185,129,0.4);
             box-shadow: inset 0 0 30px rgba(16,185,129,0.1);
-            display: grid; 
-            grid-template-columns: repeat(15, 1fr); 
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
             grid-template-rows: repeat(11, 1fr);
-            padding: 4px;
-            gap: 1px;
+            padding: 8px;
+            gap: 2px;
         }
 
-        .cell { 
+        .cell {
             border: 1px solid rgba(6,182,212,0.08);
             border-radius: 2px;
         }
 
-        .wall { 
+        .wall {
             background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
         }
 
-        .path { 
-            background: rgba(30, 41, 59, 0.3); 
+        .path {
+            background: rgba(30, 41, 59, 0.3);
         }
 
         .player {
             background: radial-gradient(circle, #06b6d4 0%, #3b82f6 100%);
-            border-radius: 50%; 
+            border-radius: 50%;
             box-shadow: 0 0 20px rgba(6,182,212,0.8);
-            position: relative; 
-            z-index: 20;
             animation: playerPulse 1.5s infinite;
-            width: 30px; /* Adjusted width for symmetry */
-            height: 30px; /* Adjusted height for symmetry */
         }
 
         @keyframes playerPulse {
@@ -201,139 +218,98 @@ permalink: /learninggame/home
         }
 
         .sector {
-            background: linear-gradient(135deg, rgba(251,191,36,0.3) 0%, rgba(217,119,6,0.3) 100%);
-            border-radius: 50%; 
-            display: flex; 
-            justify-content: center; 
+            background: linear-gradient(135deg, rgba(251,191,36,0.4) 0%, rgba(217,119,6,0.4) 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
             align-items: center;
-            color: #fbbf24; 
-            font-weight: 900; 
-            font-size: 10px; /* Reduced font size for better symmetry */
-            width: 40px; /* Adjusted width for symmetry */
-            height: 40px; /* Adjusted height for symmetry */
-            z-index: 10;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .sector::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .sector.completed { 
-            background: linear-gradient(135deg, rgba(16,185,129,0.3) 0%, rgba(5,150,105,0.3) 100%);
-            color: #10b981;
-        }
-
-        .start { 
-            background: rgba(16,185,129,0.3);
-            border-radius: 50%; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            color: #10b981;
-            font-size: 10px;
+            color: #fbbf24;
             font-weight: 900;
-            box-shadow: 0 0 15px rgba(16,185,129,0.5);
-            width: 40px; /* Adjusted width for symmetry */
-            height: 40px; /* Adjusted height for symmetry */
+            font-size: 14px;
+            box-shadow: 0 0 15px rgba(251,191,36,0.4);
         }
 
-        .end { 
-            background: rgba(168,85,247,0.3);
-            border-radius: 50%; 
-            display: flex; 
-            justify-content: center; 
+        .sector.completed {
+            background: linear-gradient(135deg, rgba(16,185,129,0.4) 0%, rgba(5,150,105,0.4) 100%);
+            color: #10b981;
+            box-shadow: 0 0 15px rgba(16,185,129,0.5);
+        }
+
+        .start, .end {
+            background: linear-gradient(135deg, rgba(168,85,247,0.4) 0%, rgba(147,51,234,0.4) 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
             align-items: center;
             color: #a855f7;
-            font-size: 10px;
+            font-size: 14px;
             font-weight: 900;
-            box-shadow: 0 0 15px rgba(168,85,247,0.5);
-            width: 40px; /* Adjusted width for symmetry */
-            height: 40px; /* Adjusted height for symmetry */
+            box-shadow: 0 0 20px rgba(168,85,247,0.6);
         }
 
         .controls-hint {
-            margin-top: 12px;
             text-align: center;
-            color: rgba(6,182,212,0.6);
-            font-size: 12px;
+            color: rgba(6,182,212,0.7);
+            font-size: 14px;
             font-family: 'Courier New', monospace;
+            padding: 12px;
+            background: rgba(2,6,23,0.5);
+            border-radius: 12px;
+            border: 1px solid rgba(6,182,212,0.2);
         }
 
-        /* Modal Styles */
         .question-modal {
-            display: none; 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
             height: 100%;
-            background: rgba(2,6,23,0.95); 
+            background: rgba(2,6,23,0.95);
             backdrop-filter: blur(10px);
-            z-index: 100; 
-            justify-content: center; 
+            z-index: 1000;
+            justify-content: center;
             align-items: center;
+            padding: 20px;
+            overflow-y: auto;
         }
 
         .question-modal.active { display: flex; }
 
         .question-card {
-            background: linear-gradient(135deg, rgba(30,41,59,0.95), rgba(51,65,85,0.95));
+            background: linear-gradient(135deg, rgba(30,41,59,0.98), rgba(51,65,85,0.98));
             backdrop-filter: blur(20px);
-            border-radius: 24px; 
-            border: 2px solid rgba(6,182,212,0.5); 
-            padding: 40px; 
-            max-width: 600px; 
-            width: 90%;
+            border-radius: 24px;
+            border: 2px solid rgba(6,182,212,0.5);
+            padding: 32px;
+            max-width: 700px;
+            width: 100%;
             box-shadow: 0 0 60px rgba(6,182,212,0.3);
             position: relative;
-            overflow: hidden;
-        }
-
-        .question-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(6,182,212,0.05), transparent);
-            animation: hologramScan 3s infinite;
-        }
-
-        @keyframes hologramScan {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .question-header {
             display: flex;
             align-items: center;
             gap: 16px;
-            margin-bottom: 24px;
-            position: relative;
-            z-index: 1;
+            margin-bottom: 20px;
         }
 
         .sector-badge {
-            width: 56px;
-            height: 56px;
+            width: 64px;
+            height: 64px;
             background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 900;
             box-shadow: 0 0 30px rgba(251,191,36,0.6);
+            flex-shrink: 0;
         }
 
         .sector-info h2 {
@@ -345,50 +321,20 @@ permalink: /learninggame/home
 
         .sector-info p {
             color: rgba(103,232,249,0.7);
-            font-size: 13px;
+            font-size: 14px;
             font-family: 'Courier New', monospace;
-        }
-
-        .question-content {
-            margin: 24px 0;
-            padding: 24px;
-            background: rgba(2,6,23,0.5);
-            border-radius: 16px;
-            border: 1px solid rgba(6,182,212,0.3);
-            position: relative;
-            z-index: 1;
-        }
-
-        .question-type {
-            color: #fbbf24;
-            font-weight: 900;
-            text-transform: uppercase;
-            font-size: 13px;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .question-text {
-            color: #e2e8f0;
-            font-size: 16px;
-            line-height: 1.6;
         }
 
         .progress-indicators {
             display: flex;
             gap: 8px;
-            margin-bottom: 24px;
-            position: relative;
-            z-index: 1;
+            margin-bottom: 20px;
         }
 
         .progress-bar {
-            height: 6px;
+            height: 8px;
             flex: 1;
-            border-radius: 3px;
+            border-radius: 4px;
             background: rgba(51,65,85,0.5);
             transition: all 0.3s ease;
             position: relative;
@@ -400,58 +346,119 @@ permalink: /learninggame/home
             box-shadow: 0 0 15px rgba(6,182,212,0.6);
         }
 
-        .progress-bar.active::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            animation: progressShine 1.5s infinite;
-        }
-
-        @keyframes progressShine {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
         .progress-bar.completed {
-            background: rgba(16,185,129,0.6);
+            background: rgba(16,185,129,0.8);
+        }
+
+        .question-content {
+            margin: 20px 0;
+            padding: 24px;
+            background: rgba(2,6,23,0.6);
+            border-radius: 16px;
+            border: 1px solid rgba(6,182,212,0.3);
+        }
+
+        .question-type {
+            color: #fbbf24;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .question-text {
+            color: #e2e8f0;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        #robotMazeContainer {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        #robotMaze {
+            display: grid;
+            grid-template-columns: repeat(5, 60px);
+            grid-template-rows: repeat(5, 60px);
+            gap: 3px;
+            background: #020617;
+            padding: 12px;
+            border-radius: 12px;
+            border: 2px solid rgba(6,182,212,0.5);
+            box-shadow: 0 0 30px rgba(6,182,212,0.3);
+        }
+
+        #codeInput, #pseudoInput {
+            width: 100%;
+            min-height: 120px;
+            border-radius: 12px;
+            padding: 16px;
+            font-family: 'Courier New', monospace;
+            background: #0f172a;
+            color: #e2e8f0;
+            border: 2px solid rgba(6,182,212,0.4);
+            font-size: 14px;
+            resize: vertical;
+        }
+
+        .run-btn {
+            margin-top: 12px;
+            padding: 12px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+            color: white;
+            border: none;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            box-shadow: 0 0 20px rgba(6,182,212,0.4);
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .run-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(6,182,212,0.6);
+        }
+
+        #codeOutput, #pseudoOutput {
+            margin-top: 12px;
+            background: #020617;
+            padding: 16px;
+            border-radius: 12px;
+            color: #10b981;
+            font-family: 'Courier New', monospace;
+            border: 2px solid rgba(6,182,212,0.3);
+            min-height: 50px;
         }
 
         .question-nav {
             display: flex;
             gap: 12px;
-            position: relative;
-            z-index: 1;
+            margin-top: 20px;
         }
 
-        .btn { 
+        .btn {
             flex: 1;
-            padding: 16px 24px; 
-            border: none; 
-            border-radius: 12px; 
-            cursor: pointer; 
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
             text-transform: uppercase;
             font-weight: 900;
             letter-spacing: 1.5px;
             transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
+            font-size: 14px;
         }
 
-        .btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.5s ease;
-        }
-
-        .btn:hover::before {
-            transform: translateX(100%);
-        }
-
-        .btn-next { 
+        .btn-next {
             background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
             color: white;
             box-shadow: 0 0 25px rgba(6,182,212,0.4);
@@ -474,94 +481,98 @@ permalink: /learninggame/home
         }
 
         @media (max-width: 768px) {
-            .title { font-size: 20px; }
-            .question-card { padding: 28px 24px; }
+            .title { font-size: 24px; }
+            .question-card { padding: 24px; }
+            #robotMaze {
+                grid-template-columns: repeat(5, 50px);
+                grid-template-rows: repeat(5, 50px);
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Stars background -->
     <div class="stars" id="stars"></div>
 
+    <div class="title-section">
+        <div class="title-header">
+            <div class="title-icon">🚀</div>
+            <div class="title">Station Navigation</div>
+        </div>
+        <div class="subtitle">Cadet Training Protocol // Sector Clearance Required</div>
+        <div class="badge-container">
+            <div class="badge easy" id="badge-1">🥉 Easy</div>
+            <div class="badge medium" id="badge-2">🥈 Medium</div>
+            <div class="badge hard" id="badge-3">🥇 Hard</div>
+            <div class="badge difficult" id="badge-4">💎 Difficult</div>
+            <div class="badge hacker" id="badge-5">👾 Hacker</div>
+        </div>
+    </div>
+
     <div class="container">
-        <div class="title-section">
-            <div class="title-header">
-                <div class="title-icon">🚀</div>
-                <div class="title">Station Navigation</div>
-            </div>
-            <div class="subtitle">Cadet Training Protocol // Sector Clearance Required</div>
-        </div>
-
         <div class="maze-container">
-            <div>
-                <div class="maze" id="maze"></div>
-                <div class="controls-hint">
-                    Use arrow keys to navigate • Reach sector checkpoints to begin training
-                </div>
-            </div>
-        </div>
-
-        <!-- Question Modal -->
-        <div class="question-modal" id="questionModal">
-            <div class="question-card">
-                <div class="question-header">
-                    <div class="sector-badge">
-                        <span id="sectorNumber">1</span>
-                    </div>
-                    <div class="sector-info">
-                        <h2 id="sectorTitle">SECTOR 1</h2>
-                        <p id="sectorName">Navigation Deck</p>
-                    </div>
-                </div>
-
-                <div class="progress-indicators" id="progressIndicators">
-                    <div class="progress-bar"></div>
-                    <div class="progress-bar"></div>
-                    <div class="progress-bar"></div>
-                </div>
-
-                <div class="question-content">
-
-                <div class="question-type" id="questionType">
-                    <span>📡</span>
-                    <span id="questionTypeText">Navigation Systems</span>
-                </div>
-
-                <div class="question-text" id="questionText">Configure robot navigation protocols</div>
-
-                <!-- CODE RUNNER (shows only on every 2nd question) -->
-                <div id="codeRunner" style="display:none; margin-top:16px;">
-                    <textarea id="codeInput" rows="5" style="width:100%; border-radius:8px; padding:10px; font-family:monospace;">
-            // write code here
-                    </textarea>
-
-                    <button id="runCodeBtn" style="margin-top:10px; padding:10px 14px; border-radius:8px; cursor:pointer;">
-                        Run Code
-                    </button>
-
-                    <pre id="codeOutput" style="margin-top:10px; background:#020617; padding:10px; border-radius:8px;"></pre>
-                </div>
-            </div>
-
-
-                <div class="question-nav">
-                    <button class="btn btn-next" id="nextBtn">Next Module →</button>
-                    <button class="btn btn-complete" id="backBtn" style="display: none;">Complete Sector ✓</button>
-                </div>
+            <div class="maze" id="maze"></div>
+            <div class="controls-hint">
+                ⌨️ Use arrow keys to navigate • 🎯 Reach sector checkpoints to begin training
             </div>
         </div>
     </div>
 
-    <!-- Integrate Game Teacher Assets -->
-   {% capture teacher_raw %}
-    {% include_relative gameteacher.md %}
-    {% endcapture %}
+    <div class="question-modal" id="questionModal">
+        <div class="question-card">
+            <div class="question-header">
+                <div class="sector-badge">
+                    <span id="sectorNumber">1</span>
+                </div>
+                <div class="sector-info">
+                    <h2 id="sectorTitle">SECTOR 1</h2>
+                    <p id="sectorName">Navigation Deck</p>
+                </div>
+            </div>
 
-    {% assign parts = teacher_raw | split: '---' %}
-    {{ parts | slice: 2, parts.size | join: '---' }}
+            <div class="progress-indicators">
+                <div class="progress-bar"></div>
+                <div class="progress-bar"></div>
+                <div class="progress-bar"></div>
+            </div>
+
+            <div class="question-content">
+                <div class="question-type">
+                    <span id="questionIcon">🤖</span>
+                    <span id="questionTypeText">Robot Code</span>
+                </div>
+
+                <div class="question-text" id="questionText">Program the robot to reach the flowers</div>
+
+                <div id="codeRunner" style="display:none;">
+                    <div id="robotMazeContainer">
+                        <div id="robotMaze"></div>
+                    </div>
+
+                    <textarea id="codeInput" placeholder="// Write your code here...
+// Example: robot.moveRight(); robot.moveDown();"></textarea>
+
+                    <button id="runCodeBtn" class="run-btn">▶ Run Code</button>
+
+                    <pre id="codeOutput"></pre>
+                </div>
+
+                <div id="pseudoRunner" style="display:none;">
+                    <textarea id="pseudoInput" placeholder="// Write your pseudocode here..."></textarea>
+
+                    <button id="runPseudoBtn" class="run-btn">▶ Run Pseudocode</button>
+
+                    <pre id="pseudoOutput"></pre>
+                </div>
+            </div>
+
+            <div class="question-nav">
+                <button class="btn btn-next" id="nextBtn">Next Module →</button>
+                <button class="btn btn-complete" id="backBtn" style="display: none;">Complete Sector ✓</button>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // Generate stars
         const starsContainer = document.getElementById('stars');
         for (let i = 0; i < 150; i++) {
             const star = document.createElement('div');
@@ -580,13 +591,17 @@ permalink: /learninggame/home
         const sectorName = document.getElementById('sectorName');
         const questionType = document.getElementById('questionTypeText');
         const questionText = document.getElementById('questionText');
+        const questionIcon = document.getElementById('questionIcon');
         const nextBtn = document.getElementById('nextBtn');
         const backBtn = document.getElementById('backBtn');
         const codeRunner = document.getElementById('codeRunner');
+        const pseudoRunner = document.getElementById('pseudoRunner');
         const codeInput = document.getElementById('codeInput');
         const codeOutput = document.getElementById('codeOutput');
         const runCodeBtn = document.getElementById('runCodeBtn');
-
+        const pseudoInput = document.getElementById('pseudoInput');
+        const pseudoOutput = document.getElementById('pseudoOutput');
+        const runPseudoBtn = document.getElementById('runPseudoBtn');
 
         let currentQuestion = 0;
         let currentSectorNum = 0;
@@ -594,12 +609,13 @@ permalink: /learninggame/home
 
         const sectorNames = [
             "Navigation Deck",
-            "Logic Core", 
+            "Logic Core",
             "Simulation Bay",
             "Dock Alpha",
             "Dock Beta"
         ];
 
+<<<<<<< HEAD
         const questions = [
             { type: "Navigation Systems", text: "Configure robot navigation protocols", icon: "📡" },
             { type: "Programming Task", text: "Configure robot navigation protocols", icon: "💻" },
@@ -610,6 +626,137 @@ permalink: /learninggame/home
             { type: "Programming Task", text: "Advanced programming challenge", icon: "💻" },
             { type: "Programming Task", text: "Final coding assessment", icon: "💻" }
         ];
+=======
+        const badgeNames = ['easy', 'medium', 'hard', 'difficult', 'hacker'];
+
+        // Questions for each sector - getting progressively harder
+        const sectorQuestions = {
+            1: [ // EASY - Sector 1
+                { 
+                    type: "Robot Code", 
+                    text: "Move the robot 2 steps right and 2 steps down to reach the flowers.", 
+                    icon: "🤖", 
+                    mode: "robot",
+                    robotStart: { x: 1, y: 1 },
+                    flowerPos: { x: 3, y: 3 }
+                },
+                { 
+                    type: "Pseudocode", 
+                    text: "Write pseudocode that prints numbers 1 to 5.", 
+                    icon: "📝", 
+                    mode: "pseudo",
+                    hint: "Use a for loop from 1 to 5"
+                },
+                { 
+                    type: "Computational Thinking", 
+                    text: "What is the time complexity of accessing an element in an array by index?", 
+                    icon: "🧠", 
+                    mode: "text",
+                    answer: "O(1) - constant time"
+                }
+            ],
+            2: [ // MEDIUM - Sector 2
+                { 
+                    type: "Robot Code", 
+                    text: "Navigate around the obstacle! Move right, down twice, right, then up.", 
+                    icon: "🤖", 
+                    mode: "robot",
+                    robotStart: { x: 1, y: 1 },
+                    flowerPos: { x: 3, y: 2 },
+                    obstacles: [[2, 2]]
+                },
+                { 
+                    type: "Pseudocode", 
+                    text: "Write pseudocode to find the maximum number in an array [5, 2, 9, 1, 7].", 
+                    icon: "📝", 
+                    mode: "pseudo",
+                    hint: "Loop through and track the largest value"
+                },
+                { 
+                    type: "Computational Thinking", 
+                    text: "If you double the input size, what happens to O(n²) algorithm runtime?", 
+                    icon: "🧠", 
+                    mode: "text",
+                    answer: "Runtime becomes 4x slower"
+                }
+            ],
+            3: [ // HARD - Sector 3
+                { 
+                    type: "Robot Code", 
+                    text: "Complex path! Navigate through multiple obstacles to reach the flowers.", 
+                    icon: "🤖", 
+                    mode: "robot",
+                    robotStart: { x: 1, y: 1 },
+                    flowerPos: { x: 3, y: 3 },
+                    obstacles: [[2, 1], [1, 2], [3, 2]]
+                },
+                { 
+                    type: "Pseudocode", 
+                    text: "Write pseudocode for binary search on a sorted array.", 
+                    icon: "📝", 
+                    mode: "pseudo",
+                    hint: "Divide and conquer - check middle element"
+                },
+                { 
+                    type: "Computational Thinking", 
+                    text: "Compare O(log n) vs O(n). Which is faster for 1 million items?", 
+                    icon: "🧠", 
+                    mode: "text",
+                    answer: "O(log n) is much faster - ~20 ops vs 1M ops"
+                }
+            ],
+            4: [ // DIFFICULT - Sector 4
+                { 
+                    type: "Robot Code", 
+                    text: "Advanced maze! Find the optimal path through dense obstacles.", 
+                    icon: "🤖", 
+                    mode: "robot",
+                    robotStart: { x: 1, y: 1 },
+                    flowerPos: { x: 3, y: 3 },
+                    obstacles: [[2, 1], [1, 2], [2, 2], [3, 1], [1, 3]]
+                },
+                { 
+                    type: "Pseudocode", 
+                    text: "Write pseudocode for a recursive function to calculate factorial.", 
+                    icon: "📝", 
+                    mode: "pseudo",
+                    hint: "Base case: n=0 or n=1, recursive: n * factorial(n-1)"
+                },
+                { 
+                    type: "Computational Thinking", 
+                    text: "What data structure provides O(1) lookup, insert, and delete?", 
+                    icon: "🧠", 
+                    mode: "text",
+                    answer: "Hash Table/Hash Map"
+                }
+            ],
+            5: [ // HACKER - Sector 5
+                { 
+                    type: "Robot Code", 
+                    text: "Expert challenge! Navigate the most complex obstacle course.", 
+                    icon: "🤖", 
+                    mode: "robot",
+                    robotStart: { x: 1, y: 1 },
+                    flowerPos: { x: 3, y: 3 },
+                    obstacles: [[2, 1], [1, 2], [2, 2], [3, 1], [1, 3], [2, 3], [3, 2]]
+                },
+                { 
+                    type: "Pseudocode", 
+                    text: "Write pseudocode for merge sort algorithm.", 
+                    icon: "📝", 
+                    mode: "pseudo",
+                    hint: "Divide array, recursively sort halves, merge sorted halves"
+                },
+                { 
+                    type: "Computational Thinking", 
+                    text: "Explain the difference between stack and heap memory allocation.", 
+                    icon: "🧠", 
+                    mode: "text",
+                    answer: "Stack: automatic, LIFO, fixed size. Heap: manual, dynamic, larger"
+                }
+            ]
+        };
+>>>>>>> f69b274317b09e7daecc6ee0c918619b36ae5b71
 
         const mazeLayout = [
             [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -626,6 +773,96 @@ permalink: /learninggame/home
         ];
 
         let playerPos = { x: 0, y: 1 };
+
+        let robotMazeLayout = [];
+        let robotPos = { x: 1, y: 1 };
+        let flowerPos = { x: 3, y: 3 };
+
+        function createRobotMaze() {
+            const robotMaze = document.getElementById('robotMaze');
+            robotMaze.innerHTML = '';
+            
+            for (let y = 0; y < 5; y++) {
+                for (let x = 0; x < 5; x++) {
+                    const cell = document.createElement('div');
+                    cell.style.cssText = 'width:60px; height:60px; display:flex; align-items:center; justify-content:center; font-size:28px; border-radius:6px;';
+                    
+                    if (robotMazeLayout[y][x] === 0) {
+                        cell.style.background = 'rgba(51,65,85,0.6)';
+                        cell.style.border = '2px solid rgba(30,41,59,0.8)';
+                    } else {
+                        cell.style.background = 'rgba(30,41,59,0.9)';
+                        cell.style.border = '2px solid rgba(6,182,212,0.2)';
+                    }
+                    
+                    if (x === robotPos.x && y === robotPos.y) {
+                        cell.textContent = '🤖';
+                    }
+                    
+                    if (x === flowerPos.x && y === flowerPos.y) {
+                        cell.textContent = '🌸';
+                    }
+                    
+                    robotMaze.appendChild(cell);
+                }
+            }
+        }
+
+        function setupRobotMaze(question) {
+            // Create fresh maze
+            robotMazeLayout = [
+                [1, 1, 1, 1, 1],
+                [1, 0, 0, 0, 1],
+                [1, 0, 0, 0, 1],
+                [1, 0, 0, 0, 1],
+                [1, 1, 1, 1, 1]
+            ];
+
+            // Add obstacles if any
+            if (question.obstacles) {
+                question.obstacles.forEach(([x, y]) => {
+                    robotMazeLayout[y][x] = 0;
+                });
+            }
+
+            robotPos = { ...question.robotStart };
+            flowerPos = { ...question.flowerPos };
+        }
+
+        const robot = {
+            moveRight: function() {
+                if (robotPos.x < 4 && robotMazeLayout[robotPos.y][robotPos.x + 1] !== 0) {
+                    robotPos.x++;
+                    createRobotMaze();
+                    return true;
+                }
+                return false;
+            },
+            moveLeft: function() {
+                if (robotPos.x > 0 && robotMazeLayout[robotPos.y][robotPos.x - 1] !== 0) {
+                    robotPos.x--;
+                    createRobotMaze();
+                    return true;
+                }
+                return false;
+            },
+            moveDown: function() {
+                if (robotPos.y < 4 && robotMazeLayout[robotPos.y + 1][robotPos.x] !== 0) {
+                    robotPos.y++;
+                    createRobotMaze();
+                    return true;
+                }
+                return false;
+            },
+            moveUp: function() {
+                if (robotPos.y > 0 && robotMazeLayout[robotPos.y - 1][robotPos.x] !== 0) {
+                    robotPos.y--;
+                    createRobotMaze();
+                    return true;
+                }
+                return false;
+            }
+        };
 
         function createMaze() {
             maze.innerHTML = '';
@@ -662,12 +899,6 @@ permalink: /learninggame/home
             }
         }
 
-        function dismissTeacher() {
-            document.getElementById('teacher-overlay').style.display = 'none';
-            modal.classList.add('active');
-            showQuestion();
-        }
-
         function movePlayer(dx, dy) {
             const newX = playerPos.x + dx;
             const newY = playerPos.y + dy;
@@ -678,7 +909,6 @@ permalink: /learninggame/home
 
                 const cellValue = mazeLayout[newY][newX];
 
-                // Prevent moving forward without completing the previous task
                 if (cellValue >= 4 && cellValue <= 8) {
                     const sectorNum = cellValue - 3;
                     if (!completedSectors.has(sectorNum - 1) && sectorNum > 1) {
@@ -695,7 +925,8 @@ permalink: /learninggame/home
                     if (!completedSectors.has(sectorNum)) {
                         currentSectorNum = sectorNum;
                         currentQuestion = 0;
-                        initTeacher(sectorNum, 0);
+                        modal.classList.add('active');
+                        showQuestion();
                     }
                 }
 
@@ -703,6 +934,7 @@ permalink: /learninggame/home
             }
         }
 
+<<<<<<< HEAD
 function showQuestion() {
     sectorNumber.textContent = currentSectorNum;
     sectorTitle.textContent = `SECTOR ${currentSectorNum}`;
@@ -753,6 +985,52 @@ function showQuestion() {
     }
 }
 
+=======
+        function showQuestion() {
+            sectorNumber.textContent = currentSectorNum;
+            sectorTitle.textContent = `SECTOR ${currentSectorNum}`;
+            sectorName.textContent = sectorNames[currentSectorNum - 1] || "Training Module";
+            
+            const currentQ = sectorQuestions[currentSectorNum][currentQuestion];
+            questionType.textContent = currentQ.type;
+            questionText.textContent = currentQ.text;
+            questionIcon.textContent = currentQ.icon;
+            
+            // Hide all runners
+            codeRunner.style.display = 'none';
+            pseudoRunner.style.display = 'none';
+            questionText.style.display = 'block';
+            
+            // Show appropriate runner
+            if (currentQ.mode === 'robot') {
+                codeRunner.style.display = 'block';
+                questionText.style.display = 'none';
+                setupRobotMaze(currentQ);
+                createRobotMaze();
+            } else if (currentQ.mode === 'pseudo') {
+                pseudoRunner.style.display = 'block';
+                questionText.style.display = 'none';
+            }
+            
+            const progressBars = document.querySelectorAll('.progress-bar');
+            progressBars.forEach((bar, idx) => {
+                bar.classList.remove('active', 'completed');
+                if (idx === currentQuestion) {
+                    bar.classList.add('active');
+                } else if (idx < currentQuestion) {
+                    bar.classList.add('completed');
+                }
+            });
+
+            if (currentQuestion === 2) {
+                nextBtn.style.display = 'none';
+                backBtn.style.display = 'block';
+            } else {
+                nextBtn.style.display = 'block';
+                backBtn.style.display = 'none';
+            }
+        }
+>>>>>>> f69b274317b09e7daecc6ee0c918619b36ae5b71
 
         nextBtn.addEventListener('click', () => {
             currentQuestion++;
@@ -762,24 +1040,56 @@ function showQuestion() {
         backBtn.addEventListener('click', () => {
             modal.classList.remove('active');
             completedSectors.add(currentSectorNum);
+            
+            // Award badge
+            const badgeId = `badge-${currentSectorNum}`;
+            const badge = document.getElementById(badgeId);
+            if (badge) {
+                badge.classList.add('earned');
+            }
+            
             createMaze();
         });
 
         document.addEventListener('keydown', (e) => {
-            if (modal.classList.contains('active') || 
-                document.getElementById('teacher-overlay')?.style.display === 'flex') return;
+            if (modal.classList.contains('active')) return;
             
             if(e.key === 'ArrowUp') movePlayer(0, -1);
             if(e.key === 'ArrowDown') movePlayer(0, 1);
             if(e.key === 'ArrowLeft') movePlayer(-1, 0);
             if(e.key === 'ArrowRight') movePlayer(1, 0);
         });
+
         runCodeBtn.addEventListener('click', () => {
+            const currentQ = sectorQuestions[currentSectorNum][currentQuestion];
+            setupRobotMaze(currentQ);
+            createRobotMaze();
+            codeOutput.textContent = '';
+            
             try {
-                const result = eval(codeInput.value);
-                codeOutput.textContent = result !== undefined ? result : "Code ran successfully.";
+                eval(codeInput.value);
+                
+                if (robotPos.x === flowerPos.x && robotPos.y === flowerPos.y) {
+                    codeOutput.textContent = "✓ Success! Robot reached the flowers!";
+                    codeOutput.style.color = '#10b981';
+                } else {
+                    codeOutput.textContent = "❌ Robot didn't reach the flowers. Try again!";
+                    codeOutput.style.color = '#fbbf24';
+                }
             } catch (err) {
-                codeOutput.textContent = err.message;
+                codeOutput.textContent = "❌ Error: " + err.message;
+                codeOutput.style.color = '#ef4444';
+            }
+        });
+
+        runPseudoBtn.addEventListener('click', () => {
+            try {
+                const result = eval(pseudoInput.value);
+                pseudoOutput.textContent = result !== undefined ? String(result) : "✓ Code executed successfully!";
+                pseudoOutput.style.color = '#10b981';
+            } catch (err) {
+                pseudoOutput.textContent = "❌ Error: " + err.message;
+                pseudoOutput.style.color = '#ef4444';
             }
         });
 
