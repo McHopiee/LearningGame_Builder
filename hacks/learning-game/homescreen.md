@@ -17,13 +17,12 @@ permalink: /learninggame/home
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #020617 0%, #0f172a 50%, #1e1b4b 100%);
             height: 100vh;
+            width: 100vw;
             display: flex; 
-            justify-content: flex-start; /* Adjusted to move content down */
-            align-items: center;
+            justify-content: center; /* Center the container horizontally */
+            align-items: center;     /* Center the container vertically */
             overflow: hidden;
             position: relative;
-            margin: 0; /* Ensure no extra margin */
-            padding-top: 50px; /* Added padding to move content further down */
         }
 
         /* Animated stars background */
@@ -41,8 +40,7 @@ permalink: /learninggame/home
 
         .star {
             position: absolute;
-            width: 2px;
-            height: 2px;
+            width: 2px; height: 2px;
             background: white;
             border-radius: 50%;
             animation: twinkle 3s infinite;
@@ -52,10 +50,8 @@ permalink: /learninggame/home
         body::before {
             content: '';
             position: fixed;
-            top: 10%;
-            left: 10%;
-            width: 500px;
-            height: 500px;
+            top: 10%; left: 10%;
+            width: 500px; height: 500px;
             background: radial-gradient(circle, rgba(6,182,212,0.15), transparent 70%);
             filter: blur(80px);
             z-index: 0;
@@ -64,10 +60,8 @@ permalink: /learninggame/home
         body::after {
             content: '';
             position: fixed;
-            bottom: 10%;
-            right: 10%;
-            width: 500px;
-            height: 500px;
+            bottom: 10%; right: 10%;
+            width: 500px; height: 500px;
             background: radial-gradient(circle, rgba(168,85,247,0.15), transparent 70%);
             filter: blur(80px);
             z-index: 0;
@@ -75,10 +69,10 @@ permalink: /learninggame/home
 
         .container {
             position: relative; 
-            width: 90vw; /* Adjusted for better centering */
-            max-width: 800px; /* Reduced max width for better fit */
-            height: 90vh; /* Adjusted for better centering */
-            max-height: 600px; /* Reduced max height for better fit */
+            width: 90vw;
+            max-width: 850px;
+            height: 85vh;
+            max-height: 750px;
             background: rgba(15, 23, 42, 0.85); 
             backdrop-filter: blur(20px);
             border-radius: 24px; 
@@ -86,22 +80,20 @@ permalink: /learninggame/home
             box-shadow: 0 0 60px rgba(6,182,212,0.25); 
             overflow: hidden;
             z-index: 1;
-            display: flex; /* Added flexbox for centering content */
-            flex-direction: column; /* Stack children vertically */
-            justify-content: center; /* Center children vertically */
-            align-items: center; /* Center children horizontally */
+            /* Flex column ensures header is on top and maze is below */
+            display: flex; 
+            flex-direction: column;
         }
 
         .title-section {
-            position: absolute; 
-            top: 0; 
-            left: 0;
-            right: 0;
+            position: relative; /* Changed from absolute to occupy space */
+            width: 100%;
             background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(30,41,59,0.95));
             backdrop-filter: blur(10px);
             padding: 20px;
             border-bottom: 2px solid rgba(6,182,212,0.3);
             z-index: 50;
+            flex-shrink: 0; /* Prevents header from squishing */
         }
 
         .title-header {
@@ -113,11 +105,8 @@ permalink: /learninggame/home
         }
 
         .title-icon {
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 32px; height: 32px;
+            display: flex; align-items: center; justify-content: center;
             font-size: 24px;
             animation: pulse 2s infinite;
         }
@@ -145,20 +134,20 @@ permalink: /learninggame/home
         }
 
         .maze-container {
+            flex-grow: 1; /* Takes up all remaining space below header */
             width: 100%; 
-            height: 100%; 
-            padding: 20px; /* Reduced padding for better fit */
             display: flex; 
-            justify-content: center; 
+            flex-direction: column;
+            justify-content: center; /* Centering the maze inside */
             align-items: center;
+            padding: 20px;
         }
 
         .maze {
-            position: relative; 
-            width: 100%; 
-            max-width: 700px; /* Adjusted for better centering */
-            height: 100%; 
-            max-height: 500px; /* Adjusted for better centering */
+            width: 100%;
+            max-width: 750px;
+            height: 100%;
+            max-height: 500px;
             background: rgba(2, 6, 23, 0.5);
             backdrop-filter: blur(10px);
             border-radius: 20px; 
@@ -167,8 +156,9 @@ permalink: /learninggame/home
             display: grid; 
             grid-template-columns: repeat(15, 1fr); 
             grid-template-rows: repeat(11, 1fr);
-            padding: 4px;
-            gap: 1px;
+            padding: 8px;
+            gap: 2px;
+            margin: 0 auto; /* Extra insurance for horizontal centering */
         }
 
         .cell { 
@@ -191,13 +181,15 @@ permalink: /learninggame/home
             position: relative; 
             z-index: 20;
             animation: playerPulse 1.5s infinite;
-            width: 30px; /* Adjusted width for symmetry */
-            height: 30px; /* Adjusted height for symmetry */
+            /* Use percentages to keep it centered in the cell */
+            width: 80%;
+            height: 80%;
+            margin: 10%;
         }
 
         @keyframes playerPulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(6,182,212,0.8); }
-            50% { box-shadow: 0 0 30px rgba(6,182,212,1); }
+            0%, 100% { box-shadow: 0 0 20px rgba(6,182,212,0.8); transform: scale(1); }
+            50% { box-shadow: 0 0 30px rgba(6,182,212,1); transform: scale(1.05); }
         }
 
         .sector {
@@ -208,9 +200,9 @@ permalink: /learninggame/home
             align-items: center;
             color: #fbbf24; 
             font-weight: 900; 
-            font-size: 10px; /* Reduced font size for better symmetry */
-            width: 40px; /* Adjusted width for symmetry */
-            height: 40px; /* Adjusted height for symmetry */
+            font-size: 12px;
+            width: 90%; height: 90%;
+            margin: 5%;
             z-index: 10;
             position: relative;
             overflow: hidden;
@@ -234,36 +226,31 @@ permalink: /learninggame/home
             color: #10b981;
         }
 
-        .start { 
-            background: rgba(16,185,129,0.3);
+        .start, .end { 
             border-radius: 50%; 
             display: flex; 
             justify-content: center; 
             align-items: center;
-            color: #10b981;
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 900;
+            width: 90%; height: 90%;
+            margin: 5%;
+        }
+
+        .start { 
+            background: rgba(16,185,129,0.3);
+            color: #10b981;
             box-shadow: 0 0 15px rgba(16,185,129,0.5);
-            width: 40px; /* Adjusted width for symmetry */
-            height: 40px; /* Adjusted height for symmetry */
         }
 
         .end { 
             background: rgba(168,85,247,0.3);
-            border-radius: 50%; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
             color: #a855f7;
-            font-size: 10px;
-            font-weight: 900;
             box-shadow: 0 0 15px rgba(168,85,247,0.5);
-            width: 40px; /* Adjusted width for symmetry */
-            height: 40px; /* Adjusted height for symmetry */
         }
 
         .controls-hint {
-            margin-top: 12px;
+            margin-top: 15px;
             text-align: center;
             color: rgba(6,182,212,0.6);
             font-size: 12px;
@@ -274,10 +261,7 @@ permalink: /learninggame/home
         .question-modal {
             display: none; 
             position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%;
+            inset: 0;
             background: rgba(2,6,23,0.95); 
             backdrop-filter: blur(10px);
             z-index: 100; 
@@ -297,20 +281,6 @@ permalink: /learninggame/home
             width: 90%;
             box-shadow: 0 0 60px rgba(6,182,212,0.3);
             position: relative;
-            overflow: hidden;
-        }
-
-        .question-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(6,182,212,0.05), transparent);
-            animation: hologramScan 3s infinite;
-        }
-
-        @keyframes hologramScan {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
         }
 
         .question-header {
@@ -318,36 +288,18 @@ permalink: /learninggame/home
             align-items: center;
             gap: 16px;
             margin-bottom: 24px;
-            position: relative;
-            z-index: 1;
         }
 
         .sector-badge {
-            width: 56px;
-            height: 56px;
+            width: 56px; height: 56px;
             background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 24px;
-            font-weight: 900;
-            box-shadow: 0 0 30px rgba(251,191,36,0.6);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 24px; font-weight: 900;
         }
 
-        .sector-info h2 {
-            color: #06b6d4;
-            font-size: 24px;
-            font-weight: 900;
-            margin-bottom: 4px;
-        }
-
-        .sector-info p {
-            color: rgba(103,232,249,0.7);
-            font-size: 13px;
-            font-family: 'Courier New', monospace;
-        }
+        .sector-info h2 { color: #06b6d4; font-size: 24px; font-weight: 900; }
+        .sector-info p { color: rgba(103,232,249,0.7); font-size: 13px; font-family: 'Courier New', monospace; }
 
         .question-content {
             margin: 24px 0;
@@ -355,127 +307,33 @@ permalink: /learninggame/home
             background: rgba(2,6,23,0.5);
             border-radius: 16px;
             border: 1px solid rgba(6,182,212,0.3);
-            position: relative;
-            z-index: 1;
         }
 
         .question-type {
-            color: #fbbf24;
-            font-weight: 900;
-            text-transform: uppercase;
-            font-size: 13px;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            color: #fbbf24; font-weight: 900; font-size: 13px;
+            margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
         }
 
-        .question-text {
-            color: #e2e8f0;
-            font-size: 16px;
-            line-height: 1.6;
-        }
+        .question-text { color: #e2e8f0; font-size: 16px; line-height: 1.6; }
 
-        .progress-indicators {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 24px;
-            position: relative;
-            z-index: 1;
-        }
+        .progress-indicators { display: flex; gap: 8px; margin-bottom: 24px; }
+        .progress-bar { height: 6px; flex: 1; border-radius: 3px; background: rgba(51,65,85,0.5); }
+        .progress-bar.active { background: #06b6d4; }
+        .progress-bar.completed { background: rgba(16,185,129,0.6); }
 
-        .progress-bar {
-            height: 6px;
-            flex: 1;
-            border-radius: 3px;
-            background: rgba(51,65,85,0.5);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .progress-bar.active {
-            background: #06b6d4;
-            box-shadow: 0 0 15px rgba(6,182,212,0.6);
-        }
-
-        .progress-bar.active::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            animation: progressShine 1.5s infinite;
-        }
-
-        @keyframes progressShine {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .progress-bar.completed {
-            background: rgba(16,185,129,0.6);
-        }
-
-        .question-nav {
-            display: flex;
-            gap: 12px;
-            position: relative;
-            z-index: 1;
-        }
+        .question-nav { display: flex; gap: 12px; }
 
         .btn { 
-            flex: 1;
-            padding: 16px 24px; 
-            border: none; 
-            border-radius: 12px; 
-            cursor: pointer; 
-            text-transform: uppercase;
-            font-weight: 900;
-            letter-spacing: 1.5px;
-            transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
+            flex: 1; padding: 16px 24px; border: none; border-radius: 12px; 
+            cursor: pointer; text-transform: uppercase; font-weight: 900;
         }
 
-        .btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.5s ease;
-        }
-
-        .btn:hover::before {
-            transform: translateX(100%);
-        }
-
-        .btn-next { 
-            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
-            color: white;
-            box-shadow: 0 0 25px rgba(6,182,212,0.4);
-        }
-
-        .btn-next:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 35px rgba(6,182,212,0.6);
-        }
-
-        .btn-complete {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            box-shadow: 0 0 25px rgba(16,185,129,0.4);
-        }
-
-        .btn-complete:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 35px rgba(16,185,129,0.6);
-        }
+        .btn-next { background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%); color: white; }
+        .btn-complete { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; }
 
         @media (max-width: 768px) {
             .title { font-size: 20px; }
-            .question-card { padding: 28px 24px; }
+            .maze { max-height: 400px; }
         }
     </style>
 </head>
@@ -484,6 +342,7 @@ permalink: /learninggame/home
     <div class="stars" id="stars"></div>
 
     <div class="container">
+        <!-- Header is now part of the flow -->
         <div class="title-section">
             <div class="title-header">
                 <div class="title-icon">🚀</div>
@@ -493,11 +352,9 @@ permalink: /learninggame/home
         </div>
 
         <div class="maze-container">
-            <div>
-                <div class="maze" id="maze"></div>
-                <div class="controls-hint">
-                    Use arrow keys to navigate • Reach sector checkpoints to begin training
-                </div>
+            <div class="maze" id="maze"></div>
+            <div class="controls-hint">
+                Use arrow keys to navigate • Reach sector checkpoints to begin training
             </div>
         </div>
 
@@ -505,9 +362,7 @@ permalink: /learninggame/home
         <div class="question-modal" id="questionModal">
             <div class="question-card">
                 <div class="question-header">
-                    <div class="sector-badge">
-                        <span id="sectorNumber">1</span>
-                    </div>
+                    <div class="sector-badge"><span id="sectorNumber">1</span></div>
                     <div class="sector-info">
                         <h2 id="sectorTitle">SECTOR 1</h2>
                         <p id="sectorName">Navigation Deck</p>
@@ -521,28 +376,18 @@ permalink: /learninggame/home
                 </div>
 
                 <div class="question-content">
+                    <div class="question-type" id="questionType">
+                        <span>📡</span><span id="questionTypeText">Navigation Systems</span>
+                    </div>
+                    <div class="question-text" id="questionText">Configure robot navigation protocols</div>
 
-                <div class="question-type" id="questionType">
-                    <span>📡</span>
-                    <span id="questionTypeText">Navigation Systems</span>
+                    <!-- CODE RUNNER -->
+                    <div id="codeRunner" style="display:none; margin-top:16px;">
+                        <textarea id="codeInput" rows="5" style="width:100%; border-radius:8px; padding:10px; font-family:monospace; background: #020617; color: #06b6d4; border: 1px solid #06b6d4;">// write code here</textarea>
+                        <button id="runCodeBtn" style="margin-top:10px; padding:10px 14px; border-radius:8px; cursor:pointer; background: #06b6d4; color: white; border: none; font-weight: bold;">Run Code</button>
+                        <pre id="codeOutput" style="margin-top:10px; background:#020617; color: #e2e8f0; padding:10px; border-radius:8px; border: 1px solid rgba(6,182,212,0.3); font-size: 12px; min-height: 40px;"></pre>
+                    </div>
                 </div>
-
-                <div class="question-text" id="questionText">Configure robot navigation protocols</div>
-
-                <!-- CODE RUNNER (shows only on every 2nd question) -->
-                <div id="codeRunner" style="display:none; margin-top:16px;">
-                    <textarea id="codeInput" rows="5" style="width:100%; border-radius:8px; padding:10px; font-family:monospace;">
-            // write code here
-                    </textarea>
-
-                    <button id="runCodeBtn" style="margin-top:10px; padding:10px 14px; border-radius:8px; cursor:pointer;">
-                        Run Code
-                    </button>
-
-                    <pre id="codeOutput" style="margin-top:10px; background:#020617; padding:10px; border-radius:8px;"></pre>
-                </div>
-            </div>
-
 
                 <div class="question-nav">
                     <button class="btn btn-next" id="nextBtn">Next Module →</button>
@@ -552,16 +397,13 @@ permalink: /learninggame/home
         </div>
     </div>
 
-    <!-- Integrate Game Teacher Assets -->
    {% capture teacher_raw %}
     {% include_relative gameteacher.md %}
     {% endcapture %}
-
     {% assign parts = teacher_raw | split: '---' %}
     {{ parts | slice: 2, parts.size | join: '---' }}
 
     <script>
-        // Generate stars
         const starsContainer = document.getElementById('stars');
         for (let i = 0; i < 150; i++) {
             const star = document.createElement('div');
@@ -569,7 +411,6 @@ permalink: /learninggame/home
             star.style.left = Math.random() * 100 + '%';
             star.style.top = Math.random() * 100 + '%';
             star.style.animationDelay = Math.random() * 3 + 's';
-            star.style.opacity = Math.random() * 0.7 + 0.3;
             starsContainer.appendChild(star);
         }
 
@@ -587,28 +428,21 @@ permalink: /learninggame/home
         const codeOutput = document.getElementById('codeOutput');
         const runCodeBtn = document.getElementById('runCodeBtn');
 
-
         let currentQuestion = 0;
         let currentSectorNum = 0;
         const completedSectors = new Set();
 
-        const sectorNames = [
-            "Navigation Deck",
-            "Logic Core", 
-            "Simulation Bay",
-            "Dock Alpha",
-            "Dock Beta"
-        ];
+        const sectorNames = ["Navigation Deck", "Logic Core", "Simulation Bay", "Dock Alpha", "Dock Beta"];
 
         const questions = [
             { type: "Navigation Systems", text: "Configure robot navigation protocols", icon: "📡" },
-            { type: "Programming Task", text: "Configure robot navigation protocols", icon: "💻" },
+            { type: "Programming Task", text: "", icon: "💻" },
             { type: "Logic Core", text: "Program decision algorithms", icon: "⚡" },
-            { type: "Programming Task", text: "Program decision algorithms", icon: "💻" },
+            { type: "Programming Task", text: "", icon: "💻" },
             { type: "Simulation Bay", text: "Interactive training module", icon: "🎮" },
-            { type: "Programming Task", text: "Interactive training module", icon: "💻" },
-            { type: "Programming Task", text: "Advanced programming challenge", icon: "💻" },
-            { type: "Programming Task", text: "Final coding assessment", icon: "💻" }
+            { type: "Programming Task", text: "", icon: "💻" },
+            { type: "Dock Access", text: "Final station protocols", icon: "🚀" },
+            { type: "Programming Task", text: "", icon: "💻" }
         ];
 
         const mazeLayout = [
@@ -633,32 +467,45 @@ permalink: /learninggame/home
                 for (let x = 0; x < mazeLayout[y].length; x++) {
                     const cell = document.createElement('div');
                     cell.className = 'cell';
-                    
-                    if (mazeLayout[y][x] === 0) {
-                        cell.classList.add('wall');
-                    } else if (mazeLayout[y][x] === 1) {
-                        cell.classList.add('path');
-                    } else if (mazeLayout[y][x] === 2) {
-                        cell.classList.add('path', 'start');
-                        cell.textContent = 'S';
-                    } else if (mazeLayout[y][x] === 3) {
-                        cell.classList.add('path', 'end');
-                        cell.textContent = 'E';
-                    } else if (mazeLayout[y][x] >= 4 && mazeLayout[y][x] <= 8) {
-                        const sectorNum = mazeLayout[y][x] - 3;
+                    if (mazeLayout[y][x] === 0) cell.classList.add('wall');
+                    else if (mazeLayout[y][x] === 1) cell.classList.add('path');
+                    else if (mazeLayout[y][x] === 2) { cell.classList.add('path', 'start'); cell.textContent = 'S'; }
+                    else if (mazeLayout[y][x] === 3) { cell.classList.add('path', 'end'); cell.textContent = 'E'; }
+                    else if (mazeLayout[y][x] >= 4 && mazeLayout[y][x] <= 8) {
+                        const sNum = mazeLayout[y][x] - 3;
                         cell.classList.add('path', 'sector');
-                        if (completedSectors.has(sectorNum)) {
-                            cell.classList.add('completed');
-                        }
-                        cell.textContent = sectorNum;
+                        if (completedSectors.has(sNum)) cell.classList.add('completed');
+                        cell.textContent = sNum;
                     }
-                    
                     if (x === playerPos.x && y === playerPos.y) {
-                        cell.classList.add('player');
+                        const player = document.createElement('div');
+                        player.className = 'player';
+                        cell.appendChild(player);
                     }
-                    
                     maze.appendChild(cell);
                 }
+            }
+        }
+
+        function movePlayer(dx, dy) {
+            const newX = playerPos.x + dx;
+            const newY = playerPos.y + dy;
+            if (newY >= 0 && newY < mazeLayout.length && newX >= 0 && newX < mazeLayout[0].length && mazeLayout[newY][newX] !== 0) {
+                const cellValue = mazeLayout[newY][newX];
+                if (cellValue >= 4 && cellValue <= 8) {
+                    const sNum = cellValue - 3;
+                    if (!completedSectors.has(sNum - 1) && sNum > 1) {
+                        alert("Complete previous sector first!");
+                        return;
+                    }
+                    if (!completedSectors.has(sNum)) {
+                        currentSectorNum = sNum;
+                        currentQuestion = 0;
+                        initTeacher(sNum, 0);
+                    }
+                }
+                playerPos.x = newX; playerPos.y = newY;
+                createMaze();
             }
         }
 
@@ -668,246 +515,71 @@ permalink: /learninggame/home
             showQuestion();
         }
 
-        function movePlayer(dx, dy) {
-            const newX = playerPos.x + dx;
-            const newY = playerPos.y + dy;
-
-            if (newY >= 0 && newY < mazeLayout.length && 
-                newX >= 0 && newX < mazeLayout[0].length && 
-                mazeLayout[newY][newX] !== 0) {
-
-                const cellValue = mazeLayout[newY][newX];
-
-                // Prevent moving forward without completing the previous task
-                if (cellValue >= 4 && cellValue <= 8) {
-                    const sectorNum = cellValue - 3;
-                    if (!completedSectors.has(sectorNum - 1) && sectorNum > 1) {
-                        alert("Complete the previous sector first!");
-                        return;
-                    }
-                }
-
-                playerPos.x = newX;
-                playerPos.y = newY;
-
-                if (cellValue >= 4 && cellValue <= 8) {
-                    const sectorNum = cellValue - 3;
-                    if (!completedSectors.has(sectorNum)) {
-                        currentSectorNum = sectorNum;
-                        currentQuestion = 0;
-                        initTeacher(sectorNum, 0);
-                    }
-                }
-
-                createMaze();
+        function showQuestion() {
+            sectorNumber.textContent = currentSectorNum;
+            sectorTitle.textContent = `SECTOR ${currentSectorNum}`;
+            sectorName.textContent = sectorNames[currentSectorNum - 1] || "Training Module";
+            const q = questions[currentQuestion];
+            questionType.innerHTML = `<span>${q.icon}</span> ${q.type}`;
+            
+            if (currentQuestion % 2 === 1) {
+                codeRunner.style.display = 'block';
+                questionText.style.display = 'none';
+                const qTexts = [
+                    "Task: Write a procedure `Average(nums)` that returns the mean of list `nums`.",
+                    "Task: Write `CountAbove(nums, threshold)` to find values > threshold.",
+                    "Task: Write `MaxValue(nums)` that returns the largest value in `nums`.",
+                    "Task: Write `ReplaceAll(words, target, replacement)` to swap target for replacement.",
+                    "Task: Write `GetEvens(nums)` that returns only even numbers."
+                ];
+                const codeTemplates = [
+                    "function Average(nums) {\n  // your code\n}",
+                    "function findMax(arr) {\n  // your code\n}",
+                    "function reverseString(str) {\n  // your code\n}",
+                    "function isPrime(num) {\n  // your code\n}",
+                    "function countVowels(str) {\n  // your code\n}"
+                ];
+                const qIndex = Math.floor(currentQuestion / 2);
+                questionType.innerHTML += `<br><span style="font-size: 14px; color: #e2e8f0; text-transform: none;">${qTexts[qIndex]}</span>`;
+                codeInput.value = codeTemplates[qIndex];
+            } else {
+                codeRunner.style.display = 'none';
+                questionText.style.display = 'block';
+                questionText.textContent = q.text;
             }
+
+            const bars = document.querySelectorAll('.progress-bar');
+            bars.forEach((bar, i) => {
+                bar.className = 'progress-bar' + (i === currentQuestion ? ' active' : (i < currentQuestion ? ' completed' : ''));
+            });
+
+            nextBtn.style.display = currentQuestion < 2 ? 'block' : 'none';
+            backBtn.style.display = currentQuestion === 2 ? 'block' : 'none';
         }
 
-function showQuestion() {
-    sectorNumber.textContent = currentSectorNum;
-    sectorTitle.textContent = `SECTOR ${currentSectorNum}`;
-    sectorName.textContent = sectorNames[currentSectorNum - 1] || "Training Module";
-    
-    const currentQ = questions[currentQuestion];
-    questionType.textContent = currentQ.type;
-    questionText.style.display = 'block';
-    
-    if (currentQuestion % 2 === 1) {
-        codeRunner.style.display = 'block';
-        
-        const qTexts = [
-            "Task: Write a procedure `Average(nums)` that returns the average (mean) of the numbers in list `nums`",
-            "Write a procedure `CountAbove(nums, threshold)` that returns how many values in `nums` are strictly greater than `threshold`",
-            "Write a procedure `MaxValue(nums)` that returns the largest value in `nums`",
-            "Write a procedure `ReplaceAll(words, target, replacement)` that replaces every occurrence of `target` in list `words` with `replacement`, then returns the modified list",
-            "Write a procedure `GetEvens(nums)` that returns a new list containing only the even numbers from `nums`, in the same order"
-        ];
-        
-        const qIndex = Math.floor(currentQuestion / 2);
-        questionText.textContent = qTexts[qIndex] || currentQ.text;
-        
+        nextBtn.onclick = () => { currentQuestion++; showQuestion(); };
+        backBtn.onclick = () => { modal.classList.remove('active'); completedSectors.add(currentSectorNum); createMaze(); };
 
-        
-        const codeTemplates = [
-            "function Average(nums) {\n  // Calculate average of numbers\n  // Return: sum / LENGTH(nums)\n}",
-            "function findMax(arr) {\n  // Find maximum value in array\n  // Return: largest number\n}",
-            "function reverseString(str) {\n  // Reverse the string\n  // Do not use built-in reverse methods\n}",
-            "function isPrime(num) {\n  // Check if number is prime\n  // Return: true if prime, false otherwise\n}",
-            "function countVowels(str) {\n  // Count vowels in string\n  // Vowels: a, e, i, o, u (both cases)\n}"
-        ];
-        
-        codeInput.value = codeTemplates[qIndex] || "// write code here\n\nfunction solution() {\n  // your code here\n}";
-    } else {
-        codeRunner.style.display = 'none';
-        questionText.textContent = currentQ.text;
-    }
-    
-    document.querySelector('.question-type span:first-child').textContent = currentQ.icon;
-    
-    const progressBars = document.querySelectorAll('.progress-bar');
-    progressBars.forEach((bar, idx) => {
-        bar.classList.remove('active', 'completed');
-        if (idx === currentQuestion) bar.classList.add('active');
-        else if (idx < currentQuestion) bar.classList.add('completed');
-    });
-    
-    if (currentQuestion === questions.length - 1) {
-        nextBtn.style.display = 'none';
-        backBtn.style.display = 'block';
-    } else {
-        nextBtn.style.display = 'block';
-        backBtn.style.display = 'none';
-    }
-}
-
-
-        nextBtn.addEventListener('click', () => {
-            currentQuestion++;
-            showQuestion();
-        });
-
-        backBtn.addEventListener('click', () => {
-            modal.classList.remove('active');
-            completedSectors.add(currentSectorNum);
-            createMaze();
-        });
+        runCodeBtn.onclick = () => {
+            try {
+                eval(codeInput.value);
+                const qIdx = Math.floor(currentQuestion / 2);
+                let passed = false;
+                if (qIdx === 0 && typeof Average !== 'undefined') passed = Average([1,2,3]) === 2;
+                if (qIdx === 1 && typeof findMax !== 'undefined') passed = findMax([1,5,3]) === 5;
+                codeOutput.textContent = passed ? "✅ Correct! All tests passed!" : "❌ Tests failed. Check logic.";
+            } catch(e) { codeOutput.textContent = "❌ Error: " + e.message; }
+        };
 
         document.addEventListener('keydown', (e) => {
-            if (modal.classList.contains('active') || 
-                document.getElementById('teacher-overlay')?.style.display === 'flex') return;
-            
-            if(e.key === 'ArrowUp') movePlayer(0, -1);
-            if(e.key === 'ArrowDown') movePlayer(0, 1);
-            if(e.key === 'ArrowLeft') movePlayer(-1, 0);
-            if(e.key === 'ArrowRight') movePlayer(1, 0);
-        });
-        runCodeBtn.addEventListener('click', () => {
-            try {
-                const result = eval(codeInput.value);
-                codeOutput.textContent = result !== undefined ? result : "Code ran successfully.";
-            } catch (err) {
-                codeOutput.textContent = err.message;
-            }
+            if (modal.classList.contains('active') || document.getElementById('teacher-overlay')?.style.display === 'flex') return;
+            if (e.key === 'ArrowUp') movePlayer(0, -1);
+            if (e.key === 'ArrowDown') movePlayer(0, 1);
+            if (e.key === 'ArrowLeft') movePlayer(-1, 0);
+            if (e.key === 'ArrowRight') movePlayer(1, 0);
         });
 
         createMaze();
-        // 添加正确答案数组
-const correctAnswers = [
-    `function Average(nums) {
-  let sum = 0;
-  for (let i = 0; i < nums.length; i++) {
-    sum += nums[i];
-  }
-  return sum / nums.length;
-}`,
-    `function findMax(arr) {
-  let max = arr[0];
-  for (let i = 1; i < arr.length; i++) {
-    if (arr[i] > max) {
-      max = arr[i];
-    }
-  }
-  return max;
-}`,
-    `function reverseString(str) {
-  let reversed = '';
-  for (let i = str.length - 1; i >= 0; i--) {
-    reversed += str[i];
-  }
-  return reversed;
-}`,
-    `function isPrime(num) {
-  if (num < 2) return false;
-  for (let i = 2; i <= Math.sqrt(num); i++) {
-    if (num % i === 0) return false;
-  }
-  return true;
-}`,
-    `function countVowels(str) {
-  const vowels = 'aeiouAEIOU';
-  let count = 0;
-  for (let i = 0; i < str.length; i++) {
-    if (vowels.includes(str[i])) {
-      count++;
-    }
-  }
-  return count;
-}`
-];
-
-// 修改runCodeBtn的点击事件
-runCodeBtn.addEventListener('click', () => {
-    try {
-        const userCode = codeInput.value;
-        const qIndex = Math.floor(currentQuestion / 2);
-        const correctAnswer = correctAnswers[qIndex];
-        
-        // 执行用户代码
-        eval(userCode);
-        
-        // 测试用户代码
-        let testPassed = false;
-        
-        if (qIndex === 0) {
-            // 测试平均数函数
-            if (typeof Average !== 'undefined') {
-                const test1 = Average([1, 2, 3, 4, 5]);
-                const test2 = Average([10, 20, 30]);
-                if (test1 === 3 && test2 === 20) {
-                    testPassed = true;
-                }
-            }
-        } else if (qIndex === 1) {
-            // 测试找最大值函数
-            if (typeof findMax !== 'undefined') {
-                const test1 = findMax([1, 5, 3, 9, 2]);
-                const test2 = findMax([-10, -5, -8]);
-                if (test1 === 9 && test2 === -5) {
-                    testPassed = true;
-                }
-            }
-        } else if (qIndex === 2) {
-            // 测试反转字符串函数
-            if (typeof reverseString !== 'undefined') {
-                const test1 = reverseString("hello");
-                const test2 = reverseString("abc");
-                if (test1 === "olleh" && test2 === "cba") {
-                    testPassed = true;
-                }
-            }
-        } else if (qIndex === 3) {
-            // 测试质数检查函数
-            if (typeof isPrime !== 'undefined') {
-                const test1 = isPrime(7);
-                const test2 = isPrime(4);
-                const test3 = isPrime(1);
-                if (test1 === true && test2 === false && test3 === false) {
-                    testPassed = true;
-                }
-            }
-        } else if (qIndex === 4) {
-            // 测试统计元音函数
-            if (typeof countVowels !== 'undefined') {
-                const test1 = countVowels("hello world");
-                const test2 = countVowels("AEIOU");
-                if (test1 === 3 && test2 === 5) {
-                    testPassed = true;
-                }
-            }
-        }
-        
-        if (testPassed) {
-            codeOutput.textContent = "✅ Correct! All tests passed!";
-            // 可以添加额外逻辑，比如解锁下一题或给予奖励
-        } else {
-            codeOutput.textContent = "❌ Incorrect. Some tests failed. Try again!";
-        }
-        
-    } catch (err) {
-        codeOutput.textContent = "❌ Error: " + err.message + "\nPlease check your code syntax.";
-    }
-});
     </script>
-    
 </body>
 </html>
