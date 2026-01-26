@@ -306,6 +306,58 @@ permalink: /learninggame/home
         const feedback = document.getElementById('feedback');
         const nextBtn = document.getElementById('nextBtn');
         const backBtn = document.getElementById('backBtn');
+        // ===== Progress Lock System (ADD) =====
+        const sectorProgress = {}; // { sectorNum: { passed: [bool,bool,bool] } }
+
+        function ensureSector(sectorNum) {
+            if (!sectorProgress[sectorNum]) {
+                sectorProgress[sectorNum] = { passed: [false, false, false] }; // 3 modules
+            }
+            return sectorProgress[sectorNum];
+        }
+
+        function isModulePassed(sectorNum, moduleIndex) {
+            return ensureSector(sectorNum).passed[moduleIndex] === true;
+        }
+
+        function setModulePassed(sectorNum, moduleIndex, passed) {
+            ensureSector(sectorNum).passed[moduleIndex] = passed === true;
+            updateNavButtons();
+        }
+
+        function updateNavButtons() {
+            if (!currentSectorNum) return;
+
+            const p = ensureSector(currentSectorNum).passed;
+
+            // NEXT only appears if current module is passed and there is a next module
+            if (currentQuestion < 2 && p[currentQuestion]) {
+                nextBtn.style.display = 'block';
+                nextBtn.disabled = false;
+                nextBtn.style.opacity = "1";
+                nextBtn.style.cursor = "pointer";
+            } else {
+                nextBtn.style.display = currentQuestion < 2 ? 'block' : 'none';
+                nextBtn.disabled = true;
+                nextBtn.style.opacity = "0.5";
+                nextBtn.style.cursor = "not-allowed";
+            }
+
+            // COMPLETE only appears on last module and only if last module passed
+            if (currentQuestion === 2 && p[2]) {
+                backBtn.style.display = 'block';
+                backBtn.disabled = false;
+                backBtn.style.opacity = "1";
+                backBtn.style.cursor = "pointer";
+            } else {
+                backBtn.style.display = currentQuestion === 2 ? 'block' : 'none';
+                backBtn.disabled = true;
+                backBtn.style.opacity = "0.5";
+                backBtn.style.cursor = "not-allowed";
+            }
+        }
+        // ===== End Progress Lock System =====
+
 
         let currentQuestion = 0;
         let currentSectorNum = 0;
@@ -354,10 +406,13 @@ permalink: /learninggame/home
         }
 
         function showQuestion() {
+            ensureSector(currentSectorNum);
+
             document.getElementById('sectorBadge').textContent = currentSectorNum;
             document.getElementById('mTitle').textContent = `Sector ${currentSectorNum}`;
             feedback.textContent = '';
-            
+
+            // Render module
             if (currentQuestion === 0) {
                 renderRobotSim();
             } else if (currentQuestion === 1) {
@@ -366,9 +421,10 @@ permalink: /learninggame/home
                 renderMCQ();
             }
 
-            nextBtn.style.display = currentQuestion < 2 ? 'block' : 'none';
-            backBtn.style.display = currentQuestion === 2 ? 'block' : 'none';
+            // Buttons should reflect lock state for this module
+            updateNavButtons();
         }
+
 
         function renderRobotSim() {
             const level = robotLevels[currentSectorNum];
@@ -380,6 +436,7 @@ permalink: /learninggame/home
                     <button class="btn btn-check" onclick="runRobotSim()">Check Path</button>
                 </div>
             `;
+            setModulePassed(currentSectorNum, 0, false);
             updateRobotGrid(level.start, 0);
         }
 
@@ -431,6 +488,7 @@ permalink: /learninggame/home
                     if (pos[0] < 0 || pos[0] > 4 || pos[1] < 0 || pos[1] > 4 || level.walls.some(w => w[0] === pos[0] && w[1] === pos[1])) {
                         feedback.style.color = "#ef4444";
                         feedback.textContent = "Oops! Robot crashed. Try again.";
+                        setModulePassed(currentSectorNum, 0, false);
                         setTimeout(() => updateRobotGrid(level.start, 0), 1000);
                         return;
                     }
@@ -438,12 +496,15 @@ permalink: /learninggame/home
 
                 if (pos[0] === level.goal[0] && pos[1] === level.goal[1]) {
                     feedback.style.color = "#10b981";
-                    feedback.textContent = "Success! Goal reached.";
+                    feedback.textContent = "Success! Goal reached. ✅ Module unlocked.";
+                    setModulePassed(currentSectorNum, 0, true); // UNLOCK next module
                 } else {
                     feedback.style.color = "#ef4444";
                     feedback.textContent = "Oops! Not at the star. Try again.";
+                    setModulePassed(currentSectorNum, 0, false);
                     setTimeout(() => updateRobotGrid(level.start, 0), 1000);
                 }
+
             } catch(e) { feedback.textContent = "Syntax Error in code."; }
         };
 
@@ -515,12 +576,14 @@ permalink: /learninggame/home
                 if (resStr === expStr) {
                     outputDiv.style.borderColor = "#10b981";
                     feedback.style.color = "#10b981";
-                    feedback.textContent = "✅ Logic Passed! Tests successful.";
-                    document.getElementById('nextBtn').style.display = 'block';
+                    feedback.textContent = "✅ Logic Passed! Tests successful. Module unlocked.";
+                    setModulePassed(currentSectorNum, 1, true);
+
                 } else {
                     outputDiv.style.borderColor = "#ef4444";
                     feedback.style.color = "#ef4444";
                     feedback.textContent = "❌ Result mismatch. Check your math/logic.";
+                    setModulePassed(currentSectorNum, 1, false);
                 }
 
             } catch (e) {
@@ -528,6 +591,7 @@ permalink: /learninggame/home
                 outputDiv.innerHTML = `> Runtime Error:\n${e.message}\n\nTip: For Sector 1, make sure to use 'nums.length' to divide.`;
                 feedback.style.color = "#ef4444";
                 feedback.textContent = "❌ Error in Pseudocode.";
+                setModulePassed(currentSectorNum, 1, false);
             }
         };
 
@@ -574,8 +638,28 @@ permalink: /learninggame/home
             showQuestion();
         };
 
-        nextBtn.onclick = () => { currentQuestion++; showQuestion(); };
-        backBtn.onclick = () => { modal.classList.remove('active'); completedSectors.add(currentSectorNum); createMaze(); };
+        nextBtn.onclick = () => {
+            if (!isModulePassed(currentSectorNum, currentQuestion)) {
+                feedback.style.color = "#ef4444";
+                feedback.textContent = "❌ You must get the correct answer to unlock the next module.";
+                updateNavButtons();
+                return;
+            }
+            currentQuestion++;
+            showQuestion();
+        };
+
+        backBtn.onclick = () => {
+            if (!isModulePassed(currentSectorNum, 2)) {
+                feedback.style.color = "#ef4444";
+                feedback.textContent = "❌ Finish the final question correctly to complete the sector.";
+                updateNavButtons();
+                return;
+            }
+            modal.classList.remove('active');
+            completedSectors.add(currentSectorNum);
+            createMaze();
+        };
 
         document.addEventListener('keydown', (e) => {
             if (modal.classList.contains('active') || document.getElementById('teacher-overlay')?.style.display === 'flex') return;
