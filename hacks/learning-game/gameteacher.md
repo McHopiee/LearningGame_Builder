@@ -91,39 +91,110 @@ permalink: /learninggame/gameteacher
             msg: "Robot Code: Robot code is a pseudocode-style language with four commands—MOVE_FORWARD(), ROTATE_LEFT(), ROTATE_RIGHT(), and CAN_MOVE(direction)—used to control a robot through a maze. Pseudocode: Use plain-language, step-by-step logic (variables, conditionals, loops, and logical flow) to describe how your algorithm should work before worrying about strict programming syntax. Computational thinking: break the problem into small rules, test your logic, and iterate based on what you observe.",
             // Each question at this stop has a unique hint
             hints: [
-                "Hint for Question 1: Think about basic directional commands!",
-                "Hint for Question 2: Moving the robot requires precise steps.",
-                "Hint for Question 3: Final check! Review your robot's path."
+                [
+                    "HINT 1: You need only one command for this task."
+                    "HINT 2: Use the MOVE_FORWARD() command."
+                    "HINT 3: Just write: MOVE_FORWARD()"
+                ],
+                [
+                    "HINT 1: Initialize sum ← 0 before the loop",
+                    "HINT 2: FOR EACH num IN nums, do sum ← sum + num",
+                    "HINT 3: After loop, RETURN sum / LENGTH(nums)"
+                ],
+                [
+                    "HINT 1: You need only one command for this task.",
+                    "HINT 2: Use the MOVE_FORWARD() command.",
+                    "HINT 3: Just write: MOVE_FORWARD()"
+                ]
             ]
         },
         2: {
             title: "Stop 2: Training",
             msg: "Robot Code: Use simple, readable command blocks to control the robot and debug one movement decision at a time. Pseudocode: In the code runner, write College Board–level pseudocode solutions (conditionals, variables, algorithm development, and logical flow) and notice how different logical choices change the program’s behavior as you progress through the maze. Computational thinking: practice structured problem-solving by tracing steps, checking edge cases, and improving your solution until it works.",
             hints: [
-                "Hint for Question 1: Pseudo code doesn't need semicolons!",
-                "Hint for Question 2: What command draws a circle?",
-                "Hint for Question 3: Review the parameters inside the brackets."
+                [
+                    "HINT 1: This requires a rotation command, not a movement command.",
+                    "HINT 2: Use ROTATE_RIGHT() to turn the robot 90 degrees clockwise",
+                    "HINT 3: Just write: ROTATE_RIGHT()"
+                ],
+                [
+                    "HINT 1: Initialize count ← 0 before the loop",
+                    "HINT 2: FOR EACH value IN nums, check IF value > threshold",
+                    "HINT 3: When condition is true, do count ← count + 1"
+                    "HINT 4: RETURN count after the loop completes"
+                ],
+                [
+                    "HINT 1: You need only one command for this task.",
+                    "HINT 2: Use the MOVE_FORWARD() command.",
+                    "HINT 3: Just write: MOVE_FORWARD()"
+                ]
             ]
         },
         3: {
             title: "Stop 3: Training",
             msg: "Robot Code: Combine multiple commands (MOVE_FORWARD, ROTATE_LEFT, ROTATE_RIGHT) to navigate complex paths and use CAN_MOVE(direction) to check for obstacles before moving. Pseudocode: Apply variables and assignment operators to store values, then use conditional statements (IF-ELSE) to make decisions based on those values in your College Board–style solutions. Computational thinking: identify patterns in the maze, create reusable logic blocks, and test your algorithm with different scenarios to ensure it handles all possible paths.",
             hints: [
-                
+                [
+                    "HINT 1: You need to move forward twice.",
+                    "HINT 2: Use MOVE_FORWARD() two times in a row.",
+                    "HINT 3: Write: MOVE_FORWARD() MOVE_FORWARD()"
+                ],
+                [
+                    "HINT 1: Set max ← nums[1] (first element)",
+                    "HINT 2: Loop through remaining elements starting at index 2",
+                    "HINT 3: IF nums[i] > max, update max ← nums[i]"
+                    "HINT 4: RETURN max after checking all elements"
+                ],
+                [
+                    "HINT 1: You need only one command for this task.",
+                    "HINT 2: Use the MOVE_FORWARD() command.",
+                    "HINT 3: Just write: MOVE_FORWARD()"
+                ]
             ]
         },
         4: {
             title: "Stop 4: Training",
             msg: "Robot Code: Master complex navigation by chaining conditional checks with CAN_MOVE() and creating efficient movement sequences. Pseudocode: Implement loops (REPEAT and REPEAT UNTIL) to avoid repetitive code, and combine them with conditionals to create dynamic algorithms that adapt to changing conditions. Computational thinking: analyze the problem systematically, decompose it into smaller sub-problems, and optimize your solution by reducing redundant steps while maintaining correctness.",
             hints: [
-                
+                [
+                    "HINT 1: This requires two commands in sequence: move, then rotate",
+                    "HINT 2: First MOVE_FORWARD(), then ROTATE_LEFT()",
+                    "HINT 3: Write: MOVE_FORWARD() ROTATE_LEFT()"
+                ],
+                [
+                    "HINT 1: Use FOR i FROM 1 TO LENGTH(words) for index-based loop",
+                    "HINT 2: Check IF words[i] = target",
+                    "HINT 3: When match found, set words[i] ← replacement"
+                    "HINT 4: RETURN words at the end"
+                ],
+                [
+                    "HINT 1: You need only one command for this task.",
+                    "HINT 2: Use the MOVE_FORWARD() command.",
+                    "HINT 3: Just write: MOVE_FORWARD()"
+                ]
             ]
         },
         5: {
             title: "Stop 5: Training",
             msg: "Robot Code: Apply all four commands strategically to solve the most challenging maze configurations, planning your entire route before executing. Pseudocode: Create comprehensive algorithms using variables, conditionals, loops, and logical operators (AND, OR, NOT) that mirror real AP CSP exam questions. Computational thinking: demonstrate mastery by developing efficient, elegant solutions that show deep understanding of algorithm design, abstraction, and the relationship between pseudocode logic and actual program execution.",
             hints: [
-               
+                [
+                    "HINT 1: You need to move forward three times.",
+                    "HINT 2: Use MOVE_FORWARD() three times in a row.",
+                    "HINT 3: Write: MOVE_FORWARD() MOVE_FORWARD() MOVE_FORWARD()"
+                ],
+                [
+                    "HINT 1: Create evens ← empty list before loop",
+                    "HINT 2: FOR EACH num IN nums, check IF num MOD 2 = 0",
+                    "HINT 3: When num is even, use APPEND(evens, num)"
+                    "HINT 4: RETURN evens after processing all numbers"
+                ],
+                [
+                    "HINT 1: You need only one command for this task.",
+                    "HINT 2: Use the MOVE_FORWARD() command.",
+                    "HINT 3: Just write: MOVE_FORWARD()"
+                ]
+            ]
             ]
         }
     };
