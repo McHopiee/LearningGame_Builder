@@ -88,7 +88,7 @@ permalink: /learninggame/gameteacher
     const teacherData = {
         1: {
             title: "Stop 1: Training",
-            msg: "Stop 1 briefing: Robot Code Basics. Objective: learn how to give step-by-step commands to move through the maze (MOVE_FORWARD, ROTATE_LEFT/RIGHT) and use CAN_MOVE(direction) to avoid walls. Run your solution, observe what happens, and iterate until the robot reaches the goal.",
+            msg: "Robot Code: Robot code is a pseudocode-style language with four commands—MOVE_FORWARD(), ROTATE_LEFT(), ROTATE_RIGHT(), and CAN_MOVE(direction)—used to control a robot through a maze. Pseudocode: Use plain-language, step-by-step logic (variables, conditionals, loops, and logical flow) to describe how your algorithm should work before worrying about strict programming syntax. Computational thinking: break the problem into small rules, test your logic, and iterate based on what you observe.",
             // Each question at this stop has a unique hint
             hints: [
                 "Hint for Question 1: Think about basic directional commands!",
@@ -98,14 +98,34 @@ permalink: /learninggame/gameteacher
         },
         2: {
             title: "Stop 2: Training",
-            msg: "Stop 2 briefing: Pseudocode (AP CSP style). Objective: write clear, College Board–level pseudocode that makes the algorithm work as intended using variables, conditionals, and logical flow. Test your logic in the code runner—small changes in order and conditions can change the outcome.",
+            msg: "Robot Code: Use simple, readable command blocks to control the robot and debug one movement decision at a time. Pseudocode: In the code runner, write College Board–level pseudocode solutions (conditionals, variables, algorithm development, and logical flow) and notice how different logical choices change the program’s behavior as you progress through the maze. Computational thinking: practice structured problem-solving by tracing steps, checking edge cases, and improving your solution until it works.",
             hints: [
                 "Hint for Question 1: Pseudo code doesn't need semicolons!",
                 "Hint for Question 2: What command draws a circle?",
                 "Hint for Question 3: Review the parameters inside the brackets."
             ]
+        },
+        3: {
+            title: "Stop 3: Training",
+            msg: "Robot Code: Combine multiple commands (MOVE_FORWARD, ROTATE_LEFT, ROTATE_RIGHT) to navigate complex paths and use CAN_MOVE(direction) to check for obstacles before moving. Pseudocode: Apply variables and assignment operators to store values, then use conditional statements (IF-ELSE) to make decisions based on those values in your College Board–style solutions. Computational thinking: identify patterns in the maze, create reusable logic blocks, and test your algorithm with different scenarios to ensure it handles all possible paths.",
+            hints: [
+                
+            ]
+        },
+        4: {
+            title: "Stop 4: Training",
+            msg: "Robot Code: Master complex navigation by chaining conditional checks with CAN_MOVE() and creating efficient movement sequences. Pseudocode: Implement loops (REPEAT and REPEAT UNTIL) to avoid repetitive code, and combine them with conditionals to create dynamic algorithms that adapt to changing conditions. Computational thinking: analyze the problem systematically, decompose it into smaller sub-problems, and optimize your solution by reducing redundant steps while maintaining correctness.",
+            hints: [
+                
+            ]
+        },
+        5: {
+            title: "Stop 5: Training",
+            msg: "Robot Code: Apply all four commands strategically to solve the most challenging maze configurations, planning your entire route before executing. Pseudocode: Create comprehensive algorithms using variables, conditionals, loops, and logical operators (AND, OR, NOT) that mirror real AP CSP exam questions. Computational thinking: demonstrate mastery by developing efficient, elegant solutions that show deep understanding of algorithm design, abstraction, and the relationship between pseudocode logic and actual program execution.",
+            hints: [
+               
+            ]
         }
-        // Cyrus: Add Stops 3, 4, 5 following this same structure
     };
 
     let currentStopId = 1;
