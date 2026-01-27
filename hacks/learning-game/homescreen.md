@@ -226,21 +226,254 @@ permalink: /learninggame/home
 
         /* Modal Overrides */
         .question-modal {
-            display: none; position: absolute; inset: 0;
-            background: rgba(2,6,23,0.98); z-index: 100;
-            justify-content: center; align-items: center;
+            display: none;
+            position: absolute;
+            inset: 0;
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+
+            /* high-tech dark glass */
+            background:
+                radial-gradient(circle at 30% 20%, rgba(6,182,212,0.12), transparent 55%),
+                radial-gradient(circle at 70% 80%, rgba(168,85,247,0.10), transparent 55%),
+                rgba(2, 6, 23, 0.92);
+
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
         }
+
         .question-modal.active { display: flex; }
+
+        /* Modal shell */
         .question-card {
-            background: #1e293b; border: 2px solid #06b6d4;
-            padding: 30px; border-radius: 24px; width: 650px;
+            width: min(720px, 92vw);
+            max-height: min(82vh, 760px);
+            overflow: hidden;
+
+            border-radius: 22px;
+            border: 1px solid rgba(6,182,212,0.35);
+            background: linear-gradient(180deg, rgba(15,23,42,0.92), rgba(2,6,23,0.92));
+            box-shadow:
+                0 0 0 1px rgba(6,182,212,0.15),
+                0 30px 90px rgba(0,0,0,0.55),
+                0 0 55px rgba(6,182,212,0.18);
+
+            position: relative;
+            transform: translateY(8px) scale(0.99);
+            opacity: 0;
+            animation: modalIn 220ms ease-out forwards;
         }
-        textarea {
-            width: 100%; height: 100px; background: #020617; color: #06b6d4;
-            border: 1px solid #06b6d4; padding: 10px; font-family: monospace;
-            margin: 10px 0; border-radius: 8px;
+
+        @keyframes modalIn {
+            to { transform: translateY(0) scale(1); opacity: 1; }
         }
-        .btn-check { background: #fbbf24; color: black; margin-top: 10px; width: 100%; font-weight: 900; }
+
+        /* Subtle grid overlay for “tech” feel */
+        .question-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+            background-size: 26px 26px;
+            opacity: 0.35;
+            pointer-events: none;
+        }
+
+        /* Top glow accent */
+        .question-card::after {
+            content: "";
+            position: absolute;
+            left: 10%;
+            top: -40px;
+            width: 80%;
+            height: 80px;
+            background: radial-gradient(circle, rgba(6,182,212,0.25), transparent 65%);
+            filter: blur(10px);
+            pointer-events: none;
+        }
+
+        /* Header area */
+        .modal-header {
+            position: relative;
+            z-index: 1;
+            padding: 18px 20px 14px;
+            border-bottom: 1px solid rgba(148,163,184,0.18);
+            background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(30,41,59,0.75));
+        }
+
+        .modal-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        .badge-wrap {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .sector-badge {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+
+            color: #06121a;
+            background: linear-gradient(135deg, rgba(251,191,36,1), rgba(245,158,11,1));
+            box-shadow: 0 0 0 1px rgba(251,191,36,0.35), 0 10px 25px rgba(251,191,36,0.18);
+        }
+
+        .modal-titles { min-width: 0; }
+
+        .modal-title {
+            margin: 0;
+            color: #67e8f9;
+            font-size: 18px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2.2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .modal-subtitle {
+            margin-top: 4px;
+            color: rgba(148,163,184,0.85);
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+
+        /* Header “status chip” (optional, but looks nice) */
+        .status-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(6,182,212,0.25);
+            background: rgba(2,6,23,0.55);
+            color: rgba(103,232,249,0.85);
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+        .status-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: #06b6d4;
+            box-shadow: 0 0 10px rgba(6,182,212,0.65);
+        }
+
+        /* Body */
+        .modal-body {
+            position: relative;
+            z-index: 1;
+            padding: 18px 20px 16px;
+            overflow: auto;
+            max-height: calc(min(82vh, 760px) - 140px);
+        }
+
+        /* Feedback */
+        #feedback {
+            margin-top: 12px;
+            font-weight: 800;
+            text-align: center;
+            min-height: 20px;
+        }
+
+        /* Footer */
+        .modal-footer {
+            position: relative;
+            z-index: 1;
+            padding: 14px 20px 18px;
+            border-top: 1px solid rgba(148,163,184,0.18);
+            background: rgba(2,6,23,0.55);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Buttons (unify look) */
+        .btn {
+            border: none;
+            border-radius: 14px;
+            padding: 12px 14px;
+            font-weight: 900;
+            letter-spacing: 0.4px;
+            cursor: pointer;
+            transition: transform 140ms ease, box-shadow 140ms ease, opacity 140ms ease;
+        }
+
+        .btn:active { transform: translateY(1px) scale(0.99); }
+
+        .btn-next {
+            flex: 1;
+            color: #06121a;
+            background: linear-gradient(135deg, #06b6d4, #3b82f6);
+            box-shadow: 0 12px 30px rgba(6,182,212,0.18);
+        }
+
+        .btn-next:hover { box-shadow: 0 16px 40px rgba(6,182,212,0.24); }
+
+        .btn-complete {
+            flex: 1;
+            color: #052012;
+            background: linear-gradient(135deg, #10b981, #22c55e);
+            box-shadow: 0 12px 30px rgba(16,185,129,0.18);
+        }
+
+        .btn-complete:hover { box-shadow: 0 16px 40px rgba(16,185,129,0.24); }
+
+        .btn-check {
+            width: 100%;
+            color: #06121a;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            box-shadow: 0 12px 30px rgba(251,191,36,0.16);
+            }
+        .btn-check:hover { box-shadow: 0 16px 40px rgba(251,191,36,0.22); }
+
+
+        /* Textareas inside modal (polished) */
+        .question-card textarea {
+            width: 100%;
+            background: rgba(2, 6, 23, 0.9);
+            color: #67e8f9;
+            border: 1px solid rgba(6,182,212,0.35);
+            border-radius: 14px;
+            padding: 12px 12px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            outline: none;
+            box-shadow: inset 0 0 0 1px rgba(2,6,23,0.35);
+        }
+
+        .question-card textarea:focus {
+            border-color: rgba(6,182,212,0.65);
+            box-shadow: 0 0 0 3px rgba(6,182,212,0.18);
+        }
+
+        /* Robot grid + code output panel polish (optional but matches theme) */
+        .robot-grid {
+            border: 1px solid rgba(148,163,184,0.2);
+            background: rgba(2,6,23,0.75);
+        }
+
+        #pcOutput {
+            border-radius: 14px !important;
+            background: rgba(2,6,23,0.75) !important;
+            border: 1px solid rgba(148,163,184,0.18) !important;
+        }
     </style>
 </head>
 <body>
@@ -263,26 +496,39 @@ permalink: /learninggame/home
         <!-- Question Modal -->
         <div class="question-modal" id="questionModal">
             <div class="question-card">
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-                    <div style="background: #fbbf24; width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: black; font-weight: bold; font-size: 20px;" id="sectorBadge">1</div>
-                    <div>
-                        <h2 style="color: #06b6d4; text-transform: uppercase;" id="mTitle">Sector 1</h2>
-                        <p style="color: rgba(103,232,249,0.7); font-family: monospace; font-size: 12px;" id="mSubtitle">Navigation Task</p>
+                <div class="modal-header">
+                <div class="modal-header-row">
+                    <div class="badge-wrap">
+                    <div class="sector-badge" id="sectorBadge">1</div>
+                    <div class="modal-titles">
+                        <h2 class="modal-title" id="mTitle">Sector 1</h2>
+                        <p class="modal-subtitle" id="mSubtitle">Navigation Task</p>
+                    </div>
+                    </div>
+
+                    <div class="status-chip">
+                    <span class="status-dot"></span>
+                    <span>SECURE SESSION</span>
                     </div>
                 </div>
-
-                <div id="moduleContent">
-                    <!-- Dynamic Module Content (Grid or Code Runner) -->
                 </div>
 
-                <div id="feedback" style="margin-top: 10px; font-weight: bold; text-align: center; height: 20px;"></div>
+                <div class="modal-body">
+                <div id="moduleContent">
+                    <!-- Dynamic Module Content -->
+                </div>
 
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button class="btn btn-next" id="nextBtn" style="background: #06b6d4; color: white;">Next Module →</button>
-                    <button class="btn btn-complete" id="backBtn" style="display: none; background: #10b981; color: white;">Complete Sector ✓</button>
+                <div id="feedback"></div>
+                </div>
+
+                <div class="modal-footer">
+                <div class="modal-actions">
+                    <button class="btn btn-next" id="nextBtn">Next Module →</button>
+                    <button class="btn btn-complete" id="backBtn" style="display:none;">Complete Sector ✓</button>
+                </div>
                 </div>
             </div>
-        </div>
+            </div>
     </div>
 
    {% capture teacher_raw %}{% include_relative gameteacher.md %}{% endcapture %}
