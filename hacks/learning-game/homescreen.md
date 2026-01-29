@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Maze - Homescreen
-authors: Anika, Cyrus, Rishabh, Jaynee, Lillian
+authors: Anika, Cyrus, Rishabh, Jaynee, Lillian, Meryl, Rebecca, Avantika
 permalink: /learninggame/home
 ---
 
