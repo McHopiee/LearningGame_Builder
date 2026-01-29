@@ -102,9 +102,9 @@ permalink: /learninggame/gameteacher
                     "HINT 3: After loop, RETURN sum / LENGTH(nums)"
                 ],
                 [
-                    "HINT 1: You need only one command for this task.",
-                    "HINT 2: Use the MOVE_FORWARD() command.",
-                    "HINT 3: Just write: MOVE_FORWARD()"
+                    "HINT 1: ",
+                    "HINT 2: ",
+                    "HINT 3: "
                 ]
             ]
         },
@@ -124,9 +124,9 @@ permalink: /learninggame/gameteacher
                     "HINT 4: RETURN count after the loop completes"
                 ],
                 [
-                    "HINT 1: You need only one command for this task.",
-                    "HINT 2: Use the MOVE_FORWARD() command.",
-                    "HINT 3: Just write: MOVE_FORWARD()"
+                    "HINT 1: ",
+                    "HINT 2: ",
+                    "HINT 3: "
                 ]
             ]
         },
@@ -146,9 +146,9 @@ permalink: /learninggame/gameteacher
                     "HINT 4: RETURN max after checking all elements"
                 ],
                 [
-                    "HINT 1: You need only one command for this task.",
-                    "HINT 2: Use the MOVE_FORWARD() command.",
-                    "HINT 3: Just write: MOVE_FORWARD()"
+                    "HINT 1: ",
+                    "HINT 2: ",
+                    "HINT 3: "
                 ]
             ]
         },
@@ -168,9 +168,9 @@ permalink: /learninggame/gameteacher
                     "HINT 4: RETURN words at the end"
                 ],
                 [
-                    "HINT 1: You need only one command for this task.",
-                    "HINT 2: Use the MOVE_FORWARD() command.",
-                    "HINT 3: Just write: MOVE_FORWARD()"
+                    "HINT 1: ",
+                    "HINT 2: ",
+                    "HINT 3: "
                 ]
             ]
         },
@@ -190,12 +190,12 @@ permalink: /learninggame/gameteacher
                     "HINT 4: RETURN evens after processing all numbers"
                 ],
                 [
-                    "HINT 1: You need only one command for this task.",
-                    "HINT 2: Use the MOVE_FORWARD() command.",
-                    "HINT 3: Just write: MOVE_FORWARD()"
+                    "HINT 1: ",
+                    "HINT 2: ",
+                    "HINT 3: "
                 ]
             ]
-            ]
+            
         }
     };
 
