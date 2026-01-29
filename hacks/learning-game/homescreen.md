@@ -164,6 +164,15 @@ permalink: /learninggame/home
     // Store fetchOptions globally so other functions can use it
     window.authOptions = fetchOptions;
 
+    const endgameApiBase = window.ENDGAME_API_BASE || ((location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+        ? 'http://localhost:3000'
+        : 'https://robop.opencodingsociety.com');
+    window.ENDGAME_API_BASE = endgameApiBase;
+
+    const storedPlayerId = localStorage.getItem('learninggame_player_id');
+    const playerId = storedPlayerId || `player-${crypto.randomUUID ? crypto.randomUUID() : Date.now()}`;
+    localStorage.setItem('learninggame_player_id', playerId);
+
     // Star Field Initialization
     const starsContainer = document.getElementById('stars');
     for (let i = 0; i < 150; i++) {
@@ -258,6 +267,35 @@ permalink: /learninggame/home
                 body: JSON.stringify({ sector_id: currentSectorNum, score: Math.round(score), badge_name: badgeName })
             });
         } catch (e) { console.error("Save error:", e); }
+    }
+
+    async function saveEndgameProgress(score, badgeName, attempts) {
+        try {
+            await fetch(`${endgameApiBase}/player/${playerId}/progress`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    stopId: currentSectorNum,
+                    attempts,
+                    score: Math.round(score),
+                    badgeName
+                })
+            });
+        } catch (e) {
+            console.error("Endgame save error:", e);
+        }
+    }
+
+    function storeLocalProgress(score, badgeName, attempts) {
+        const progress = JSON.parse(localStorage.getItem('learninggame_progress') || '{}');
+        progress[currentSectorNum] = {
+            stopId: currentSectorNum,
+            attempts,
+            score: Math.round(score),
+            badgeName,
+            completedAt: new Date().toISOString()
+        };
+        localStorage.setItem('learninggame_progress', JSON.stringify(progress));
     }
 
     function showQuestion() {
@@ -380,6 +418,9 @@ permalink: /learninggame/home
         let earnedBadge = "Participant";
         for (let r of badgeRules) { if (finalScore >= r.threshold) { earnedBadge = r.name; break; } }
         await saveBadgeToBackend(finalScore, earnedBadge);
+        const totalAttempts = moduleAttempts.reduce((sum, val) => sum + val, 0);
+        storeLocalProgress(finalScore, earnedBadge, totalAttempts);
+        await saveEndgameProgress(finalScore, earnedBadge, totalAttempts);
         mContent.innerHTML = `
             <div class="summary-card">
                 <h3 style="color:#fbbf24; margin-bottom:10px;">SECTOR RESULTS</h3>
@@ -416,7 +457,8 @@ permalink: /learninggame/home
                     else { modal.classList.add('active'); showQuestion(); }
                 }, 100);
             } else if (val === 3) {
-                alert("Mission Accomplished! You reached the exit.");
+                localStorage.setItem('learninggame_last_end', new Date().toISOString());
+                window.location.href = `{{ '/learninggame/ending/' | relative_url }}?playerId=${encodeURIComponent(playerId)}`;
             }
         }
     }
