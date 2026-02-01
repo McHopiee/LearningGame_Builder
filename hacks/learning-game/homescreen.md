@@ -54,6 +54,92 @@ permalink: /learninggame/home
         .title { color: #06b6d4; font-size: 28px; font-weight: 900; text-transform: uppercase; letter-spacing: 4px; }
         .subtitle { text-align: center; color: rgba(103,232,249,0.7); font-size: 12px; font-family: 'Courier New', monospace; }
 
+        /* Progress Bar Styles */
+        .progress-bar-container {
+            background: rgba(2, 6, 23, 0.6);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 20px;
+            border: 1px solid rgba(6,182,212,0.2);
+        }
+
+        .progress-header {
+            font-size: 10px;
+            color: #06b6d4;
+            letter-spacing: 3px;
+            margin-bottom: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .progress-main {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .progress-percentage {
+            font-size: 36px;
+            font-weight: 900;
+            color: #10b981;
+            min-width: 80px;
+        }
+
+        .progress-status {
+            font-size: 11px;
+            color: rgba(103,232,249,0.6);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .progress-boxes {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 15px;
+        }
+
+        .progress-box {
+            width: 20px;
+            height: 20px;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(6,182,212,0.3);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .progress-box.completed {
+            background: #10b981;
+            border-color: #10b981;
+            box-shadow: 0 0 10px rgba(16,185,129,0.5);
+        }
+
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 900;
+            color: #06b6d4;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 9px;
+            color: rgba(103,232,249,0.5);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
         .maze-container {
             flex-grow: 1; width: 100%; display: flex; flex-direction: column;
             justify-content: center; align-items: center; padding: 20px;
@@ -122,6 +208,46 @@ permalink: /learninggame/home
                 <div class="title">Station Navigation</div>
             </div>
             <div class="subtitle">Cadet Training Protocol // Sector Clearance Required</div>
+        </div>
+
+        <!-- Progress Bar Component -->
+        <div class="progress-bar-container">
+            <div class="progress-header">STATION_INTEGRITY_MAP</div>
+            <div class="progress-main">
+                <div class="progress-percentage" id="progressPercentage">0%</div>
+                <div class="progress-status" id="progressStatus">PROTOCOL_SYNCED</div>
+            </div>
+            <div class="progress-boxes" id="progressBoxes">
+                <div class="progress-box"></div>
+                <div class="progress-box"></div>
+                <div class="progress-box"></div>
+                <div class="progress-box"></div>
+                <div class="progress-box"></div>
+                <div class="progress-box"></div>
+                <div class="progress-box"></div>
+                <div class="progress-box"></div>
+                <div class="progress-box"></div>
+                <div class="progress-box"></div>
+                <div class="progress-box"></div>
+                <div class="progress-box"></div>
+                <div class="progress-box"></div>
+                <div class="progress-box"></div>
+                <div class="progress-box"></div>
+            </div>
+            <div class="progress-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="statSectors">0/5</span>
+                    <span class="stat-label">SECTORS</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="statLocked">5</span>
+                    <span class="stat-label">LOCKED</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="statConnected">CONNECTED</span>
+                    <span class="stat-label">DATABASE</span>
+                </div>
+            </div>
         </div>
 
         <div class="maze-container">
@@ -220,6 +346,29 @@ permalink: /learninggame/home
         4: { start: [0,0], goal: [4,0], walls: [[0,1],[1,1],[2,1]] },
         5: { start: [0,2], goal: [4,2], walls: [[2,1],[2,2],[2,3]] }
     };
+
+    // Progress Bar Update Function
+    function updateProgressBar() {
+        const totalSectors = 5;
+        const completedCount = completedSectors.size;
+        const percentage = Math.round((completedCount / totalSectors) * 100);
+        
+        document.getElementById('progressPercentage').textContent = `${percentage}%`;
+        document.getElementById('statSectors').textContent = `${completedCount}/5`;
+        document.getElementById('statLocked').textContent = `${5 - completedCount}`;
+        
+        const boxes = document.querySelectorAll('.progress-box');
+        const boxesPerSector = 3; // 15 boxes / 5 sectors = 3 boxes per sector
+        
+        boxes.forEach((box, index) => {
+            const sectorIndex = Math.floor(index / boxesPerSector);
+            if (sectorIndex < completedCount) {
+                box.classList.add('completed');
+            } else {
+                box.classList.remove('completed');
+            }
+        });
+    }
 
     function drawMaze() {
         mazeEl.innerHTML = '';
@@ -451,6 +600,7 @@ permalink: /learninggame/home
         modal.classList.remove('active');
         completedSectors.add(currentSectorNum);
         drawMaze();
+        updateProgressBar();
     }
 
     function movePlayer(dx, dy) {
@@ -576,7 +726,9 @@ permalink: /learninggame/home
             return false;
         }
     }
+    
     drawMaze();
+    updateProgressBar();
 </script>
 </body>
 </html>
