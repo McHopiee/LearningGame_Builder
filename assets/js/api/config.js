@@ -3,16 +3,41 @@
 export const baseurl = "{{ site.baseurl }}";
 
 export var pythonURI;
-if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-    pythonURI = "http://localhost:8587";  // Same URI for localhost or 127.0.0.1
-} else {
-    pythonURI = "https://flask.opencodingsociety.com";
+const PYTHON_LOCAL = "http://localhost:8587";
+const PYTHON_PROD = "https://flask.opencodingsociety.com";
+const isLocalHost = ["localhost", "127.0.0.1"].includes(location.hostname);
 
+// Default to prod; local will be probed asynchronously.
+pythonURI = PYTHON_PROD;
+
+/**
+ * Returns the correct Python API base URL.
+ * - If frontend is running on localhost AND local backend responds, use localhost.
+ * - Otherwise fall back to production.
+ */
+export async function getPythonURI() {
+  if (isLocalHost) {
+    try {
+      const r = await fetch(`${PYTHON_LOCAL}/api/id`, {
+        method: "GET",
+        credentials: "omit",
+      });
+      if (r) return PYTHON_LOCAL;
+    } catch (e) {
+      // local backend is down -> fall back to prod
+    }
+  }
+  return PYTHON_PROD;
 }
+
+// Keep compatibility if other files import pythonURI directly:
+// we set it asynchronously after module load.
+getPythonURI().then((uri) => {
+  pythonURI = uri;
+});
 
 const ROBOP_LOCAL = "http://localhost:8320";
 const ROBOP_PROD = "https://robop.opencodingsociety.com";
-const isLocalHost = ["localhost", "127.0.0.1"].includes(location.hostname);
 
 /**
  * Returns the correct Robop base URL.

@@ -446,7 +446,8 @@ permalink: /learninggame/ending/
     const API_URL = `${robopURI}/api/robop`;
     
     // Backend endgame API
-    const endgameApiBase = 'http://localhost:8320/api/endgame';
+    const endgameApiBase = `${robopURI}/api/endgame`;
+    let backendAvailable = true;
     
     window.ENDGAME_API_BASE = endgameApiBase;
     window.API_URL = API_URL;
@@ -511,6 +512,18 @@ permalink: /learninggame/ending/
         throw new Error(`Request failed: ${res.status} ${res.statusText}`);
       }
       return res.json();
+    }
+
+    async function tryFetchBackend(url, options = {}) {
+      if (!backendAvailable) return null;
+      try {
+        const res = await fetch(url, options);
+        if (!res.ok) return null;
+        return res.json();
+      } catch (err) {
+        backendAvailable = false;
+        return null;
+      }
     }
 
     function renderBadges(badges) {
@@ -634,14 +647,9 @@ permalink: /learninggame/ending/
       }
       
       // Then try to fetch from backend (non-blocking)
-      try {
+      if (backendAvailable) {
         console.log(`Fetching from backend: ${endgameApiBase}/player/${playerId}/score`);
-        const scoreRes = await fetch(`${endgameApiBase}/player/${playerId}/score`)
-          .then(r => r.ok ? r.json() : null)
-          .catch(err => {
-            console.warn('Backend fetch failed:', err);
-            return null;
-          });
+        const scoreRes = await tryFetchBackend(`${endgameApiBase}/player/${playerId}/score`);
         
         if (scoreRes && scoreRes.success) {
           console.log('Backend response:', scoreRes);
@@ -680,9 +688,6 @@ permalink: /learninggame/ending/
         } else {
           console.log('No backend data or player not found');
         }
-      } catch (backendError) {
-        console.warn('Backend completely unavailable:', backendError);
-        // Data already displayed from localStorage, so no error shown
       }
 
       // Check for saved final answer
@@ -824,8 +829,7 @@ permalink: /learninggame/ending/
     async function refreshScore() {
       if (!playerId) return;
       try {
-        const scoreRes = await fetch(`${endgameApiBase}/player/${playerId}/score`)
-          .then(r => r.ok ? r.json() : null);
+        const scoreRes = await tryFetchBackend(`${endgameApiBase}/player/${playerId}/score`);
         
         if (scoreRes && scoreRes.success) {
           const totalBadges = scoreRes.earned_badges?.length || 0;
@@ -863,12 +867,14 @@ permalink: /learninggame/ending/
         let aiFeedback = '';
         
         try {
+          if (!backendAvailable) throw new Error('Backend unavailable');
           console.log('Submitting to backend:', `${endgameApiBase}/player/${playerId}/final-check`);
-          const res = await fetch(`${endgameApiBase}/player/${playerId}/final-check`, {
+          const res = await tryFetchBackend(`${endgameApiBase}/player/${playerId}/final-check`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ answer })
-          }).then(r => r.json());
+          });
+          if (!res) throw new Error('Backend response unavailable');
           
           isCorrect = res.correct || false;
           if (!isCorrect) {
@@ -1012,13 +1018,6 @@ permalink: /learninggame/ending/
 
     loadData();
     setInterval(refreshScore, 5000);
-    
-    // Debug helper: Test backend connection
-    console.log('🔗 Testing backend connection...');
-    fetch(`${endgameApiBase}/player/1/score`)
-      .then(r => r.json())
-      .then(data => console.log('✅ Backend connected!', data))
-      .catch(err => console.error('❌ Backend connection failed:', err));
     
     // Debug helper: Add test data button (remove in production)
     if (location.search.includes('debug')) {
