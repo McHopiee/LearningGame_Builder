@@ -9,7 +9,7 @@ permalink: /learninggame/home
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Space Station Navigation</title>
+    <title>Space Station Navigation - Full Preview</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -24,6 +24,11 @@ permalink: /learninggame/home
         .stars { position: fixed; inset: 0; overflow: hidden; z-index: 0; }
         .star { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; animation: twinkle 3s infinite; }
 
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
         body::before {
             content: ''; position: fixed; top: 10%; left: 10%; width: 500px; height: 500px;
             background: radial-gradient(circle, rgba(6,182,212,0.15), transparent 70%);
@@ -37,7 +42,7 @@ permalink: /learninggame/home
         }
 
         .container {
-            position: relative; width: 90vw; max-width: 850px; height: 85vh; max-height: 750px;
+            position: relative; width: 90vw; max-width: 900px; height: 90vh; max-height: 850px;
             background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px);
             border-radius: 24px; border: 2px solid rgba(6,182,212,0.4);
             box-shadow: 0 0 60px rgba(6,182,212,0.25); overflow: hidden;
@@ -46,28 +51,29 @@ permalink: /learninggame/home
 
         .title-section {
             position: relative; width: 100%; background: rgba(15,23,42,0.95);
-            padding: 20px; border-bottom: 2px solid rgba(6,182,212,0.3);
+            padding: 15px 20px; border-bottom: 2px solid rgba(6,182,212,0.3);
             z-index: 50; flex-shrink: 0;
         }
 
-        .title-header { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 8px; }
-        .title { color: #06b6d4; font-size: 28px; font-weight: 900; text-transform: uppercase; letter-spacing: 4px; }
+        .title-header { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 6px; }
+        .title { color: #06b6d4; font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: 4px; }
         .subtitle { text-align: center; color: rgba(103,232,249,0.7); font-size: 12px; font-family: 'Courier New', monospace; }
 
         /* Progress Bar Styles */
         .progress-bar-container {
             background: rgba(2, 6, 23, 0.6);
-            padding: 20px;
+            padding: 12px 20px;
             border-radius: 12px;
-            margin: 15px 20px;
+            margin: 8px 20px;
             border: 1px solid rgba(6,182,212,0.2);
+            flex-shrink: 0;
         }
 
         .progress-header {
             font-size: 10px;
             color: #06b6d4;
             letter-spacing: 3px;
-            margin-bottom: 12px;
+            margin-bottom: 6px;
             font-weight: 700;
             text-transform: uppercase;
         }
@@ -76,14 +82,15 @@ permalink: /learninggame/home
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
         }
 
         .progress-percentage {
-            font-size: 36px;
+            font-size: 32px;
             font-weight: 900;
             color: #10b981;
-            min-width: 80px;
+            min-width: 70px;
+            transition: all 0.5s ease;
         }
 
         .progress-status {
@@ -96,7 +103,7 @@ permalink: /learninggame/home
         .progress-boxes {
             display: flex;
             gap: 6px;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
         }
 
         .progress-box {
@@ -126,11 +133,12 @@ permalink: /learninggame/home
         }
 
         .stat-value {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 900;
             color: #06b6d4;
             display: block;
             margin-bottom: 4px;
+            transition: all 0.3s ease;
         }
 
         .stat-label {
@@ -141,16 +149,33 @@ permalink: /learninggame/home
         }
 
         .maze-container {
-            flex-grow: 1; width: 100%; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; padding: 20px;
+            flex-grow: 1; 
+            width: 100%; 
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            padding: 12px 20px 20px 20px;
+            min-height: 0;
+            overflow: hidden;
         }
 
         .maze {
-            width: 100%; max-width: 750px; height: 100%; max-height: 500px;
-            background: rgba(2, 6, 23, 0.5); backdrop-filter: blur(10px);
-            border-radius: 20px; border: 2px solid rgba(16,185,129,0.4);
-            display: grid; grid-template-columns: repeat(15, 1fr); grid-template-rows: repeat(11, 1fr);
-            padding: 8px; gap: 2px; margin: 0 auto;
+            width: 100%; 
+            max-width: 750px;
+            height: auto;
+            aspect-ratio: 15 / 11;
+            max-height: 550px;
+            background: rgba(2, 6, 23, 0.5); 
+            backdrop-filter: blur(10px);
+            border-radius: 20px; 
+            border: 2px solid rgba(16,185,129,0.4);
+            display: grid; 
+            grid-template-columns: repeat(15, 1fr); 
+            grid-template-rows: repeat(11, 1fr);
+            padding: 8px; 
+            gap: 3px; 
+            margin: 0 auto;
         }
 
         .cell { border: 1px solid rgba(6,182,212,0.08); border-radius: 2px; position: relative; }
@@ -164,11 +189,19 @@ permalink: /learninggame/home
         .sector {
             background: linear-gradient(135deg, rgba(251,191,36,0.3) 0%, rgba(217,119,6,0.3) 100%);
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            color: #fbbf24; font-weight: 900; font-size: 12px; width: 90%; height: 90%; margin: 5%;
+            color: #fbbf24; font-weight: 900; font-size: 14px; width: 90%; height: 90%; margin: 5%;
         }
         .completed { background: #10b981 !important; color: white; }
         .start { background: rgba(16,185,129,0.3); color: #10b981; }
         .end { background: rgba(168,85,247,0.3); color: #a855f7; }
+
+        .controls-hint {
+            color: rgba(103,232,249,0.6);
+            font-size: 11px;
+            margin-top: 10px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
 
         .question-modal {
             display: none; position: absolute; inset: 0; z-index: 100;
@@ -186,7 +219,8 @@ permalink: /learninggame/home
         .r-wall { background: #ef4444; }
 
         textarea { width: 100%; height: 120px; background: #020617; color: #06b6d4; border: 1px solid #06b6d4; padding: 10px; font-family: monospace; border-radius: 8px; }
-        .btn { padding: 12px 20px; border-radius: 12px; border: none; cursor: pointer; font-weight: 900; }
+        .btn { padding: 12px 20px; border-radius: 12px; border: none; cursor: pointer; font-weight: 900; transition: all 0.2s ease; }
+        .btn:hover { transform: translateY(-2px); }
         .btn-blue { background: #06b6d4; color: white; }
         .btn-check { background: #fbbf24; color: black; width: 100%; margin-top: 10px; }
         .btn-autofill { background: #a855f7; color: white; }
@@ -277,28 +311,7 @@ permalink: /learninggame/home
         </div>
     </div>
 
-   {% capture teacher_raw %}{% include_relative gameteacher.md %}{% endcapture %}
-    {% assign parts = teacher_raw | split: '---' %}
-    {{ parts | slice: 2, parts.size | join: '---' }}
-
-<script type="module">
-    import { getRobopURI, fetchOptions } from '{{ "/assets/js/api/config.js" | relative_url }}?v=20260123_1';
-
-    const robopURI = await getRobopURI();
-    const API_URL = `${robopURI}/api/robop`;
-    
-    window.API_URL = API_URL;
-    window.authOptions = fetchOptions;
-
-    const endgameApiBase = window.ENDGAME_API_BASE || ((location.hostname === 'localhost' || location.hostname === '127.0.0.1')
-        ? 'http://localhost:3000'
-        : 'https://robop.opencodingsociety.com');
-    window.ENDGAME_API_BASE = endgameApiBase;
-
-    const storedPlayerId = localStorage.getItem('learninggame_player_id');
-    const playerId = storedPlayerId || `player-${crypto.randomUUID ? crypto.randomUUID() : Date.now()}`;
-    localStorage.setItem('learninggame_player_id', playerId);
-
+<script>
     // Star Field Initialization
     const starsContainer = document.getElementById('stars');
     for (let i = 0; i < 150; i++) {
@@ -393,60 +406,7 @@ permalink: /learninggame/home
         });
     }
 
-    async function fetchThresholds() {
-        try {
-            const response = await fetch(`${window.API_URL}/badge_thresholds`, {
-                ...window.authOptions,
-                method: 'GET'
-            });
-            if (!response.ok) throw new Error("Unauthorized or Not Found");
-            return await response.json();
-        } catch (e) {
-            console.error("API Error (Thresholds):", e);
-            return [{name: "Gold", threshold: 95}, {name: "Silver", threshold: 80}, {name: "Bronze", threshold: 65}, {name: "Participant", threshold: 0}];
-        }
-    }
-
-    async function saveBadgeToBackend(score, badgeName) {
-        try {
-            await fetch(`${window.API_URL}/assign_badge`, {
-                ...window.authOptions,
-                method: 'POST',
-                body: JSON.stringify({ sector_id: currentSectorNum, score: Math.round(score), badge_name: badgeName })
-            });
-        } catch (e) { console.error("Save error:", e); }
-    }
-
-    async function saveEndgameProgress(score, badgeName, attempts) {
-        try {
-            await fetch(`${endgameApiBase}/player/${playerId}/progress`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    stopId: currentSectorNum,
-                    attempts,
-                    score: Math.round(score),
-                    badgeName
-                })
-            });
-        } catch (e) {
-            console.error("Endgame save error:", e);
-        }
-    }
-
-    function storeLocalProgress(score, badgeName, attempts) {
-        const progress = JSON.parse(localStorage.getItem('learninggame_progress') || '{}');
-        progress[currentSectorNum] = {
-            stopId: currentSectorNum,
-            attempts,
-            score: Math.round(score),
-            badgeName,
-            completedAt: new Date().toISOString()
-        };
-        localStorage.setItem('learninggame_progress', JSON.stringify(progress));
-    }
-
-    window.showQuestion = function() {
+    function showQuestion() {
         document.getElementById('sectorBadge').textContent = currentSectorNum;
         document.getElementById('mTitle').textContent = `Sector ${currentSectorNum}`;
         feedback.textContent = '';
@@ -483,35 +443,55 @@ permalink: /learninggame/home
         let rPos = [...level.start];
         let dir = 0; 
         const commands = [];
-        const robot = { MoveForward: (n=1) => { for(let i=0; i<n; i++) commands.push('MOVE'); }, TurnRight: () => commands.push('RIGHT'), TurnLeft: () => commands.push('LEFT') };
+        const robot = { 
+            MoveForward: (n=1) => { for(let i=0; i<n; i++) commands.push('MOVE'); }, 
+            TurnRight: () => commands.push('RIGHT'), 
+            TurnLeft: () => commands.push('LEFT') 
+        };
         try {
             eval(code);
             for (const cmd of commands) {
                 await new Promise(r => setTimeout(r, 400));
-                if (cmd === 'MOVE') { if (dir === 0) rPos[0]++; else if (dir === 1) rPos[1]++; else if (dir === 2) rPos[0]--; else rPos[1]--; }
+                if (cmd === 'MOVE') { 
+                    if (dir === 0) rPos[0]++; 
+                    else if (dir === 1) rPos[1]++; 
+                    else if (dir === 2) rPos[0]--; 
+                    else rPos[1]--; 
+                }
                 else if (cmd === 'RIGHT') dir = (dir + 1) % 4;
                 else if (cmd === 'LEFT') dir = (dir + 3) % 4;
                 updateRobotGrid(rPos, dir);
                 if (rPos[0]<0||rPos[0]>4||rPos[1]<0||rPos[1]>4||level.walls.some(w=>w[0]===rPos[0]&&w[1]===rPos[1])) {
                     feedback.textContent = "💥 Crash! Resetting...";
+                    feedback.style.color = "#ef4444";
                     setTimeout(()=>updateRobotGrid(level.start, 0), 1000); return;
                 }
             }
             if (rPos[0] === level.goal[0] && rPos[1] === level.goal[1]) {
-                feedback.style.color = "#10b981"; feedback.textContent = "Goal reached!";
-                nextBtn.disabled = false; nextBtn.style.opacity = "1";
-            } else { feedback.textContent = "Short of target. Try again."; }
-        } catch(e) { feedback.textContent = "Syntax Error."; }
-    };
+                feedback.style.color = "#10b981"; 
+                feedback.textContent = "✅ Goal reached!";
+                nextBtn.disabled = false; 
+                nextBtn.style.opacity = "1";
+            } else { 
+                feedback.style.color = "#fbbf24";
+                feedback.textContent = "⚠️ Short of target. Try again."; 
+            }
+        } catch(e) { 
+            feedback.style.color = "#ef4444";
+            feedback.textContent = "❌ Syntax Error."; 
+        }
+    }
 
     function updateRobotGrid(pos, dir) {
         const grid = document.getElementById('rg');
-        if (!grid) return; grid.innerHTML = '';
+        if (!grid) return; 
+        grid.innerHTML = '';
         const level = robotLevels[currentSectorNum];
         const icons = ["▶️", "🔽", "◀️", "🔼"];
         for (let y=0; y<5; y++) {
             for (let x=0; x<5; x++) {
-                const c = document.createElement('div'); c.className = 'r-cell';
+                const c = document.createElement('div'); 
+                c.className = 'r-cell';
                 if (level.walls.some(w => w[0] === x && w[1] === y)) c.classList.add('r-wall');
                 if (x === level.goal[0] && y === level.goal[1]) c.textContent = '⭐';
                 if (x === pos[0] && y === pos[1]) c.textContent = icons[dir];
@@ -522,70 +502,87 @@ permalink: /learninggame/home
 
     function renderPseudoCode() {
         const currentTask = [{t:"Mean"},{t:"Filter"},{t:"Max"},{t:"Swap"},{t:"Evens"}][currentSectorNum - 1];
-        mContent.innerHTML = `<p style="color: #e2e8f0; margin-bottom:10px;">${currentTask.t} Task</p><textarea id="pcCode" placeholder="Write your function here..."></textarea><button class="btn btn-check" id="validateBtn">Validate</button><div id="pcOutput" style="margin-top:10px; background:#020617; padding:10px; border-radius:8px; font-family:monospace; font-size:12px;">Console...</div>`;
+        mContent.innerHTML = `<p style="color: #e2e8f0; margin-bottom:10px;">${currentTask.t} Task</p><textarea id="pcCode" placeholder="Write your function here..."></textarea><button class="btn btn-check" id="validateBtn">Validate</button><div id="pcOutput" style="margin-top:10px; background:#020617; padding:10px; border-radius:8px; font-family:monospace; font-size:12px; color:#06b6d4;">Console...</div>`;
         document.getElementById('validateBtn').onclick = checkPseudo;
     }
 
-    window.checkPseudo = function() {
+    function checkPseudo() {
         moduleAttempts[1]++;
         const code = document.getElementById('pcCode').value;
-        const tests = [{a:[[10,20,30,40]], e:25}, {a:[[1,5,10,2,8],4], e:3}, {a:[[5,12,3,9]], e:12}, {a:[["A","B","A"],"A","Z"], e:["Z","B","Z"]}, {a:[[1,2,3,4,5,6]], e:[2,4,6]}][currentSectorNum - 1];
+        const tests = [
+            {a:[[10,20,30,40]], e:25}, 
+            {a:[[1,5,10,2,8],4], e:3}, 
+            {a:[[5,12,3,9]], e:12}, 
+            {a:[["A","B","A"],"A","Z"], e:["Z","B","Z"]}, 
+            {a:[[1,2,3,4,5,6]], e:[2,4,6]}
+        ][currentSectorNum - 1];
         try {
             const fn = eval(`(${code})`);
             const res = fn(...tests.a);
             if (JSON.stringify(res) === JSON.stringify(tests.e)) {
-                feedback.style.color = "#10b981"; feedback.textContent = "Logic Passed!";
-                nextBtn.disabled = false; nextBtn.style.opacity = "1";
-            } else { feedback.textContent = "Mismatch."; }
-        } catch (e) { feedback.textContent = "Error."; }
-    };
+                feedback.style.color = "#10b981"; 
+                feedback.textContent = "✅ Logic Passed!";
+                nextBtn.disabled = false; 
+                nextBtn.style.opacity = "1";
+            } else { 
+                feedback.style.color = "#fbbf24";
+                feedback.textContent = "⚠️ Mismatch."; 
+            }
+        } catch (e) { 
+            feedback.style.color = "#ef4444";
+            feedback.textContent = "❌ Error."; 
+        }
+    }
 
     function renderMCQ() {
-        const qs = [{q:"1101 binary?", a:["13","11"], c:0},{q:"AND logic?", a:["Both","One"], c:0},{q:"Abstraction?", a:["Hide detail","Show all"], c:0},{q:"IP Protocol?", a:["Routing","Website"], c:0},{q:"Heuristics?", a:["Rule of thumb","Perfect"], c:0}][currentSectorNum-1];
-        mContent.innerHTML = `<p style="color:white; margin-bottom:15px;">${qs.q}</p>`;
+        const qs = [
+            {q:"What is 1101 in binary?", a:["13","11"], c:0},
+            {q:"What is AND logic?", a:["Both true","One true"], c:0},
+            {q:"What is Abstraction?", a:["Hide detail","Show all"], c:0},
+            {q:"What is IP Protocol?", a:["Routing","Website"], c:0},
+            {q:"What are Heuristics?", a:["Rule of thumb","Perfect solution"], c:0}
+        ][currentSectorNum-1];
+        mContent.innerHTML = `<p style="color:white; margin-bottom:15px; font-size:16px;">${qs.q}</p>`;
         qs.a.forEach((opt, i) => {
-            const b = document.createElement('button'); b.className = 'btn'; b.style = "background:#334155; color:white; margin-bottom:5px; width:100%; text-align:left;";
+            const b = document.createElement('button'); 
+            b.className = 'btn'; 
+            b.style = "background:#334155; color:white; margin-bottom:5px; width:100%; text-align:left;";
             b.textContent = opt;
-            b.onclick = () => { moduleAttempts[2]++; if (i === qs.c) { feedback.style.color="#10b981"; feedback.textContent="Correct!"; backBtn.disabled=false; backBtn.style.opacity="1"; } else { feedback.textContent="Try again."; } };
+            b.onclick = () => { 
+                moduleAttempts[2]++; 
+                if (i === qs.c) { 
+                    feedback.style.color="#10b981"; 
+                    feedback.textContent="✅ Correct!"; 
+                    backBtn.disabled=false; 
+                    backBtn.style.opacity="1"; 
+                } else { 
+                    feedback.style.color="#ef4444";
+                    feedback.textContent="❌ Try again."; 
+                } 
+            };
             mContent.appendChild(b);
         });
     }
 
-    autofillBtn.onclick = async () => {
-        try {
-            feedback.textContent = '⏳ Fetching answer...';
-            feedback.style.color = '#06b6d4';
-            const response = await fetch(`${window.API_URL}/autofill`, {
-                ...window.authOptions,
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ sector_id: currentSectorNum, question_num: currentQuestion })
-            });
-            const data = await response.json();
-            if (data.success) {
-                if (currentQuestion === 0) document.getElementById('rcInput').value = data.answer;
-                else if (currentQuestion === 1) document.getElementById('pcCode').value = data.answer;
-                else if (currentQuestion === 2) {
-                    const buttons = mContent.querySelectorAll('.btn');
-                    if (buttons[data.answer]) buttons[data.answer].click();
-                }
-                feedback.textContent = '✨ Autofilled!';
-            }
-        } catch (error) { feedback.textContent = '❌ Error connecting'; }
+    autofillBtn.onclick = () => {
+        feedback.textContent = '✨ Autofill active in full game version';
+        feedback.style.color = '#a855f7';
     };
 
-    backBtn.onclick = async () => {
+    backBtn.onclick = () => {
         let weightedSum = 0;
         const pts = moduleAttempts.map(a => Math.max(1, 6 - a));
         for (let i=0; i<3; i++) weightedSum += (pts[i]/5) * weights[i];
         const finalScore = weightedSum * 100;
-        const badgeRules = await fetchThresholds();
+        const badgeRules = [{name: "Gold", threshold: 95}, {name: "Silver", threshold: 80}, {name: "Bronze", threshold: 65}, {name: "Participant", threshold: 0}];
         let earnedBadge = "Participant";
-        for (let r of badgeRules) { if (finalScore >= r.threshold) { earnedBadge = r.name; break; } }
-        await saveBadgeToBackend(finalScore, earnedBadge);
-        const totalAttempts = moduleAttempts.reduce((sum, val) => sum + val, 0);
-        storeLocalProgress(finalScore, earnedBadge, totalAttempts);
-        await saveEndgameProgress(finalScore, earnedBadge, totalAttempts);
+        for (let r of badgeRules) { 
+            if (finalScore >= r.threshold) { 
+                earnedBadge = r.name; 
+                break; 
+            } 
+        }
+        
         mContent.innerHTML = `
             <div class="summary-card">
                 <h3 style="color:#fbbf24; margin-bottom:10px;">SECTOR RESULTS</h3>
@@ -596,7 +593,7 @@ permalink: /learninggame/home
         document.getElementById('finalCloseBtn').onclick = closeSector;
     };
 
-    window.closeSector = function() {
+    function closeSector() {
         modal.classList.remove('active');
         completedSectors.add(currentSectorNum);
         drawMaze();
@@ -606,127 +603,43 @@ permalink: /learninggame/home
     function movePlayer(dx, dy) {
         const nx = playerPos.x + dx, ny = playerPos.y + dy;
         if (ny >= 0 && ny < mazeLayout.length && nx >= 0 && nx < mazeLayout[0].length && mazeLayout[ny][nx] !== 0) {
-            playerPos.x = nx; playerPos.y = ny;
+            playerPos.x = nx; 
+            playerPos.y = ny;
             drawMaze();
             const val = mazeLayout[ny][nx];
             if (val >= 4 && val <= 8) {
                 const sNum = val - 3;
                 if (sNum > 1 && !completedSectors.has(sNum - 1)) {
-                    alert("Complete previous sector first!");
+                    alert("⚠️ Complete previous sector first!");
                     return; 
                 }
-                currentSectorNum = sNum; currentQuestion = 0; moduleAttempts = [0, 0, 0];
+                currentSectorNum = sNum; 
+                currentQuestion = 0; 
+                moduleAttempts = [0, 0, 0];
                 setTimeout(() => { 
-                    if (typeof initTeacher === 'function') initTeacher(sNum, 0); 
-                    else { modal.classList.add('active'); window.showQuestion(); }
+                    modal.classList.add('active'); 
+                    showQuestion(); 
                 }, 100);
             } else if (val === 3) {
-                localStorage.setItem('learninggame_last_end', new Date().toISOString());
-                window.location.href = `{{ '/learninggame/ending/' | relative_url }}?playerId=${encodeURIComponent(playerId)}`;
+                alert("🎉 Congratulations! You've reached the end!");
             }
         }
     }
 
-    window.dismissTeacher = () => { 
-        document.getElementById('teacher-overlay').style.display='none'; 
-        modal.classList.add('active'); 
-        window.showQuestion(); 
+    nextBtn.onclick = () => { 
+        currentQuestion++; 
+        showQuestion(); 
     };
 
-    nextBtn.onclick = () => { currentQuestion++; window.showQuestion(); };
-
     document.addEventListener('keydown', e => {
-        if (modal.classList.contains('active') || (document.getElementById('teacher-overlay') && document.getElementById('teacher-overlay').style.display === 'flex')) return;
+        if (modal.classList.contains('active')) return;
         if (e.key === 'ArrowUp') movePlayer(0, -1);
         if (e.key === 'ArrowDown') movePlayer(0, 1);
         if (e.key === 'ArrowLeft') movePlayer(-1, 0);
         if (e.key === 'ArrowRight') movePlayer(1, 0);
     });
 
-    // --- NEW: SECRET ADMIN KEYSTROKES ---
-    // GUIDELINE IMPLEMENTATION: SHIFT + ALT + I/C/B/R
-    window.addEventListener('keydown', async (e) => {
-        if (e.shiftKey && e.altKey) {
-            const key = e.key.toLowerCase();
-            
-            // SHIFT + ALT + I (Inject/Seed Data)
-            if (key === 'i') {
-                const confirmed = confirm("ADMIN: Bulk Add 50 Mock Cadets?");
-                if (confirmed) {
-                    await handleAdminAction('/seed', "Seeding");
-                    await handleAdminAction('/backup_data', "Auto-Backup");
-                }
-            }
-            
-            // SHIFT + ALT + C (Clear Data)
-            else if (key === 'c') {
-                const confirmed = confirm("ADMIN: Wipe all User and Badge data?");
-                if (confirmed) {
-                    await handleAdminAction('/clear', "Clearing Data");
-                }
-            }
-
-            // SHIFT + ALT + B (Manual Backup)
-            else if (key === 'b') {
-                const confirmed = confirm("ADMIN: Generate a new Jinja2 JSON Snapshot?");
-                if (confirmed) {
-                    await handleAdminAction('/backup_data', "Backup Generation");
-                }
-            }
-
-            // SHIFT + ALT + R (Restore Data)
-            else if (key === 'r') {
-                const confirmed = confirm("ADMIN: Restore DB from JSON backup?");
-                if (confirmed) {
-                    await handleAdminAction('/restore', "Data Restoration");
-                }
-            }
-        }
-    });
-
-    async function handleAdminAction(route, actionName) {
-        try {
-            // FIX: Manually build the URL to ensure no double slashes or missing slashes
-            const baseUrl = window.API_URL.endsWith('/') ? window.API_URL.slice(0, -1) : window.API_URL;
-            const url = `${baseUrl}/admin${route}`;
-            
-            console.log(`📡 Sending POST to: ${url}`);
-
-            // FIX: Explicitly define the request. 
-            // Do NOT use ...authOptions here as it might contain method: 'GET'
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                // Include credentials manually if needed for session
-                credentials: window.authOptions.credentials || 'include', 
-                body: JSON.stringify({}) 
-            });
-
-            const contentType = response.headers.get("content-type");
-            if (!contentType || !contentType.includes("application/json")) {
-                const text = await response.text();
-                console.error("HTML Received instead of JSON. Server Error:", text);
-                alert(`❌ ${actionName} failed: Server returned an HTML error. Check Python console.`);
-                return false;
-            }
-
-            const data = await response.json();
-            if (data.success) {
-                alert(`✅ ${actionName} SUCCESS: ${data.message}`);
-                return true;
-            } else {
-                alert(`❌ ${actionName} FAILED: ${data.message}`);
-                return false;
-            }
-        } catch (err) {
-            console.error(`${actionName} Connection Error:`, err);
-            alert(`❌ ${actionName}: Backend Unreachable.`);
-            return false;
-        }
-    }
-    
+    // Initialize
     drawMaze();
     updateProgressBar();
 </script>
