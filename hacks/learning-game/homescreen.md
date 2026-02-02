@@ -311,7 +311,16 @@ permalink: /learninggame/home
         </div>
     </div>
 
-<script>
+<script type="module">
+    // Import API configuration
+    import { getRobopURI, fetchOptions } from '{{ "/assets/js/api/config.js" | relative_url }}?v=20260123_1';
+
+    const robopURI = await getRobopURI();
+    const API_URL = `${robopURI}/api/robop`;
+    
+    window.API_URL = API_URL;
+    window.authOptions = fetchOptions;
+
     // Star Field Initialization
     const starsContainer = document.getElementById('stars');
     for (let i = 0; i < 150; i++) {
@@ -406,7 +415,7 @@ permalink: /learninggame/home
         });
     }
 
-    function showQuestion() {
+    async function showQuestion() {
         document.getElementById('sectorBadge').textContent = currentSectorNum;
         document.getElementById('mTitle').textContent = `Sector ${currentSectorNum}`;
         feedback.textContent = '';
@@ -414,7 +423,7 @@ permalink: /learninggame/home
         nextBtn.style.opacity = "0.5";
 
         if (currentQuestion === 0) renderRobotSim();
-        else if (currentQuestion === 1) renderPseudoCode();
+        else if (currentQuestion === 1) await renderPseudoCode();
         else renderMCQ();
 
         nextBtn.style.display = currentQuestion < 2 ? 'block' : 'none';
@@ -500,39 +509,106 @@ permalink: /learninggame/home
         }
     }
 
-    function renderPseudoCode() {
-        const currentTask = [{t:"Mean"},{t:"Filter"},{t:"Max"},{t:"Swap"},{t:"Evens"}][currentSectorNum - 1];
-        mContent.innerHTML = `<p style="color: #e2e8f0; margin-bottom:10px;">${currentTask.t} Task</p><textarea id="pcCode" placeholder="Write your function here..."></textarea><button class="btn btn-check" id="validateBtn">Validate</button><div id="pcOutput" style="margin-top:10px; background:#020617; padding:10px; border-radius:8px; font-family:monospace; font-size:12px; color:#06b6d4;">Console...</div>`;
-        document.getElementById('validateBtn').onclick = checkPseudo;
+    async function fetchRandomPseudocodeQuestion(levelNum) {
+        // levelNum should be 1..5
+        const url = `${window.PSEUDOCODE_BANK_URL}/random?level=${encodeURIComponent(levelNum)}`;
+
+        const res = await fetch(url, {
+            ...window.authOptions,
+            method: "GET"
+        });
+
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok || !data.success) {
+            const msg = data.message || `Failed to fetch pseudocode question for level ${levelNum}`;
+            throw new Error(msg);
+        }
+
+        return data; // {success, level, question, question_id}
     }
+
+        async function renderPseudoCode() {
+        // Map sector (1..5) to difficulty level (1..5)
+        const levelNum = currentSectorNum;
+
+        // Show loading UI immediately
+        mContent.innerHTML = `
+            <p style="color:#e2e8f0; margin-bottom:10px;">Fetching a random pseudocode question (Level ${levelNum})...</p>
+            <div style="margin-top:10px; background:#020617; padding:10px; border-radius:8px; font-family:monospace; font-size:12px; color:#06b6d4;">
+                Loading...
+            </div>
+        `;
+
+        try {
+            const data = await fetchRandomPseudocodeQuestion(levelNum);
+
+            currentPseudo.level = data.level;           // e.g. "level3"
+            currentPseudo.question_id = data.question_id;
+            currentPseudo.question = data.question;
+
+            mContent.innerHTML = `
+                <div style="color:#e2e8f0; margin-bottom:10px; font-size:14px;">
+                    <div style="color: rgba(103,232,249,0.7); font-family: monospace; font-size: 12px; margin-bottom: 6px;">
+                        Level: ${data.level} • Question ID: ${data.question_id}
+                    </div>
+                    <div style="font-weight:800; color:#fbbf24; margin-bottom:8px;">Prompt</div>
+                    <div style="background: rgba(2,6,23,0.6); border: 1px solid rgba(6,182,212,0.25); padding: 12px; border-radius: 10px; line-height: 1.35;">
+                        ${data.question}
+                    </div>
+                </div>
+
+                <textarea id="pcCode" placeholder="Write your pseudocode here..."></textarea>
+
+                <button class="btn btn-check" id="validateBtn">I wrote my solution</button>
+
+                <div id="pcOutput" style="margin-top:10px; background:#020617; padding:10px; border-radius:8px; font-family:monospace; font-size:12px; color:#06b6d4;">
+                    Tip: Write clear step-by-step pseudocode. This check only requires a non-empty response.
+                </div>
+            `;
+
+            document.getElementById("validateBtn").onclick = checkPseudo;
+        } catch (err) {
+            console.error("Pseudocode bank fetch failed:", err);
+            feedback.style.color = "#ef4444";
+            feedback.textContent = `❌ ${err.message}`;
+
+            mContent.innerHTML = `
+                <p style="color:#e2e8f0; margin-bottom:10px;">Could not load a question for Level ${levelNum}.</p>
+                <div style="margin-top:10px; background:#020617; padding:10px; border-radius:8px; font-family:monospace; font-size:12px; color:#06b6d4;">
+                    Check that your backend is running and that /api/pseudocode_bank/random works.
+                </div>
+            `;
+        }
+    }
+
 
     function checkPseudo() {
         moduleAttempts[1]++;
-        const code = document.getElementById('pcCode').value;
-        const tests = [
-            {a:[[10,20,30,40]], e:25}, 
-            {a:[[1,5,10,2,8],4], e:3}, 
-            {a:[[5,12,3,9]], e:12}, 
-            {a:[["A","B","A"],"A","Z"], e:["Z","B","Z"]}, 
-            {a:[[1,2,3,4,5,6]], e:[2,4,6]}
-        ][currentSectorNum - 1];
-        try {
-            const fn = eval(`(${code})`);
-            const res = fn(...tests.a);
-            if (JSON.stringify(res) === JSON.stringify(tests.e)) {
-                feedback.style.color = "#10b981"; 
-                feedback.textContent = "✅ Logic Passed!";
-                nextBtn.disabled = false; 
-                nextBtn.style.opacity = "1";
-            } else { 
-                feedback.style.color = "#fbbf24";
-                feedback.textContent = "⚠️ Mismatch."; 
-            }
-        } catch (e) { 
-            feedback.style.color = "#ef4444";
-            feedback.textContent = "❌ Error."; 
+
+        const code = document.getElementById("pcCode")?.value || "";
+        const output = document.getElementById("pcOutput");
+
+        if (code.trim().length < 5) {
+            feedback.style.color = "#fbbf24";
+            feedback.textContent = "⚠️ Write a little more pseudocode before continuing.";
+            if (output) output.textContent = "Not enough content yet (need a non-empty solution).";
+            return;
         }
+
+        feedback.style.color = "#10b981";
+        feedback.textContent = "✅ Submitted!";
+        if (output) {
+            output.textContent =
+                `Saved locally for this run.\n` +
+                `Question: ${currentPseudo.question_id} (${currentPseudo.level})\n` +
+                `Your response length: ${code.trim().length} chars`;
+        }
+
+        nextBtn.disabled = false;
+        nextBtn.style.opacity = "1";
     }
+
 
     function renderMCQ() {
         const qs = [

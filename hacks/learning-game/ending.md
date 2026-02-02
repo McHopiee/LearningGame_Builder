@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: page
 title: Maze - Ending Page
 authors: Rishabh
 permalink: /learninggame/ending/
@@ -13,17 +13,29 @@ permalink: /learninggame/ending/
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
+    html, body {
+      height: auto !important;
+      min-height: 100% !important;
+      overflow-y: auto !important;
+      overscroll-behavior-y: auto;
+    }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, #020617 0%, #0f172a 50%, #1e1b4b 100%);
       color: #e2e8f0;
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: block;
       padding: 30px;
       position: relative;
-      overflow: hidden;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+    }
+
+    main, .page-content, .wrapper, .container, #main {
+      height: auto !important;
+      max-height: none !important;
+      overflow: visible !important;
     }
     
     .stars { 
@@ -271,6 +283,78 @@ permalink: /learninggame/ending/
       margin-bottom: 12px;
       display: none;
     }
+    .coach-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .coach-step {
+      background: rgba(2, 6, 23, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.4;
+      color: #e2e8f0;
+      opacity: 0.5;
+      transition: all 0.2s ease;
+    }
+    .coach-step.active {
+      opacity: 1;
+      border-color: rgba(34, 197, 94, 0.6);
+      box-shadow: 0 0 14px rgba(34, 197, 94, 0.2);
+    }
+    .chat-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .chat-log {
+      min-height: 180px;
+      max-height: 260px;
+      overflow-y: auto;
+      background: rgba(2, 6, 23, 0.6);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 13px;
+    }
+    .chat-bubble {
+      padding: 8px 10px;
+      border-radius: 10px;
+      max-width: 90%;
+      line-height: 1.4;
+    }
+    .chat-user {
+      background: rgba(59, 130, 246, 0.2);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      align-self: flex-end;
+      color: #bfdbfe;
+    }
+    .chat-ai {
+      background: rgba(16, 185, 129, 0.18);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      align-self: flex-start;
+      color: #bbf7d0;
+      white-space: pre-line;
+    }
+    .chat-input {
+      display: flex;
+      gap: 8px;
+    }
+    .chat-input input {
+      flex: 1;
+      background: #0f172a;
+      color: #e2e8f0;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 13px;
+    }
   </style>
 </head>
 <body>
@@ -324,6 +408,28 @@ permalink: /learninggame/ending/
           <div class="status" id="answerStatus"></div>
         </div>
       </div>
+
+      <div class="card">
+        <h3>Step-by-Step Coach</h3>
+        <p class="helper-text">This replaces full code examples. Follow the steps like a mini video script to build your own solution.</p>
+        <div class="coach-steps" id="coachSteps"></div>
+        <div class="btn-row">
+          <button class="btn btn-secondary" id="startCoach">▶ Start Steps</button>
+          <button class="btn btn-ghost" id="resetCoach">⏹ Reset</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>AI Help Chat</h3>
+        <p class="helper-text">Ask for hints or feedback. The AI will guide you without giving away the full answer.</p>
+        <div class="chat-panel">
+          <div class="chat-log" id="chatLog"></div>
+          <div class="chat-input">
+            <input id="chatInput" type="text" placeholder="Ask for help (e.g., 'How do I add a loop?')" />
+            <button class="btn btn-primary" id="sendChat">Send</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="btn-row" style="margin-top: 24px;">
@@ -340,7 +446,8 @@ permalink: /learninggame/ending/
     const API_URL = `${robopURI}/api/robop`;
     
     // Backend endgame API
-    const endgameApiBase = 'http://localhost:8320/api/endgame';
+    const endgameApiBase = `${robopURI}/api/endgame`;
+    let backendAvailable = true;
     
     window.ENDGAME_API_BASE = endgameApiBase;
     window.API_URL = API_URL;
@@ -405,6 +512,18 @@ permalink: /learninggame/ending/
         throw new Error(`Request failed: ${res.status} ${res.statusText}`);
       }
       return res.json();
+    }
+
+    async function tryFetchBackend(url, options = {}) {
+      if (!backendAvailable) return null;
+      try {
+        const res = await fetch(url, options);
+        if (!res.ok) return null;
+        return res.json();
+      } catch (err) {
+        backendAvailable = false;
+        return null;
+      }
     }
 
     function renderBadges(badges) {
@@ -528,14 +647,9 @@ permalink: /learninggame/ending/
       }
       
       // Then try to fetch from backend (non-blocking)
-      try {
+      if (backendAvailable) {
         console.log(`Fetching from backend: ${endgameApiBase}/player/${playerId}/score`);
-        const scoreRes = await fetch(`${endgameApiBase}/player/${playerId}/score`)
-          .then(r => r.ok ? r.json() : null)
-          .catch(err => {
-            console.warn('Backend fetch failed:', err);
-            return null;
-          });
+        const scoreRes = await tryFetchBackend(`${endgameApiBase}/player/${playerId}/score`);
         
         if (scoreRes && scoreRes.success) {
           console.log('Backend response:', scoreRes);
@@ -574,9 +688,6 @@ permalink: /learninggame/ending/
         } else {
           console.log('No backend data or player not found');
         }
-      } catch (backendError) {
-        console.warn('Backend completely unavailable:', backendError);
-        // Data already displayed from localStorage, so no error shown
       }
 
       // Check for saved final answer
@@ -600,10 +711,10 @@ permalink: /learninggame/ending/
 
     function generateAiFeedback(answer, checks, backendMessage = '') {
       const steps = [];
-      if (!checks.hasFunction) steps.push('Add a function definition (named function or arrow function).');
-      if (!checks.hasConditional) steps.push('Add a conditional branch (if/else or switch).');
-      if (!checks.hasLoop) steps.push('Add a loop (for/while/forEach).');
-      if (!checks.hasMinimumLength) steps.push('Expand the steps so the algorithm is clear and complete.');
+      if (!checks.hasFunction) steps.push('Define a function name that describes the task. Example pattern: name(input) { ... }');
+      if (!checks.hasConditional) steps.push('Add decision logic: when a condition is true do A, otherwise do B.');
+      if (!checks.hasLoop) steps.push('Repeat over steps: use a loop to handle each item one-by-one.');
+      if (!checks.hasMinimumLength) steps.push('Add clear, ordered steps so the algorithm is complete.');
 
       if (steps.length === 0) {
         steps.push('Clarify your steps with sequence, selection, and iteration.');
@@ -612,14 +723,113 @@ permalink: /learninggame/ending/
       const header = 'AI feedback: Your answer is incorrect.';
       const detail = backendMessage ? `Backend says: ${backendMessage}` : 'Missing required algorithm elements.';
       const guide = steps.map((step, index) => `${index + 1}. ${step}`).join('\n');
-      return `${header}\n${detail}\nStep-by-step fix:\n${guide}`;
+      const miniScript = [
+        'Mini walkthrough (no full code):',
+        '1) Name the function and list inputs.',
+        '2) Start a loop to process each step.',
+        '3) Inside the loop, use if/else to choose what to do.',
+        '4) Update a result variable.',
+        '5) Return the result at the end.'
+      ].join('\n');
+
+      return `${header}\n${detail}\nStep-by-step fix:\n${guide}\n\n${miniScript}`;
+    }
+
+    const coachSteps = [
+      'Step 1: Pick a function name that explains the goal (e.g., evaluateMoves, calculateScore).',
+      'Step 2: Decide what input data your function needs (like a list of steps).',
+      'Step 3: Start a loop to process each item in order.',
+      'Step 4: Use an if/else decision inside the loop to handle different cases.',
+      'Step 5: Update a result variable (score, count, path).',
+      'Step 6: Return the result at the end.'
+    ];
+
+    const coachContainer = document.getElementById('coachSteps');
+    let coachIndex = 0;
+    let coachTimer = null;
+
+    function renderCoachSteps(activeIndex = -1) {
+      coachContainer.innerHTML = '';
+      coachSteps.forEach((step, index) => {
+        const el = document.createElement('div');
+        el.className = `coach-step${index === activeIndex ? ' active' : ''}`;
+        el.textContent = step;
+        coachContainer.appendChild(el);
+      });
+    }
+
+    function startCoachSteps() {
+      clearInterval(coachTimer);
+      coachIndex = 0;
+      renderCoachSteps(coachIndex);
+      coachTimer = setInterval(() => {
+        coachIndex += 1;
+        if (coachIndex >= coachSteps.length) {
+          clearInterval(coachTimer);
+          renderCoachSteps(coachSteps.length - 1);
+          return;
+        }
+        renderCoachSteps(coachIndex);
+      }, 1600);
+    }
+
+    function resetCoachSteps() {
+      clearInterval(coachTimer);
+      coachIndex = 0;
+      renderCoachSteps(-1);
+    }
+
+    renderCoachSteps(-1);
+
+    const chatLog = document.getElementById('chatLog');
+    const chatInput = document.getElementById('chatInput');
+    const sendChat = document.getElementById('sendChat');
+
+    function appendChatBubble(text, type) {
+      const bubble = document.createElement('div');
+      bubble.className = `chat-bubble ${type}`;
+      bubble.textContent = text;
+      chatLog.appendChild(bubble);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    let aiFallbackIndex = 0;
+    const aiFallbacks = [
+      'Tell me your goal in one sentence (e.g., "count safe steps" or "calculate score"). I will break it into steps.',
+      'Try this structure: define inputs → loop through steps → decide with if/else → update result → return.',
+      'Share the parts you already have (function, loop, conditional). I will fill the missing piece.',
+      'If you want an example, I can give a pseudo-code outline without full code.'
+    ];
+
+    function aiReply(userText) {
+      const text = userText.toLowerCase();
+      if (text.includes('example') || text.includes('code')) {
+        return 'I can’t give full code, but here’s a safe outline: function name + inputs → loop through items → if/else decision → update a result → return it.';
+      }
+      if (text.includes('loop')) {
+        return 'Pick a loop type (for/while). Decide what repeats and when to stop. Example: repeat for each step in a list.';
+      }
+      if (text.includes('if') || text.includes('condition')) {
+        return 'Use if/else to choose between two actions. Write the condition in plain English first, then translate it.';
+      }
+      if (text.includes('function')) {
+        return 'Start with a clear function name and inputs. Then add the loop and decision logic inside.';
+      }
+      if (text.includes('score') || text.includes('result')) {
+        return 'Create a result variable before the loop, update it inside, and return it after the loop.';
+      }
+      if (text.includes('help') || text.includes('hint')) {
+        return 'Tell me which part is missing: function, loop, or conditional. I will guide just that part.';
+      }
+      const reply = aiFallbacks[aiFallbackIndex % aiFallbacks.length];
+      aiFallbackIndex += 1;
+      return reply;
     }
 
     async function refreshScore() {
       if (!playerId) return;
       try {
-        const scoreRes = await fetch(`${endgameApiBase}/player/${playerId}/score`)
-          .then(r => r.ok ? r.json() : null);
+        const scoreRes = await tryFetchBackend(`${endgameApiBase}/player/${playerId}/score`);
         
         if (scoreRes && scoreRes.success) {
           const totalBadges = scoreRes.earned_badges?.length || 0;
@@ -657,12 +867,14 @@ permalink: /learninggame/ending/
         let aiFeedback = '';
         
         try {
+          if (!backendAvailable) throw new Error('Backend unavailable');
           console.log('Submitting to backend:', `${endgameApiBase}/player/${playerId}/final-check`);
-          const res = await fetch(`${endgameApiBase}/player/${playerId}/final-check`, {
+          const res = await tryFetchBackend(`${endgameApiBase}/player/${playerId}/final-check`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ answer })
-          }).then(r => r.json());
+          });
+          if (!res) throw new Error('Backend response unavailable');
           
           isCorrect = res.correct || false;
           if (!isCorrect) {
@@ -747,6 +959,25 @@ permalink: /learninggame/ending/
       answerStatus.className = 'status';
     });
 
+    document.getElementById('startCoach').addEventListener('click', startCoachSteps);
+    document.getElementById('resetCoach').addEventListener('click', resetCoachSteps);
+
+    function handleSendChat() {
+      const message = chatInput.value.trim();
+      if (!message) return;
+      appendChatBubble(message, 'chat-user');
+      chatInput.value = '';
+      const reply = aiReply(message);
+      setTimeout(() => appendChatBubble(reply, 'chat-ai'), 200);
+    }
+
+    sendChat.addEventListener('click', handleSendChat);
+    chatInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        handleSendChat();
+      }
+    });
+
     document.getElementById('playAgainBtn').addEventListener('click', () => {
       if (confirm('This will reset your progress and start a new game. Continue?')) {
         // Clear game progress but keep player ID
@@ -763,15 +994,30 @@ permalink: /learninggame/ending/
       }
     });
 
+    function forceScroll() {
+      const html = document.documentElement;
+      if (html) {
+        html.style.setProperty('overflow-y', 'auto', 'important');
+        html.style.setProperty('overflow-x', 'hidden', 'important');
+        html.style.setProperty('height', 'auto', 'important');
+        html.style.setProperty('max-height', 'none', 'important');
+      }
+      if (document.body) {
+        document.body.style.setProperty('overflow-y', 'auto', 'important');
+        document.body.style.setProperty('overflow-x', 'hidden', 'important');
+        document.body.style.setProperty('height', 'auto', 'important');
+        document.body.style.setProperty('max-height', 'none', 'important');
+        document.body.style.setProperty('position', 'static', 'important');
+      }
+    }
+
+    forceScroll();
+    window.addEventListener('load', forceScroll);
+    const scrollFixInterval = setInterval(forceScroll, 500);
+    setTimeout(() => clearInterval(scrollFixInterval), 4000);
+
     loadData();
     setInterval(refreshScore, 5000);
-    
-    // Debug helper: Test backend connection
-    console.log('🔗 Testing backend connection...');
-    fetch(`${endgameApiBase}/player/1/score`)
-      .then(r => r.json())
-      .then(data => console.log('✅ Backend connected!', data))
-      .catch(err => console.error('❌ Backend connection failed:', err));
     
     // Debug helper: Add test data button (remove in production)
     if (location.search.includes('debug')) {
