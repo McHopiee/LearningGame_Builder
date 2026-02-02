@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Character Selection Protocol
-permalink: 
+permalink: /character/spacesuit
 ---
 
 <style>
@@ -102,90 +102,170 @@ permalink:
 </style>
 
 <div class="instruction-card">
-    <h1>🚀 Mission: Character Selector</h1>
-    <div class="subtitle">// AUTHENTICATION SUCCESSFUL // REDIRECTING TO CADET CUSTOMIZATION //</div>
+    <h1>🚀 Select Your Character</h1>
+    <div class="subtitle">// Choose your cadet identity and customize your profile //</div>
 
-    <p>Cadet Shay, you have been assigned the <strong>Character Selection Feature</strong>. This page is the "hub" where users define their identity before entering the maze. To satisfy the <strong>AP CSP Create PT</strong>, you must build this using a Full-Stack approach.</p>
+    <div style="margin: 40px 0;">
+        <div id="character-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 30px 0;">
+            <!-- Characters will be rendered here by JavaScript -->
+        </div>
 
-    <div class="step">
-        <span class="pt-badge">Skill B: Database Persistence</span>
-        <h2>1. Expand the Database (<code>model/robop_user.py</code>)</h2>
-        <p>The <code>RobopUser</code> class needs new columns to hold the character data. Add these to the model:</p>
-<pre>
-# Add these columns to the RobopUser class
-_character_name = db.Column(db.String(64), nullable=True)
-_character_class = db.Column(db.String(64), nullable=True) # e.g. "Engineer"
+        <div style="background: rgba(6, 182, 212, 0.05); border: 2px solid rgba(6, 182, 212, 0.2); border-radius: 12px; padding: 25px; margin-top: 30px;">
+            <label style="display: block; margin-bottom: 10px; color: #67e8f9; font-weight: bold;">Enter Your Character Name:</label>
+            <input type="text" id="character-name-input" placeholder="Type your cadet name..." style="width: 100%; padding: 12px; border: 1px solid rgba(6, 182, 212, 0.4); border-radius: 8px; background: rgba(2, 6, 23, 0.8); color: white; font-size: 16px; box-sizing: border-box;">
+            <p id="error-message" style="color: #ef4444; margin-top: 10px; display: none; font-size: 14px;"></p>
+        </div>
 
-# Important: Update to_dict() so the frontend can read these values
-def to_dict(self):
-    return {
-        "uid": self._uid,
-        "character_name": self._character_name,
-        "character_class": self._character_class,
-        # ... include your other existing fields here
-    }
-</pre>
-    </div>
-
-    <div class="step">
-        <span class="pt-badge">Skill B: I/O Procedure</span>
-        <h2>2. Build the API Communication (<code>api/robop_api.py</code>)</h2>
-        <p>Implement a <code>POST</code> route that handles the "Input" (user choice) and provides "Output" (success message).</p>
-<pre>
-@robop_api.route("/update_character", methods=["POST"])
-def update_character():
-    uid = session.get("robop_uid")
-    if not uid:
-        return jsonify({"success": False, "message": "Unauthorized"}), 401
-    
-    data = request.get_json()
-    user = RobopUser.query.filter_by(_uid=uid).first()
-    
-    # Selection Logic: Update the database object based on POST data
-    user._character_name = data.get("name")
-    user._character_class = data.get("class")
-    
-    db.session.commit()
-    return jsonify({"success": True, "message": "Cadet profile synchronized!"}), 200
-</pre>
-    </div>
-
-    <div class="step">
-        <span class="pt-badge">Skill B: Iteration & Lists</span>
-        <h2>3. Create the UI Logic (Frontend)</h2>
-        <p>For the AP PT, you <strong>must</strong> use a List and Iteration. Do not hard-code 3 separate cards in HTML. Define them in a JavaScript array and loop through them to generate the UI.</p>
-<pre>
-// Define a List of cadet types
-const cadetRoles = [
-    { type: "Navigator", icon: "🛰️", trait: "Pathfinding +5" },
-    { type: "Technician", icon: "🛠️", trait: "Logic +5" },
-    { type: "Specialist", icon: "🧪", trait: "Science +5" }
-];
-
-// Iteration: Use a loop to render cards into an empty div
-function renderRoles() {
-    const container = document.getElementById('role-grid');
-    cadetRoles.forEach(role => {
-        // Build the HTML card here and append it!
-    });
-}
-</pre>
-    </div>
-
-    <div class="step">
-        <h2>4. Create PT Documentation Checklist</h2>
-        <ul>
-            <li><strong>Selection:</strong> Use <code>if</code> statements to validate that the user entered a name before clicking "Ready."</li>
-            <li><strong>Iteration:</strong> The <code>forEach</code> loop above fulfills this requirement.</li>
-            <li><strong>Input:</strong> The text input for the character name and the click event for the icon.</li>
-            <li><strong>Output:</strong> The <code>fetch()</code> confirmation and the redirect to the Maze page.</li>
-        </ul>
-    </div>
-
-    <div style="text-align: center; margin-top: 40px;">
-        <a href="{{ '/learninggame/home' | relative_url }}" class="nav-btn">Development Bypass: Enter Maze →</a>
-        <p style="margin-top: 25px; font-size: 11px; opacity: 0.5; font-family: monospace;">
-            SHAY: Once you begin implementation, replace this instruction file with your actual UI code.
-        </p>
+        <div style="text-align: center; margin-top: 30px;">
+            <button id="submit-btn" style="padding: 15px 40px; background: linear-gradient(135deg, #06b6d4, #3b82f6); color: white; border: none; border-radius: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; font-size: 16px; cursor: pointer; box-shadow: 0 10px 20px rgba(6, 182, 212, 0.3); transition: 0.3s;">Ready to Enter Maze →</button>
+        </div>
     </div>
 </div>
+
+<script>
+// LIST: Define characters using an array
+const characters = [
+    { 
+        name: "Axiom Space Suit", 
+        icon: "🛰️",
+        image: "{{ '/images/learninggame/axiom.png' | relative_url }}", // Add character image path
+        trait: "Advanced Commercial Design",
+        description: "Modern next-gen suit technology"
+    },
+    { 
+        name: "Gemini G4c Space Suit", 
+        icon: "🔧",
+        image: "{{ '/images/learninggame/gemini.png' | relative_url }}", // Add character image path
+        trait: "Classic NASA Engineering",
+        description: "Proven reliability and durability"
+    },
+    { 
+        name: "Orlan Space Suit", 
+        icon: "🧪",
+        image: "{{ '/images/learninggame/orlan.png' | relative_url }}", // Add character image path
+        trait: "Modular Russian Design",
+        description: "Flexible and adaptable systems"
+    },
+    { 
+        name: "Feitian Space Suit", 
+        icon: "⚡",
+        image: "{{ '/images/learninggame/feitian.png' | relative_url }}", // Add character image path
+        trait: "Advanced Chinese Technology",
+        description: "Cutting-edge innovation"
+    }
+];
+
+let selectedCharacter = null;
+
+// ITERATION: Loop through characters and render them
+function renderCharacters() {
+    const grid = document.getElementById('character-grid');
+    
+    characters.forEach((character) => {
+        const card = document.createElement('div');
+        card.className = 'character-card';
+        card.style.cssText = `
+            background: rgba(15, 23, 42, 0.7);
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        `;
+        
+        card.innerHTML = `
+            <img src="${character.image}" alt="${character.name}" style="width: 100%; height: 200px; object-fit: contain; border-radius: 8px; margin-bottom: 15px;">
+            <h3 style="color: #06b6d4; margin: 10px 0; font-size: 18px;">${character.name}</h3>
+            <p style="color: #fbbf24; font-size: 12px; font-weight: bold; margin-bottom: 8px;">${character.trait}</p>
+            <p style="color: #cbd5e1; font-size: 13px; margin: 0;">${character.description}</p>
+        `;
+        
+        card.addEventListener('mouseover', function() {
+            this.style.borderColor = 'rgba(251, 191, 36, 0.6)';
+            this.style.boxShadow = '0 0 20px rgba(251, 191, 36, 0.3)';
+            this.style.transform = 'translateY(-5px)';
+        });
+        
+        card.addEventListener('mouseout', function() {
+            if (selectedCharacter !== character.name) {
+                this.style.borderColor = 'rgba(6, 182, 212, 0.3)';
+                this.style.boxShadow = 'none';
+                this.style.transform = 'translateY(0)';
+            }
+        });
+        
+        card.addEventListener('click', function() {
+            // SELECTION: Handle character selection
+            selectCharacter(character.name, card);
+        });
+        
+        grid.appendChild(card);
+    });
+}
+
+// INPUT: Handle character selection
+function selectCharacter(characterName, cardElement) {
+    // Deselect previous selection
+    const allCards = document.querySelectorAll('.character-card');
+    allCards.forEach(card => {
+        card.style.borderColor = 'rgba(6, 182, 212, 0.3)';
+        card.style.boxShadow = 'none';
+        card.style.backgroundColor = 'rgba(15, 23, 42, 0.7)';
+    });
+    
+    // Select current character
+    selectedCharacter = characterName;
+    cardElement.style.borderColor = '#06b6d4';
+    cardElement.style.boxShadow = '0 0 30px rgba(6, 182, 212, 0.6)';
+    cardElement.style.backgroundColor = 'rgba(6, 182, 212, 0.1)';
+}
+
+// OUTPUT: Submit character selection
+document.getElementById('submit-btn').addEventListener('click', function() {
+    const characterName = document.getElementById('character-name-input').value.trim();
+    const errorMessage = document.getElementById('error-message');
+    
+    // SELECTION: Validate input
+    if (!characterName) {
+        errorMessage.textContent = "⚠️ Please enter your character name!";
+        errorMessage.style.display = 'block';
+        return;
+    }
+    
+    if (!selectedCharacter) {
+        errorMessage.textContent = "⚠️ Please select a character class!";
+        errorMessage.style.display = 'block';
+        return;
+    }
+    
+    errorMessage.style.display = 'none';
+    
+    // I/O: Send data to server (simulated)
+    console.log(`Character Selected: ${characterName} - Class: ${selectedCharacter}`);
+    
+    // In production, this would be:
+    // fetch('/api/update_character', {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify({ name: characterName, class: selectedCharacter })
+    // }).then(response => response.json()).then(data => {
+    //     if (data.success) {
+    //         // Redirect or display success
+    //     }
+    // });
+    
+    // For now, show success and redirect
+    this.textContent = "✓ Profile Created!";
+    this.disabled = true;
+    this.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+    
+    setTimeout(() => {
+        window.location.href = "{{ '/learninggame/home' | relative_url }}";
+    }, 1500);
+});
+
+// Initialize on page load
+window.addEventListener('DOMContentLoaded', renderCharacters);
+</script>
