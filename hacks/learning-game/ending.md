@@ -485,8 +485,17 @@ permalink: /learninggame/ending/
       Gold: '🥇',
       Silver: '🥈',
       Bronze: '🥉',
-      Participant: '🎖️'
+      Participant: '🎖️',
+      Master: '🏅',
+      Final: '🏅'
     };
+
+    function normalizeStopId(value) {
+      if (value === 'final' || value === 'Final') return 'final';
+      if (value === 6 || value === '6') return 'final';
+      const num = Number(value);
+      return Number.isFinite(num) ? num : value;
+    }
 
     function showError(message) {
       errorBanner.textContent = message;
@@ -537,7 +546,7 @@ permalink: /learninggame/ending/
       ];
       badgeGrid.innerHTML = '';
       slots.forEach((slot) => {
-        const badge = badges.find((b) => b.stopId === slot.id);
+        const badge = badges.find((b) => normalizeStopId(b.stopId) === slot.id);
         const el = document.createElement('div');
         el.className = 'badge' + (badge ? ' earned' : '');
         el.innerHTML = `
@@ -547,6 +556,13 @@ permalink: /learninggame/ending/
         `;
         badgeGrid.appendChild(el);
       });
+    }
+
+    function mergeBadges(primary, secondary) {
+      const map = new Map();
+      (secondary || []).forEach((b) => map.set(b.stopId, b));
+      (primary || []).forEach((b) => map.set(b.stopId, b));
+      return Array.from(map.values());
     }
 
     function renderAttempts(progress) {
@@ -622,16 +638,17 @@ permalink: /learninggame/ending/
       console.log('Local progress:', progressArray);
       
       // Render localStorage data immediately
+      let localBadges = [];
       if (progressArray.length > 0) {
-        const badgesToRender = progressArray.map(p => ({
+        localBadges = progressArray.map(p => ({
           stopId: p.stopId,
           badgeName: p.badgeName || 'Earned',
           score: p.score
         }));
         if (savedAnswer?.isCorrect) {
-          badgesToRender.push({ stopId: 'final', badgeName: 'Master', score: 100 });
+          localBadges.push({ stopId: 'final', badgeName: 'Master', score: 100 });
         }
-        renderBadges(badgesToRender);
+        renderBadges(localBadges);
         renderAttempts(progressArray);
         
         const totalScore = progressArray.reduce((sum, p) => sum + (p.score || 0), 0) / progressArray.length;
@@ -663,7 +680,7 @@ permalink: /learninggame/ending/
               attempts: b.attempts
             }));
             console.log('Updating with backend badges:', backendBadges);
-            renderBadges(backendBadges);
+            renderBadges(mergeBadges(localBadges, backendBadges));
           }
           
           // Update attempts from backend
@@ -802,7 +819,7 @@ permalink: /learninggame/ending/
     ];
 
     function aiReply(userText) {
-      const text = userText.toLowerCase();
+      const text = String(userText || '').toLowerCase();
       if (text.includes('example') || text.includes('code')) {
         return 'I can’t give full code, but here’s a safe outline: function name + inputs → loop through items → if/else decision → update a result → return it.';
       }
@@ -893,9 +910,9 @@ permalink: /learninggame/ending/
           // Simple client-side validation as fallback
           // Check for common algorithm patterns
           const checks = {
-            hasLoop: /for|while|forEach/.test(answer),
-            hasConditional: /if|switch|case/.test(answer),
-            hasFunction: /function|=>|\(.*\)\s*{/.test(answer),
+            hasLoop: /for\s+each|foreach|for|while/.test(answer.toLowerCase()),
+            hasConditional: /if|switch|case/.test(answer.toLowerCase()),
+            hasFunction: /function|=>|\(.*\)\s*{|procedure\s+\w+/i.test(answer),
             hasMinimumLength: answer.length > 50
           };
           
@@ -908,9 +925,9 @@ permalink: /learninggame/ending/
 
         if (!isCorrect && !aiFeedback) {
           const checks = {
-            hasLoop: /for|while|forEach/.test(answer),
-            hasConditional: /if|switch|case/.test(answer),
-            hasFunction: /function|=>|\(.*\)\s*{/.test(answer),
+            hasLoop: /for\s+each|foreach|for|while/.test(answer.toLowerCase()),
+            hasConditional: /if|switch|case/.test(answer.toLowerCase()),
+            hasFunction: /function|=>|\(.*\)\s*{|procedure\s+\w+/i.test(answer),
             hasMinimumLength: answer.length > 50
           };
           aiFeedback = generateAiFeedback(answer, checks, message);
@@ -963,20 +980,29 @@ permalink: /learninggame/ending/
     document.getElementById('resetCoach').addEventListener('click', resetCoachSteps);
 
     function handleSendChat() {
+      if (!chatInput || !chatLog) return;
       const message = chatInput.value.trim();
       if (!message) return;
       appendChatBubble(message, 'chat-user');
       chatInput.value = '';
-      const reply = aiReply(message);
+      let reply = '';
+      try {
+        reply = aiReply(message);
+      } catch (e) {
+        reply = 'I hit a snag. Try asking again with a short goal or a specific part (function, loop, condition).';
+      }
       setTimeout(() => appendChatBubble(reply, 'chat-ai'), 200);
     }
 
-    sendChat.addEventListener('click', handleSendChat);
-    chatInput.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
-        handleSendChat();
-      }
-    });
+    if (chatLog && chatInput && sendChat) {
+      appendChatBubble('Hi! Tell me your goal and I will guide the steps (no full code).', 'chat-ai');
+      sendChat.addEventListener('click', handleSendChat);
+      chatInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          handleSendChat();
+        }
+      });
+    }
 
     document.getElementById('playAgainBtn').addEventListener('click', () => {
       if (confirm('This will reset your progress and start a new game. Continue?')) {

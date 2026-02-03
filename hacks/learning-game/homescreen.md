@@ -369,6 +369,106 @@ permalink: /learninggame/home
         5: { start: [0,2], goal: [4,2], walls: [[2,1],[2,2],[2,3]] }
     };
 
+    function findRobotPath(level) {
+        const size = 5;
+        const walls = new Set(level.walls.map(([x, y]) => `${x},${y}`));
+        const startKey = `${level.start[0]},${level.start[1]}`;
+        const goalKey = `${level.goal[0]},${level.goal[1]}`;
+        const queue = [[level.start[0], level.start[1]]];
+        const prev = new Map();
+        prev.set(startKey, null);
+
+        const dirs = [
+            [1, 0],
+            [0, 1],
+            [-1, 0],
+            [0, -1]
+        ];
+
+        while (queue.length) {
+            const [x, y] = queue.shift();
+            const key = `${x},${y}`;
+            if (key === goalKey) break;
+            for (const [dx, dy] of dirs) {
+                const nx = x + dx;
+                const ny = y + dy;
+                if (nx < 0 || ny < 0 || nx >= size || ny >= size) continue;
+                const nkey = `${nx},${ny}`;
+                if (walls.has(nkey) || prev.has(nkey)) continue;
+                prev.set(nkey, [x, y]);
+                queue.push([nx, ny]);
+            }
+        }
+
+        if (!prev.has(goalKey)) return null;
+        const path = [];
+        let cur = level.goal;
+        while (cur) {
+            path.push(cur);
+            const key = `${cur[0]},${cur[1]}`;
+            cur = prev.get(key);
+        }
+        return path.reverse();
+    }
+
+    function buildRobotAutofill(level) {
+        const path = findRobotPath(level);
+        if (!path || path.length < 2) {
+            return "robot.MoveForward();";
+        }
+
+        let dir = 0; // 0: right, 1: down, 2: left, 3: up
+        const lines = [];
+        let forwardCount = 0;
+
+        const flushForward = () => {
+            if (forwardCount > 0) {
+                lines.push(`robot.MoveForward(${forwardCount});`);
+                forwardCount = 0;
+            }
+        };
+
+        for (let i = 1; i < path.length; i++) {
+            const [px, py] = path[i - 1];
+            const [nx, ny] = path[i];
+            let desiredDir = dir;
+            if (nx > px) desiredDir = 0;
+            else if (ny > py) desiredDir = 1;
+            else if (nx < px) desiredDir = 2;
+            else if (ny < py) desiredDir = 3;
+
+            const diff = (desiredDir - dir + 4) % 4;
+            if (diff !== 0) {
+                flushForward();
+                if (diff === 1) lines.push("robot.TurnRight();");
+                else if (diff === 2) lines.push("robot.TurnRight();", "robot.TurnRight();");
+                else if (diff === 3) lines.push("robot.TurnLeft();");
+                dir = desiredDir;
+            }
+
+            forwardCount += 1;
+        }
+
+        flushForward();
+        return lines.join("\n");
+    }
+
+    function buildPseudoAutofill() {
+        return [
+            "FUNCTION solveMaze(steps)",
+            "  SET result TO 0",
+            "  FOR EACH step IN steps",
+            "    IF step IS safe THEN",
+            "      result = result + 1",
+            "    ELSE",
+            "      result = result + 0",
+            "    END IF",
+            "  END FOR",
+            "  RETURN result",
+            "END FUNCTION"
+        ].join("\n");
+    }
+
     // Progress Bar Update Function
     function updateProgressBar() {
         const totalSectors = 5;
@@ -641,7 +741,27 @@ permalink: /learninggame/home
     }
 
     autofillBtn.onclick = () => {
-        feedback.textContent = '✨ Autofill active in full game version';
+        if (currentQuestion === 0) {
+            const level = robotLevels[currentSectorNum];
+            const code = buildRobotAutofill(level);
+            const input = document.getElementById('rcInput');
+            if (input) input.value = code;
+            feedback.textContent = '✨ Autofill: robot path generated.';
+            feedback.style.color = '#a855f7';
+            runRobotSim();
+            return;
+        }
+
+        if (currentQuestion === 1) {
+            const pcInput = document.getElementById('pcCode');
+            if (pcInput) pcInput.value = buildPseudoAutofill();
+            feedback.textContent = '✨ Autofill: pseudocode drafted.';
+            feedback.style.color = '#a855f7';
+            checkPseudo();
+            return;
+        }
+
+        feedback.textContent = '✨ Autofill: no action for this module.';
         feedback.style.color = '#a855f7';
     };
 
