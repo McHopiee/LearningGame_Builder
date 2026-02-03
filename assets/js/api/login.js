@@ -1,10 +1,11 @@
-import { baseurl, pythonURI, fetchOptions } from './config.js';
+import { baseurl, pythonURI, getPythonURI, fetchOptions } from './config.js';
 
 console.log("login.js loaded");
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
     console.log("Base URL:", baseurl); // Debugging line
-    getCredentials(baseurl) // Call the function to get credentials
+    const apiBase = await getPythonURI();
+    getCredentials(apiBase) // Call the function to get credentials
         .then(data => {
             console.log("Credentials data:", data); // Debugging line
             window.user = data;
@@ -68,8 +69,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 });
 
-function getCredentials(baseurl) {
-    const URL = pythonURI + '/api/id';
+function getCredentials(apiBase) {
+    const URL = `${apiBase || pythonURI}/api/id`;
     return fetch(URL, {
         ...fetchOptions,
         credentials: 'include' // Add this to include cookies
@@ -87,7 +88,7 @@ function getCredentials(baseurl) {
             return data;
         })
         .catch(err => {
-            console.error("Fetch error: ", err);
+            console.warn("Fetch error: ", err);
             // Return null instead of throwing to handle the error gracefully
             return null;
         });
