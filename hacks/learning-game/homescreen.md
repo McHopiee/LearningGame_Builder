@@ -9,7 +9,7 @@ permalink: /learninggame/home
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Space Station Navigation - Full Preview</title>
+    <title>Space Station Navigation</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -24,11 +24,6 @@ permalink: /learninggame/home
         .stars { position: fixed; inset: 0; overflow: hidden; z-index: 0; }
         .star { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; animation: twinkle 3s infinite; }
 
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-
         body::before {
             content: ''; position: fixed; top: 10%; left: 10%; width: 500px; height: 500px;
             background: radial-gradient(circle, rgba(6,182,212,0.15), transparent 70%);
@@ -42,7 +37,7 @@ permalink: /learninggame/home
         }
 
         .container {
-            position: relative; width: 90vw; max-width: 900px; height: 90vh; max-height: 850px;
+            position: relative; width: 90vw; max-width: 850px; height: 85vh; max-height: 750px;
             background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px);
             border-radius: 24px; border: 2px solid rgba(6,182,212,0.4);
             box-shadow: 0 0 60px rgba(6,182,212,0.25); overflow: hidden;
@@ -51,131 +46,25 @@ permalink: /learninggame/home
 
         .title-section {
             position: relative; width: 100%; background: rgba(15,23,42,0.95);
-            padding: 15px 20px; border-bottom: 2px solid rgba(6,182,212,0.3);
+            padding: 20px; border-bottom: 2px solid rgba(6,182,212,0.3);
             z-index: 50; flex-shrink: 0;
         }
 
-        .title-header { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 6px; }
-        .title { color: #06b6d4; font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: 4px; }
+        .title-header { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 8px; }
+        .title { color: #06b6d4; font-size: 28px; font-weight: 900; text-transform: uppercase; letter-spacing: 4px; }
         .subtitle { text-align: center; color: rgba(103,232,249,0.7); font-size: 12px; font-family: 'Courier New', monospace; }
 
-        /* Progress Bar Styles */
-        .progress-bar-container {
-            background: rgba(2, 6, 23, 0.6);
-            padding: 12px 20px;
-            border-radius: 12px;
-            margin: 8px 20px;
-            border: 1px solid rgba(6,182,212,0.2);
-            flex-shrink: 0;
-        }
-
-        .progress-header {
-            font-size: 10px;
-            color: #06b6d4;
-            letter-spacing: 3px;
-            margin-bottom: 6px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .progress-main {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 8px;
-        }
-
-        .progress-percentage {
-            font-size: 32px;
-            font-weight: 900;
-            color: #10b981;
-            min-width: 70px;
-            transition: all 0.5s ease;
-        }
-
-        .progress-status {
-            font-size: 11px;
-            color: rgba(103,232,249,0.6);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .progress-boxes {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 8px;
-        }
-
-        .progress-box {
-            width: 20px;
-            height: 20px;
-            background: rgba(30, 41, 59, 0.5);
-            border: 1px solid rgba(6,182,212,0.3);
-            border-radius: 3px;
-            transition: all 0.3s ease;
-        }
-
-        .progress-box.completed {
-            background: #10b981;
-            border-color: #10b981;
-            box-shadow: 0 0 10px rgba(16,185,129,0.5);
-        }
-
-        .progress-stats {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-        }
-
-        .stat-item {
-            text-align: center;
-            flex: 1;
-        }
-
-        .stat-value {
-            font-size: 18px;
-            font-weight: 900;
-            color: #06b6d4;
-            display: block;
-            margin-bottom: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .stat-label {
-            font-size: 9px;
-            color: rgba(103,232,249,0.5);
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
-
         .maze-container {
-            flex-grow: 1; 
-            width: 100%; 
-            display: flex; 
-            flex-direction: column;
-            justify-content: center; 
-            align-items: center; 
-            padding: 12px 20px 20px 20px;
-            min-height: 0;
-            overflow: hidden;
+            flex-grow: 1; width: 100%; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; padding: 20px;
         }
 
         .maze {
-            width: 100%; 
-            max-width: 750px;
-            height: auto;
-            aspect-ratio: 15 / 11;
-            max-height: 550px;
-            background: rgba(2, 6, 23, 0.5); 
-            backdrop-filter: blur(10px);
-            border-radius: 20px; 
-            border: 2px solid rgba(16,185,129,0.4);
-            display: grid; 
-            grid-template-columns: repeat(15, 1fr); 
-            grid-template-rows: repeat(11, 1fr);
-            padding: 8px; 
-            gap: 3px; 
-            margin: 0 auto;
+            width: 100%; max-width: 750px; height: 100%; max-height: 500px;
+            background: rgba(2, 6, 23, 0.5); backdrop-filter: blur(10px);
+            border-radius: 20px; border: 2px solid rgba(16,185,129,0.4);
+            display: grid; grid-template-columns: repeat(15, 1fr); grid-template-rows: repeat(11, 1fr);
+            padding: 8px; gap: 2px; margin: 0 auto;
         }
 
         .cell { border: 1px solid rgba(6,182,212,0.08); border-radius: 2px; position: relative; }
@@ -189,19 +78,11 @@ permalink: /learninggame/home
         .sector {
             background: linear-gradient(135deg, rgba(251,191,36,0.3) 0%, rgba(217,119,6,0.3) 100%);
             border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            color: #fbbf24; font-weight: 900; font-size: 14px; width: 90%; height: 90%; margin: 5%;
+            color: #fbbf24; font-weight: 900; font-size: 12px; width: 90%; height: 90%; margin: 5%;
         }
         .completed { background: #10b981 !important; color: white; }
         .start { background: rgba(16,185,129,0.3); color: #10b981; }
         .end { background: rgba(168,85,247,0.3); color: #a855f7; }
-
-        .controls-hint {
-            color: rgba(103,232,249,0.6);
-            font-size: 11px;
-            margin-top: 10px;
-            text-align: center;
-            font-family: 'Courier New', monospace;
-        }
 
         .question-modal {
             display: none; position: absolute; inset: 0; z-index: 100;
@@ -219,8 +100,7 @@ permalink: /learninggame/home
         .r-wall { background: #ef4444; }
 
         textarea { width: 100%; height: 120px; background: #020617; color: #06b6d4; border: 1px solid #06b6d4; padding: 10px; font-family: monospace; border-radius: 8px; }
-        .btn { padding: 12px 20px; border-radius: 12px; border: none; cursor: pointer; font-weight: 900; transition: all 0.2s ease; }
-        .btn:hover { transform: translateY(-2px); }
+        .btn { padding: 12px 20px; border-radius: 12px; border: none; cursor: pointer; font-weight: 900; }
         .btn-blue { background: #06b6d4; color: white; }
         .btn-check { background: #fbbf24; color: black; width: 100%; margin-top: 10px; }
         .btn-autofill { background: #a855f7; color: white; }
@@ -230,6 +110,14 @@ permalink: /learninggame/home
         .summary-card { text-align: left; color: #e2e8f0; }
         .summary-row { display: flex; justify-content: space-between; margin: 10px 0; border-bottom: 1px solid rgba(148,163,184,0.1); padding-bottom: 5px; }
         .badge-display { font-size: 48px; text-align: center; margin: 20px 0; color: #fbbf24; text-shadow: 0 0 20px rgba(251,191,36,0.4); }
+
+        /* Admin UI Element Styles */
+        .admin-notification {
+            position: fixed; bottom: 20px; left: 20px; padding: 15px 25px;
+            border-radius: 10px; background: rgba(6, 182, 212, 0.95);
+            color: white; font-weight: bold; z-index: 9999; display: none;
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.5); border: 1px solid #67e8f9;
+        }
     </style>
 </head>
 <body>
@@ -242,46 +130,6 @@ permalink: /learninggame/home
                 <div class="title">Station Navigation</div>
             </div>
             <div class="subtitle">Cadet Training Protocol // Sector Clearance Required</div>
-        </div>
-
-        <!-- Progress Bar Component -->
-        <div class="progress-bar-container">
-            <div class="progress-header">STATION_INTEGRITY_MAP</div>
-            <div class="progress-main">
-                <div class="progress-percentage" id="progressPercentage">0%</div>
-                <div class="progress-status" id="progressStatus">PROTOCOL_SYNCED</div>
-            </div>
-            <div class="progress-boxes" id="progressBoxes">
-                <div class="progress-box"></div>
-                <div class="progress-box"></div>
-                <div class="progress-box"></div>
-                <div class="progress-box"></div>
-                <div class="progress-box"></div>
-                <div class="progress-box"></div>
-                <div class="progress-box"></div>
-                <div class="progress-box"></div>
-                <div class="progress-box"></div>
-                <div class="progress-box"></div>
-                <div class="progress-box"></div>
-                <div class="progress-box"></div>
-                <div class="progress-box"></div>
-                <div class="progress-box"></div>
-                <div class="progress-box"></div>
-            </div>
-            <div class="progress-stats">
-                <div class="stat-item">
-                    <span class="stat-value" id="statSectors">0/5</span>
-                    <span class="stat-label">SECTORS</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value" id="statLocked">5</span>
-                    <span class="stat-label">LOCKED</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value" id="statConnected">CONNECTED</span>
-                    <span class="stat-label">DATABASE</span>
-                </div>
-            </div>
         </div>
 
         <div class="maze-container">
@@ -311,8 +159,14 @@ permalink: /learninggame/home
         </div>
     </div>
 
+    <!-- Admin Notification Div -->
+    <div id="adminNotice" class="admin-notification"></div>
+
+   {% capture teacher_raw %}{% include_relative gameteacher.md %}{% endcapture %}
+    {% assign parts = teacher_raw | split: '---' %}
+    {{ parts | slice: 2, parts.size | join: '---' }}
+
 <script type="module">
-    // Import API configuration
     import { getRobopURI, fetchOptions } from '{{ "/assets/js/api/config.js" | relative_url }}?v=20260123_1';
 
     const robopURI = await getRobopURI();
@@ -345,6 +199,7 @@ permalink: /learninggame/home
     let currentSectorNum = 0;
     let currentQuestion = 0;
     const completedSectors = new Set();
+    let usedAutofill = false;
 
     const mazeLayout = [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -368,106 +223,6 @@ permalink: /learninggame/home
         4: { start: [0,0], goal: [4,0], walls: [[0,1],[1,1],[2,1]] },
         5: { start: [0,2], goal: [4,2], walls: [[2,1],[2,2],[2,3]] }
     };
-
-    function findRobotPath(level) {
-        const size = 5;
-        const walls = new Set(level.walls.map(([x, y]) => `${x},${y}`));
-        const startKey = `${level.start[0]},${level.start[1]}`;
-        const goalKey = `${level.goal[0]},${level.goal[1]}`;
-        const queue = [[level.start[0], level.start[1]]];
-        const prev = new Map();
-        prev.set(startKey, null);
-
-        const dirs = [
-            [1, 0],
-            [0, 1],
-            [-1, 0],
-            [0, -1]
-        ];
-
-        while (queue.length) {
-            const [x, y] = queue.shift();
-            const key = `${x},${y}`;
-            if (key === goalKey) break;
-            for (const [dx, dy] of dirs) {
-                const nx = x + dx;
-                const ny = y + dy;
-                if (nx < 0 || ny < 0 || nx >= size || ny >= size) continue;
-                const nkey = `${nx},${ny}`;
-                if (walls.has(nkey) || prev.has(nkey)) continue;
-                prev.set(nkey, [x, y]);
-                queue.push([nx, ny]);
-            }
-        }
-
-        if (!prev.has(goalKey)) return null;
-        const path = [];
-        let cur = level.goal;
-        while (cur) {
-            path.push(cur);
-            const key = `${cur[0]},${cur[1]}`;
-            cur = prev.get(key);
-        }
-        return path.reverse();
-    }
-
-    function buildRobotAutofill(level) {
-        const path = findRobotPath(level);
-        if (!path || path.length < 2) {
-            return "robot.MoveForward();";
-        }
-
-        let dir = 0; // 0: right, 1: down, 2: left, 3: up
-        const lines = [];
-        let forwardCount = 0;
-
-        const flushForward = () => {
-            if (forwardCount > 0) {
-                lines.push(`robot.MoveForward(${forwardCount});`);
-                forwardCount = 0;
-            }
-        };
-
-        for (let i = 1; i < path.length; i++) {
-            const [px, py] = path[i - 1];
-            const [nx, ny] = path[i];
-            let desiredDir = dir;
-            if (nx > px) desiredDir = 0;
-            else if (ny > py) desiredDir = 1;
-            else if (nx < px) desiredDir = 2;
-            else if (ny < py) desiredDir = 3;
-
-            const diff = (desiredDir - dir + 4) % 4;
-            if (diff !== 0) {
-                flushForward();
-                if (diff === 1) lines.push("robot.TurnRight();");
-                else if (diff === 2) lines.push("robot.TurnRight();", "robot.TurnRight();");
-                else if (diff === 3) lines.push("robot.TurnLeft();");
-                dir = desiredDir;
-            }
-
-            forwardCount += 1;
-        }
-
-        flushForward();
-        return lines.join("\n");
-    }
-
-    function buildPseudoAutofill() {
-        return [
-            "FUNCTION solveMaze(steps)",
-            "  SET result TO 0",
-            "  FOR EACH step IN steps",
-            "    IF step IS safe THEN",
-            "      result = result + 1",
-            "    ELSE",
-            "      result = result + 0",
-            "    END IF",
-            "  END FOR",
-            "  RETURN result",
-            "END FUNCTION"
-        ].join("\n");
-    }
 
     // Progress Bar Update Function
     function updateProgressBar() {
@@ -515,7 +270,34 @@ permalink: /learninggame/home
         });
     }
 
-    async function showQuestion() {
+    async function fetchThresholds() {
+        try {
+            const response = await fetch(`${window.API_URL}/badge_thresholds`, {
+                ...window.authOptions,
+                method: 'GET'
+            });
+            if (!response.ok) throw new Error("Unauthorized or Not Found");
+            return await response.json();
+        } catch (e) {
+            console.error("API Error (Thresholds):", e);
+            return [{name: "Gold", threshold: 95}, {name: "Silver", threshold: 80}, {name: "Bronze", threshold: 65}, {name: "Participant", threshold: 0}];
+        }
+    }
+
+    async function saveBadgeToBackend(score, badgeName) {
+        try {
+            // FIX: method: 'POST' MUST come after authOptions spread
+            const response = await fetch(`${window.API_URL}/assign_badge`, {
+                ...window.authOptions,
+                method: 'POST',
+                body: JSON.stringify({ sector_id: currentSectorNum, score: Math.round(score), badge_name: badgeName })
+            });
+            const data = await response.json();
+            console.log("Badge Save result:", data);
+        } catch (e) { console.error("Save error:", e); }
+    }
+
+    window.showQuestion = function() {
         document.getElementById('sectorBadge').textContent = currentSectorNum;
         document.getElementById('mTitle').textContent = `Sector ${currentSectorNum}`;
         feedback.textContent = '';
@@ -523,7 +305,7 @@ permalink: /learninggame/home
         nextBtn.style.opacity = "0.5";
 
         if (currentQuestion === 0) renderRobotSim();
-        else if (currentQuestion === 1) await renderPseudoCode();
+        else if (currentQuestion === 1) renderPseudoCode();
         else renderMCQ();
 
         nextBtn.style.display = currentQuestion < 2 ? 'block' : 'none';
@@ -552,56 +334,37 @@ permalink: /learninggame/home
         let rPos = [...level.start];
         let dir = 0; 
         const commands = [];
-        const robot = { 
-            MoveForward: (n=1) => { for(let i=0; i<n; i++) commands.push('MOVE'); }, 
-            TurnRight: () => commands.push('RIGHT'), 
-            TurnLeft: () => commands.push('LEFT') 
-        };
+        const robot = { MoveForward: (n=1) => { for(let i=0; i<n; i++) commands.push('MOVE'); }, TurnRight: () => commands.push('RIGHT'), TurnLeft: () => commands.push('LEFT') };
         try {
             eval(code);
             for (const cmd of commands) {
                 await new Promise(r => setTimeout(r, 400));
-                if (cmd === 'MOVE') { 
-                    if (dir === 0) rPos[0]++; 
-                    else if (dir === 1) rPos[1]++; 
-                    else if (dir === 2) rPos[0]--; 
-                    else rPos[1]--; 
-                }
+                if (cmd === 'MOVE') { if (dir === 0) rPos[0]++; else if (dir === 1) rPos[1]++; else if (dir === 2) rPos[0]--; else rPos[1]--; }
                 else if (cmd === 'RIGHT') dir = (dir + 1) % 4;
                 else if (cmd === 'LEFT') dir = (dir + 3) % 4;
                 updateRobotGrid(rPos, dir);
                 if (rPos[0]<0||rPos[0]>4||rPos[1]<0||rPos[1]>4||level.walls.some(w=>w[0]===rPos[0]&&w[1]===rPos[1])) {
                     feedback.textContent = "💥 Crash! Resetting...";
-                    feedback.style.color = "#ef4444";
                     setTimeout(()=>updateRobotGrid(level.start, 0), 1000); return;
                 }
             }
             if (rPos[0] === level.goal[0] && rPos[1] === level.goal[1]) {
-                feedback.style.color = "#10b981"; 
-                feedback.textContent = "✅ Goal reached!";
-                nextBtn.disabled = false; 
-                nextBtn.style.opacity = "1";
-            } else { 
-                feedback.style.color = "#fbbf24";
-                feedback.textContent = "⚠️ Short of target. Try again."; 
-            }
-        } catch(e) { 
-            feedback.style.color = "#ef4444";
-            feedback.textContent = "❌ Syntax Error."; 
-        }
-    }
+                feedback.style.color = "#10b981"; feedback.textContent = "Goal reached!";
+                nextBtn.disabled = false; nextBtn.style.opacity = "1";
+            } else { feedback.textContent = "Short of target. Try again."; }
+        } catch(e) { feedback.textContent = "Syntax Error."; }
+    };
 
     function updateRobotGrid(pos, dir) {
         const grid = document.getElementById('rg');
-        if (!grid) return; 
-        grid.innerHTML = '';
+        if (!grid) return; grid.innerHTML = '';
         const level = robotLevels[currentSectorNum];
         const icons = ["▶️", "🔽", "◀️", "🔼"];
         for (let y=0; y<5; y++) {
             for (let x=0; x<5; x++) {
-                const c = document.createElement('div'); 
-                c.className = 'r-cell';
+                const c = document.createElement('div'); c.className = 'r-cell';
                 if (level.walls.some(w => w[0] === x && w[1] === y)) c.classList.add('r-wall');
+                // FIXED: Missing quote was here
                 if (x === level.goal[0] && y === level.goal[1]) c.textContent = '⭐';
                 if (x === pos[0] && y === pos[1]) c.textContent = icons[dir];
                 grid.appendChild(c);
@@ -609,175 +372,58 @@ permalink: /learninggame/home
         }
     }
 
-    async function fetchRandomPseudocodeQuestion(levelNum) {
-        // levelNum should be 1..5
-        const url = `${window.PSEUDOCODE_BANK_URL}/random?level=${encodeURIComponent(levelNum)}`;
-
-        const res = await fetch(url, {
-            ...window.authOptions,
-            method: "GET"
-        });
-
-        const data = await res.json().catch(() => ({}));
-
-        if (!res.ok || !data.success) {
-            const msg = data.message || `Failed to fetch pseudocode question for level ${levelNum}`;
-            throw new Error(msg);
-        }
-
-        return data; // {success, level, question, question_id}
+    function renderPseudoCode() {
+        const currentTask = [{t:"Mean"},{t:"Filter"},{t:"Max"},{t:"Swap"},{t:"Evens"}][currentSectorNum - 1];
+        mContent.innerHTML = `<p style="color: #e2e8f0; margin-bottom:10px;">${currentTask.t} Task</p><textarea id="pcCode" placeholder="Write your function here..."></textarea><button class="btn btn-check" id="validateBtn">Validate</button><div id="pcOutput" style="margin-top:10px; background:#020617; padding:10px; border-radius:8px; font-family:monospace; font-size:12px;">Console...</div>`;
+        document.getElementById('validateBtn').onclick = checkPseudo;
     }
 
-        async function renderPseudoCode() {
-        // Map sector (1..5) to difficulty level (1..5)
-        const levelNum = currentSectorNum;
-
-        // Show loading UI immediately
-        mContent.innerHTML = `
-            <p style="color:#e2e8f0; margin-bottom:10px;">Fetching a random pseudocode question (Level ${levelNum})...</p>
-            <div style="margin-top:10px; background:#020617; padding:10px; border-radius:8px; font-family:monospace; font-size:12px; color:#06b6d4;">
-                Loading...
-            </div>
-        `;
-
-        try {
-            const data = await fetchRandomPseudocodeQuestion(levelNum);
-
-            currentPseudo.level = data.level;           // e.g. "level3"
-            currentPseudo.question_id = data.question_id;
-            currentPseudo.question = data.question;
-
-            mContent.innerHTML = `
-                <div style="color:#e2e8f0; margin-bottom:10px; font-size:14px;">
-                    <div style="color: rgba(103,232,249,0.7); font-family: monospace; font-size: 12px; margin-bottom: 6px;">
-                        Level: ${data.level} • Question ID: ${data.question_id}
-                    </div>
-                    <div style="font-weight:800; color:#fbbf24; margin-bottom:8px;">Prompt</div>
-                    <div style="background: rgba(2,6,23,0.6); border: 1px solid rgba(6,182,212,0.25); padding: 12px; border-radius: 10px; line-height: 1.35;">
-                        ${data.question}
-                    </div>
-                </div>
-
-                <textarea id="pcCode" placeholder="Write your pseudocode here..."></textarea>
-
-                <button class="btn btn-check" id="validateBtn">I wrote my solution</button>
-
-                <div id="pcOutput" style="margin-top:10px; background:#020617; padding:10px; border-radius:8px; font-family:monospace; font-size:12px; color:#06b6d4;">
-                    Tip: Write clear step-by-step pseudocode. This check only requires a non-empty response.
-                </div>
-            `;
-
-            document.getElementById("validateBtn").onclick = checkPseudo;
-        } catch (err) {
-            console.error("Pseudocode bank fetch failed:", err);
-            feedback.style.color = "#ef4444";
-            feedback.textContent = `❌ ${err.message}`;
-
-            mContent.innerHTML = `
-                <p style="color:#e2e8f0; margin-bottom:10px;">Could not load a question for Level ${levelNum}.</p>
-                <div style="margin-top:10px; background:#020617; padding:10px; border-radius:8px; font-family:monospace; font-size:12px; color:#06b6d4;">
-                    Check that your backend is running and that /api/pseudocode_bank/random works.
-                </div>
-            `;
-        }
-    }
-
-
-    function checkPseudo() {
+    window.checkPseudo = function() {
         moduleAttempts[1]++;
-
-        const code = document.getElementById("pcCode")?.value || "";
-        const output = document.getElementById("pcOutput");
-
-        if (code.trim().length < 5) {
-            feedback.style.color = "#fbbf24";
-            feedback.textContent = "⚠️ Write a little more pseudocode before continuing.";
-            if (output) output.textContent = "Not enough content yet (need a non-empty solution).";
-            return;
-        }
-
-        feedback.style.color = "#10b981";
-        feedback.textContent = "✅ Submitted!";
-        if (output) {
-            output.textContent =
-                `Saved locally for this run.\n` +
-                `Question: ${currentPseudo.question_id} (${currentPseudo.level})\n` +
-                `Your response length: ${code.trim().length} chars`;
-        }
-
-        nextBtn.disabled = false;
-        nextBtn.style.opacity = "1";
-    }
-
+        const code = document.getElementById('pcCode').value;
+        const tests = [{a:[[10,20,30,40]], e:25}, {a:[[1,5,10,2,8],4], e:3}, {a:[[5,12,3,9]], e:12}, {a:[["A","B","A"],"A","Z"], e:["Z","B","Z"]}, {a:[[1,2,3,4,5,6]], e:[2,4,6]}][currentSectorNum - 1];
+        try {
+            const fn = eval(`(${code})`);
+            const res = fn(...tests.a);
+            if (JSON.stringify(res) === JSON.stringify(tests.e)) {
+                feedback.style.color = "#10b981"; feedback.textContent = "Logic Passed!";
+                nextBtn.disabled = false; nextBtn.style.opacity = "1";
+            } else { feedback.textContent = "Mismatch."; }
+        } catch (e) { feedback.textContent = "Error."; }
+    };
 
     function renderMCQ() {
-        const qs = [
-            {q:"What is 1101 in binary?", a:["13","11"], c:0},
-            {q:"What is AND logic?", a:["Both true","One true"], c:0},
-            {q:"What is Abstraction?", a:["Hide detail","Show all"], c:0},
-            {q:"What is IP Protocol?", a:["Routing","Website"], c:0},
-            {q:"What are Heuristics?", a:["Rule of thumb","Perfect solution"], c:0}
-        ][currentSectorNum-1];
-        mContent.innerHTML = `<p style="color:white; margin-bottom:15px; font-size:16px;">${qs.q}</p>`;
+        const qs = [{q:"1101 binary?", a:["13","11"], c:0},{q:"AND logic?", a:["Both","One"], c:0},{q:"Abstraction?", a:["Hide detail","Show all"], c:0},{q:"IP Protocol?", a:["Routing","Website"], c:0},{q:"Heuristics?", a:["Rule of thumb","Perfect"], c:0}][currentSectorNum-1];
+        mContent.innerHTML = `<p style="color:white; margin-bottom:15px;">${qs.q}</p>`;
         qs.a.forEach((opt, i) => {
-            const b = document.createElement('button'); 
-            b.className = 'btn'; 
-            b.style = "background:#334155; color:white; margin-bottom:5px; width:100%; text-align:left;";
+            const b = document.createElement('button'); b.className = 'btn'; b.style = "background:#334155; color:white; margin-bottom:5px; width:100%; text-align:left;";
             b.textContent = opt;
-            b.onclick = () => { 
-                moduleAttempts[2]++; 
-                if (i === qs.c) { 
-                    feedback.style.color="#10b981"; 
-                    feedback.textContent="✅ Correct!"; 
-                    backBtn.disabled=false; 
-                    backBtn.style.opacity="1"; 
-                } else { 
-                    feedback.style.color="#ef4444";
-                    feedback.textContent="❌ Try again."; 
-                } 
-            };
+            b.onclick = () => { moduleAttempts[2]++; if (i === qs.c) { feedback.style.color="#10b981"; feedback.textContent="Correct!"; backBtn.disabled=false; backBtn.style.opacity="1"; } else { feedback.textContent="Try again."; } };
             mContent.appendChild(b);
         });
     }
 
     autofillBtn.onclick = () => {
-        if (currentQuestion === 0) {
-            const level = robotLevels[currentSectorNum];
-            const code = buildRobotAutofill(level);
-            const input = document.getElementById('rcInput');
-            if (input) input.value = code;
-            feedback.textContent = '✨ Autofill: robot path generated.';
-            feedback.style.color = '#a855f7';
-            runRobotSim();
-            return;
-        }
-
-        if (currentQuestion === 1) {
-            const pcInput = document.getElementById('pcCode');
-            if (pcInput) pcInput.value = buildPseudoAutofill();
-            feedback.textContent = '✨ Autofill: pseudocode drafted.';
-            feedback.style.color = '#a855f7';
-            checkPseudo();
-            return;
-        }
-
-        feedback.textContent = '✨ Autofill: no action for this module.';
+        feedback.textContent = '✨ Autofill active in full game version';
         feedback.style.color = '#a855f7';
     };
 
-    backBtn.onclick = () => {
-        let weightedSum = 0;
-        const pts = moduleAttempts.map(a => Math.max(1, 6 - a));
-        for (let i=0; i<3; i++) weightedSum += (pts[i]/5) * weights[i];
-        const finalScore = weightedSum * 100;
-        const badgeRules = [{name: "Gold", threshold: 95}, {name: "Silver", threshold: 80}, {name: "Bronze", threshold: 65}, {name: "Participant", threshold: 0}];
-        let earnedBadge = "Participant";
-        for (let r of badgeRules) { 
-            if (finalScore >= r.threshold) { 
-                earnedBadge = r.name; 
-                break; 
-            } 
+    backBtn.onclick = async () => {
+        let finalScore, earnedBadge;
+        if (usedAutofill) {
+            finalScore = 0;
+            earnedBadge = "Participant";
+        } else {
+            let weightedSum = 0;
+            const pts = moduleAttempts.map(a => Math.max(1, 6 - a));
+            for (let i=0; i<3; i++) weightedSum += (pts[i]/5) * weights[i];
+            finalScore = weightedSum * 100;
+            const badgeRules = await fetchThresholds();
+            earnedBadge = "Participant";
+            for (let r of badgeRules) { if (finalScore >= r.threshold) { earnedBadge = r.name; break; } }
         }
+        
+        await saveBadgeToBackend(finalScore, earnedBadge);
         
         mContent.innerHTML = `
             <div class="summary-card">
@@ -789,55 +435,89 @@ permalink: /learninggame/home
         document.getElementById('finalCloseBtn').onclick = closeSector;
     };
 
-    function closeSector() {
+    window.closeSector = function() {
         modal.classList.remove('active');
         completedSectors.add(currentSectorNum);
         drawMaze();
-        updateProgressBar();
     }
 
     function movePlayer(dx, dy) {
         const nx = playerPos.x + dx, ny = playerPos.y + dy;
         if (ny >= 0 && ny < mazeLayout.length && nx >= 0 && nx < mazeLayout[0].length && mazeLayout[ny][nx] !== 0) {
-            playerPos.x = nx; 
-            playerPos.y = ny;
+            playerPos.x = nx; playerPos.y = ny;
             drawMaze();
             const val = mazeLayout[ny][nx];
             if (val >= 4 && val <= 8) {
                 const sNum = val - 3;
                 if (sNum > 1 && !completedSectors.has(sNum - 1)) {
-                    alert("⚠️ Complete previous sector first!");
+                    alert("Complete previous sector first!");
                     return; 
                 }
-                currentSectorNum = sNum; 
-                currentQuestion = 0; 
-                moduleAttempts = [0, 0, 0];
+                currentSectorNum = sNum; currentQuestion = 0; moduleAttempts = [0, 0, 0]; usedAutofill = false;
                 setTimeout(() => { 
-                    modal.classList.add('active'); 
-                    showQuestion(); 
+                    if (typeof initTeacher === 'function') initTeacher(sNum, 0); 
+                    else { modal.classList.add('active'); window.showQuestion(); }
                 }, 100);
             } else if (val === 3) {
-                alert("🎉 Congratulations! You've reached the end!");
+                localStorage.setItem('learninggame_last_end', new Date().toISOString());
+                window.location.href = `{{ '/learninggame/ending/' | relative_url }}?playerId=${encodeURIComponent(playerId)}`;
             }
         }
     }
 
-    nextBtn.onclick = () => { 
-        currentQuestion++; 
-        showQuestion(); 
-    };
+    window.dismissTeacher = () => { document.getElementById('teacher-overlay').style.display='none'; modal.classList.add('active'); window.showQuestion(); };
+    nextBtn.onclick = () => { currentQuestion++; window.showQuestion(); };
 
     document.addEventListener('keydown', e => {
-        if (modal.classList.contains('active')) return;
+        if (modal.classList.contains('active') || (document.getElementById('teacher-overlay') && document.getElementById('teacher-overlay').style.display === 'flex')) return;
         if (e.key === 'ArrowUp') movePlayer(0, -1);
         if (e.key === 'ArrowDown') movePlayer(0, 1);
         if (e.key === 'ArrowLeft') movePlayer(-1, 0);
         if (e.key === 'ArrowRight') movePlayer(1, 0);
     });
 
-    // Initialize
+    // --- ADMIN HELPER & STEALTH KEYS ---
+    window.showAdminNotice = function(msg) {
+        const notice = document.getElementById('adminNotice');
+        notice.innerText = msg;
+        notice.style.display = 'block';
+        setTimeout(() => { notice.style.display = 'none'; }, 5000);
+    }
+
+    async function handleAdminAction(route, actionName) {
+        try {
+            const url = `${window.API_URL}/admin${route}`;
+            const response = await fetch(url, {
+                ...window.authOptions,
+                method: 'POST'
+            });
+            const data = await response.json();
+            if (data.success) window.showAdminNotice(`✅ ${data.message}`);
+        } catch (err) { window.showAdminNotice("❌ Failure"); }
+    }
+
+    window.addEventListener('keydown', async (e) => {
+        if (e.shiftKey && e.altKey) {
+            const key = e.key.toLowerCase();
+            if (key === 'i') {
+                if (confirm("ADMIN: Inject mock cadets?")) {
+                    await handleAdminAction('/seed', "Seeding");
+                    await handleAdminAction('/backup_data', "Backup");
+                }
+            }
+            else if (key === 'c') {
+                if (confirm("ADMIN: Purge database?")) await handleAdminAction('/clear', "Clearing");
+            }
+            else if (key === 'r') {
+                if (confirm("ADMIN: Restore from JSON?")) await handleAdminAction('/restore', "Restoring");
+            }
+            else if (key === 'b') {
+                if (confirm("ADMIN: Manual backup?")) await handleAdminAction('/backup_data', "Backup");
+            }
+        }
+    });
+
     drawMaze();
-    updateProgressBar();
 </script>
 </body>
 </html>
