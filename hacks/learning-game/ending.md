@@ -398,7 +398,11 @@ permalink: /learninggame/ending/
 
       <div class="card" style="grid-column: 1 / -1;">
         <h3>Final Code Answer</h3>
-        <p class="helper-text">Instructions: Write your algorithm in the box. Include a function, at least one conditional (if/else or switch), and a loop (for/while/forEach). Then click “Validate Answer.”</p>
+        <p class="helper-text">To earn the mastery, you need to do the following:
+You begin by deciding what the final result should represent. You gather every action the player made in the order they happened.
+You then create a loop that runs once for each action. Each time the loop runs, you read the current action, determine what it means, and update the final result. Make sure the loop should run one action to get the badge.
+You continue looping until there are no actions left. When the loop ends, you output the final result
+</p>
         <div class="code-runner">
           <textarea id="finalAnswer" placeholder="Enter your final algorithm here..."></textarea>
           <div class="btn-row">
@@ -810,6 +814,34 @@ permalink: /learninggame/ending/
       chatLog.scrollTop = chatLog.scrollHeight;
     }
 
+    const GEMINI_API_KEY = window.GEMINI_API_KEY || 'AIzaSyA9IdSK4fMKRC0PSpm3BaoCBJRH2htIc4c';
+    const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
+    const MAX_CHAT_TURNS = 8;
+    const chatHistory = [];
+
+    function addChatHistory(role, text) {
+      chatHistory.push({ role, text });
+      if (chatHistory.length > MAX_CHAT_TURNS * 2) {
+        chatHistory.splice(0, chatHistory.length - MAX_CHAT_TURNS * 2);
+      }
+    }
+
+    function buildChatContext() {
+      const progress = JSON.parse(localStorage.getItem('learninggame_progress') || '{}');
+      const finalAnswer = JSON.parse(localStorage.getItem('learninggame_final_answer') || '{}');
+      const progressList = Object.values(progress)
+        .map(p => `${p.stopId}: ${p.badgeName || 'N/A'} (${p.score || 0})`)
+        .slice(0, 6)
+        .join(', ');
+      const savedAnswerPreview = finalAnswer.answer ? finalAnswer.answer.slice(0, 120) : '';
+      return [
+        `PlayerId: ${playerId || 'unknown'}`,
+        `Progress: ${progressList || 'no progress yet'}`,
+        `Final answer preview: ${savedAnswerPreview || 'none'}`,
+        'Rules: give hints and steps, not full code.'
+      ].join('\n');
+    }
+
     let aiFallbackIndex = 0;
     const aiFallbacks = [
       'Tell me your goal in one sentence (e.g., "count safe steps" or "calculate score"). I will break it into steps.',
@@ -818,7 +850,7 @@ permalink: /learninggame/ending/
       'If you want an example, I can give a pseudo-code outline without full code.'
     ];
 
-    function aiReply(userText) {
+    function aiFallbackReply(userText) {
       const text = String(userText || '').toLowerCase();
       if (text.includes('example') || text.includes('code')) {
         return 'I can’t give full code, but here’s a safe outline: function name + inputs → loop through items → if/else decision → update a result → return it.';
@@ -841,6 +873,48 @@ permalink: /learninggame/ending/
       const reply = aiFallbacks[aiFallbackIndex % aiFallbacks.length];
       aiFallbackIndex += 1;
       return reply;
+    }
+
+    async function aiReply(userText) {
+      if (!GEMINI_API_KEY) {
+        return aiFallbackReply(userText);
+      }
+
+      const systemPrompt = [
+        'You are Maze Mentor, a friendly programming coach for students.',
+        'Base your help on the player\'s journey (their progress, choices, and attempts).',
+        'Ask focused questions that reference what they did or learned, not generic prompts.',
+        'Give short, clear guidance and step-by-step hints.',
+        'Do not provide full solutions or full code; use outlines or pseudocode.',
+        'Ask one clarifying question if needed.',
+        'Keep responses under 6 sentences.'
+      ].join(' ');
+
+      const context = buildChatContext();
+      const contents = [
+        { role: 'user', parts: [{ text: `${systemPrompt}\n\nContext:\n${context}` }] },
+        ...chatHistory.map(item => ({ role: item.role, parts: [{ text: item.text }] }))
+      ];
+
+      const response = await fetch(GEMINI_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents,
+          generationConfig: {
+            temperature: 0.6,
+            maxOutputTokens: 240
+          }
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Gemini error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      return reply || aiFallbackReply(userText);
     }
 
     async function refreshScore() {
@@ -979,19 +1053,22 @@ permalink: /learninggame/ending/
     document.getElementById('startCoach').addEventListener('click', startCoachSteps);
     document.getElementById('resetCoach').addEventListener('click', resetCoachSteps);
 
-    function handleSendChat() {
+    async function handleSendChat() {
       if (!chatInput || !chatLog) return;
       const message = chatInput.value.trim();
       if (!message) return;
       appendChatBubble(message, 'chat-user');
       chatInput.value = '';
-      let reply = '';
       try {
-        reply = aiReply(message);
+        addChatHistory('user', message);
+        const typingBubble = appendChatBubble('Thinking...', 'chat-ai');
+        const reply = await aiReply(message);
+        addChatHistory('model', reply);
+        typingBubble.textContent = reply;
       } catch (e) {
-        reply = 'I hit a snag. Try asking again with a short goal or a specific part (function, loop, condition).';
+        const fallback = aiFallbackReply(message);
+        appendChatBubble(fallback, 'chat-ai');
       }
-      setTimeout(() => appendChatBubble(reply, 'chat-ai'), 200);
     }
 
     if (chatLog && chatInput && sendChat) {
