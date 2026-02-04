@@ -42,17 +42,21 @@ permalink: /learninggame/home
         }
 
         .container {
-            position: relative; width: 90vw; max-width: 900px; height: 90vh; max-height: 850px;
-            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px);
-            border-radius: 24px; border: 2px solid rgba(6,182,212,0.4);
-            box-shadow: 0 0 60px rgba(6,182,212,0.25); overflow: hidden;
-            z-index: 1; display: flex; flex-direction: column;
+    position: relative; width: 90vw; max-width: 900px; height: 90vh; max-height: 850px;
+    background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px);
+    border-radius: 24px; border: 2px solid rgba(6,182,212,0.4);
+    box-shadow: 0 0 60px rgba(6,182,212,0.25); overflow: hidden;
+    z-index: 1; 
+    display: flex; 
+    flex-direction: column;
         }
 
         .title-section {
-            position: relative; width: 100%; background: rgba(15,23,42,0.95);
-            padding: 15px 20px; border-bottom: 2px solid rgba(6,182,212,0.3);
-            z-index: 50; flex-shrink: 0;
+    position: relative; width: 100%; background: rgba(15,23,42,0.95);
+    padding: 15px 20px; border-bottom: 2px solid rgba(6,182,212,0.3);
+    z-index: 50; 
+    flex-shrink: 0; 
+    min-height: 70px;
         }
 
         .title-header { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 6px; }
@@ -61,12 +65,15 @@ permalink: /learninggame/home
 
         /* Progress Bar Styles */
         .progress-bar-container {
-            background: rgba(2, 6, 23, 0.6);
-            padding: 12px 20px;
-            border-radius: 12px;
-            margin: 8px 20px;
-            border: 1px solid rgba(6,182,212,0.2);
-            flex-shrink: 0;
+    background: rgba(2, 6, 23, 0.6);
+    padding: 12px 20px;
+    border-radius: 12px;
+    margin: 8px 20px;
+    border: 1px solid rgba(6,182,212,0.2);
+    flex-shrink: 0;
+    min-height: 140px;
+    max-height: 180px;
+    overflow-y: auto;
         }
 
         .progress-header {
@@ -149,33 +156,35 @@ permalink: /learninggame/home
         }
 
         .maze-container {
-            flex-grow: 1; 
-            width: 100%; 
-            display: flex; 
-            flex-direction: column;
-            justify-content: center; 
-            align-items: center; 
-            padding: 12px 20px 20px 20px;
-            min-height: 0;
-            overflow: hidden;
+    flex: 1; /* 改为 flex: 1 而不是 flex-grow: 1 */
+    width: 100%; 
+    display: flex; 
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    padding: 12px 20px 20px 20px;
+    min-height: 0;
+    overflow: auto;
+    min-height: 300px;
         }
 
         .maze {
-            width: 100%; 
-            max-width: 750px;
-            height: auto;
-            aspect-ratio: 15 / 11;
-            max-height: 550px;
-            background: rgba(2, 6, 23, 0.5); 
-            backdrop-filter: blur(10px);
-            border-radius: 20px; 
-            border: 2px solid rgba(16,185,129,0.4);
-            display: grid; 
-            grid-template-columns: repeat(15, 1fr); 
-            grid-template-rows: repeat(11, 1fr);
-            padding: 8px; 
-            gap: 3px; 
-            margin: 0 auto;
+    width: 100%; 
+    max-width: 750px;
+    height: auto;
+    aspect-ratio: 15 / 11;
+    max-height: 100%; 
+    background: rgba(2, 6, 23, 0.5); 
+    backdrop-filter: blur(10px);
+    border-radius: 20px; 
+    border: 2px solid rgba(16,185,129,0.4);
+    display: grid; 
+    grid-template-columns: repeat(15, 1fr); 
+    grid-template-rows: repeat(11, 1fr);
+    padding: 8px; 
+    gap: 3px; 
+    margin: 0 auto;
+    flex-shrink: 0;
         }
 
         .cell { border: 1px solid rgba(6,182,212,0.08); border-radius: 2px; position: relative; }
