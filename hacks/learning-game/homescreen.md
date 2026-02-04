@@ -13,16 +13,34 @@ permalink: /learninggame/home
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-         body {
+        body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #020617 0%, #0f172a 50%, #1e1b4b 100%);
-            height: 100vh; width: 100vw; display: flex; 
-            justify-content: center; align-items: center;
-            overflow: hidden; position: relative;
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+            padding: 20px 0;
         }
 
-        .stars { position: fixed; inset: 0; overflow: hidden; z-index: 0; }
-        .star { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; animation: twinkle 3s infinite; }
+        .stars { 
+            position: fixed; 
+            inset: 0; 
+            overflow: hidden; 
+            z-index: 0; 
+        }
+        .star { 
+            position: absolute; 
+            width: 2px; 
+            height: 2px; 
+            background: white; 
+            border-radius: 50%; 
+            animation: twinkle 3s infinite; 
+        }
 
         @keyframes twinkle {
             0%, 100% { opacity: 0.3; }
@@ -30,50 +48,84 @@ permalink: /learninggame/home
         }
 
         body::before {
-            content: ''; position: fixed; top: 10%; left: 10%; width: 500px; height: 500px;
+            content: ''; 
+            position: fixed; 
+            top: 10%; 
+            left: 10%; 
+            width: 500px; 
+            height: 500px;
             background: radial-gradient(circle, rgba(6,182,212,0.15), transparent 70%);
-            filter: blur(80px); z-index: 0;
+            filter: blur(80px); 
+            z-index: 0;
         }
 
         body::after {
-            content: ''; position: fixed; bottom: 10%; right: 10%; width: 500px; height: 500px;
+            content: ''; 
+            position: fixed; 
+            bottom: 10%; 
+            right: 10%; 
+            width: 500px; 
+            height: 500px;
             background: radial-gradient(circle, rgba(168,85,247,0.15), transparent 70%);
-            filter: blur(80px); z-index: 0;
+            filter: blur(80px); 
+            z-index: 0;
         }
 
         .container {
-    position: relative; width: 90vw; max-width: 900px; height: 90vh; max-height: 850px;
-    background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px);
-    border-radius: 24px; border: 2px solid rgba(6,182,212,0.4);
-    box-shadow: 0 0 60px rgba(6,182,212,0.25); overflow: hidden;
-    z-index: 1; 
-    display: flex; 
-    flex-direction: column;
+            position: relative; 
+            width: 90vw; 
+            max-width: 900px;
+            min-height: min-content;
+            background: rgba(15, 23, 42, 0.85); 
+            backdrop-filter: blur(20px);
+            border-radius: 24px; 
+            border: 2px solid rgba(6,182,212,0.4);
+            box-shadow: 0 0 60px rgba(6,182,212,0.25); 
+            overflow: visible;
+            z-index: 1; 
+            display: flex; 
+            flex-direction: column;
+            margin: 20px 0;
         }
 
         .title-section {
-    position: relative; width: 100%; background: rgba(15,23,42,0.95);
-    padding: 15px 20px; border-bottom: 2px solid rgba(6,182,212,0.3);
-    z-index: 50; 
-    flex-shrink: 0; 
-    min-height: 70px;
+            position: relative; 
+            width: 100%; 
+            background: rgba(15,23,42,0.95);
+            padding: 15px 20px; 
+            border-bottom: 2px solid rgba(6,182,212,0.3);
+            z-index: 50; 
+            flex-shrink: 0;
         }
 
-        .title-header { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 6px; }
-        .title { color: #06b6d4; font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: 4px; }
-        .subtitle { text-align: center; color: rgba(103,232,249,0.7); font-size: 12px; font-family: 'Courier New', monospace; }
+        .title-header { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 12px; 
+            margin-bottom: 6px; 
+        }
+        .title { 
+            color: #06b6d4; 
+            font-size: 24px; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            letter-spacing: 4px; 
+        }
+        .subtitle { 
+            text-align: center; 
+            color: rgba(103,232,249,0.7); 
+            font-size: 12px; 
+            font-family: 'Courier New', monospace; 
+        }
 
-        /* Progress Bar Styles */
         .progress-bar-container {
-    background: rgba(2, 6, 23, 0.6);
-    padding: 12px 20px;
-    border-radius: 12px;
-    margin: 8px 20px;
-    border: 1px solid rgba(6,182,212,0.2);
-    flex-shrink: 0;
-    min-height: 140px;
-    max-height: 180px;
-    overflow-y: auto;
+            background: rgba(2, 6, 23, 0.6);
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin: 8px 20px;
+            border: 1px solid rgba(6,182,212,0.2);
+            flex-shrink: 0;
         }
 
         .progress-header {
@@ -111,6 +163,7 @@ permalink: /learninggame/home
             display: flex;
             gap: 6px;
             margin-bottom: 8px;
+            flex-wrap: wrap;
         }
 
         .progress-box {
@@ -120,6 +173,7 @@ permalink: /learninggame/home
             border: 1px solid rgba(6,182,212,0.3);
             border-radius: 3px;
             transition: all 0.3s ease;
+            flex-shrink: 0;
         }
 
         .progress-box.completed {
@@ -156,53 +210,78 @@ permalink: /learninggame/home
         }
 
         .maze-container {
-    flex: 1; /* 改为 flex: 1 而不是 flex-grow: 1 */
-    width: 100%; 
-    display: flex; 
-    flex-direction: column;
-    justify-content: center; 
-    align-items: center; 
-    padding: 12px 20px 20px 20px;
-    min-height: 0;
-    overflow: auto;
-    min-height: 300px;
+            width: 100%; 
+            display: flex; 
+            flex-direction: column;
+            justify-content: flex-start; 
+            align-items: center; 
+            padding: 12px 20px 20px 20px;
+            flex-shrink: 0;
         }
 
         .maze {
-    width: 100%; 
-    max-width: 750px;
-    height: auto;
-    aspect-ratio: 15 / 11;
-    max-height: 100%; 
-    background: rgba(2, 6, 23, 0.5); 
-    backdrop-filter: blur(10px);
-    border-radius: 20px; 
-    border: 2px solid rgba(16,185,129,0.4);
-    display: grid; 
-    grid-template-columns: repeat(15, 1fr); 
-    grid-template-rows: repeat(11, 1fr);
-    padding: 8px; 
-    gap: 3px; 
-    margin: 0 auto;
-    flex-shrink: 0;
+            width: 100%; 
+            max-width: 750px;
+            height: auto;
+            aspect-ratio: 15 / 11;
+            background: rgba(2, 6, 23, 0.5); 
+            backdrop-filter: blur(10px);
+            border-radius: 20px; 
+            border: 2px solid rgba(16,185,129,0.4);
+            display: grid; 
+            grid-template-columns: repeat(15, 1fr); 
+            grid-template-rows: repeat(11, 1fr);
+            padding: 8px; 
+            gap: 3px; 
+            margin: 0 auto 15px auto;
         }
 
-        .cell { border: 1px solid rgba(6,182,212,0.08); border-radius: 2px; position: relative; }
-        .wall { background: linear-gradient(135deg, #1e293b 0%, #334155 100%); }
-        .path { background: rgba(30, 41, 59, 0.3); }
+        .cell { 
+            border: 1px solid rgba(6,182,212,0.08); 
+            border-radius: 2px; 
+            position: relative; 
+        }
+        .wall { 
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%); 
+        }
+        .path { 
+            background: rgba(30, 41, 59, 0.3); 
+        }
         .player {
             background: radial-gradient(circle, #06b6d4 0%, #3b82f6 100%);
-            border-radius: 50%; box-shadow: 0 0 20px rgba(6,182,212,0.8);
-            width: 80%; height: 80%; margin: 10%; z-index: 20; position: absolute;
+            border-radius: 50%; 
+            box-shadow: 0 0 20px rgba(6,182,212,0.8);
+            width: 80%; 
+            height: 80%; 
+            margin: 10%; 
+            z-index: 20; 
+            position: absolute;
         }
         .sector {
             background: linear-gradient(135deg, rgba(251,191,36,0.3) 0%, rgba(217,119,6,0.3) 100%);
-            border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            color: #fbbf24; font-weight: 900; font-size: 14px; width: 90%; height: 90%; margin: 5%;
+            border-radius: 50%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            color: #fbbf24; 
+            font-weight: 900; 
+            font-size: 14px; 
+            width: 90%; 
+            height: 90%; 
+            margin: 5%;
         }
-        .completed { background: #10b981 !important; color: white; }
-        .start { background: rgba(16,185,129,0.3); color: #10b981; }
-        .end { background: rgba(168,85,247,0.3); color: #a855f7; }
+        .completed { 
+            background: #10b981 !important; 
+            color: white; 
+        }
+        .start { 
+            background: rgba(16,185,129,0.3); 
+            color: #10b981; 
+        }
+        .end { 
+            background: rgba(168,85,247,0.3); 
+            color: #a855f7; 
+        }
 
         .controls-hint {
             color: rgba(103,232,249,0.6);
@@ -213,216 +292,117 @@ permalink: /learninggame/home
         }
 
         .question-modal {
-            display: none; position: absolute; inset: 0; z-index: 100;
-            justify-content: center; align-items: center;
-            background: rgba(2, 6, 23, 0.92); backdrop-filter: blur(14px);
+            display: none; 
+            position: fixed; 
+            inset: 0; 
+            z-index: 100;
+            justify-content: center; 
+            align-items: center;
+            background: rgba(2, 6, 23, 0.92); 
+            backdrop-filter: blur(14px);
+            overflow-y: auto;
+            padding: 20px;
         }
-        .question-modal.active { display: flex; }
-        .question-card { width: min(720px, 92vw); background: #1e293b; border: 1px solid #06b6d4; border-radius: 24px; padding: 30px; position: relative; }
+        .question-modal.active { 
+            display: flex; 
+        }
+        .question-card { 
+            width: min(720px, 92vw); 
+            background: #1e293b; 
+            border: 1px solid #06b6d4; 
+            border-radius: 24px; 
+            padding: 30px; 
+            position: relative;
+            margin: auto 0;
+        }
         
         .robot-grid {
-            display: grid; grid-template-columns: repeat(5, 45px); grid-template-rows: repeat(5, 45px);
-            gap: 4px; background: #0f172a; padding: 10px; border-radius: 8px; margin: 10px auto; justify-content: center;
+            display: grid; 
+            grid-template-columns: repeat(5, 45px); 
+            grid-template-rows: repeat(5, 45px);
+            gap: 4px; 
+            background: #0f172a; 
+            padding: 10px; 
+            border-radius: 8px; 
+            margin: 10px auto; 
+            justify-content: center;
         }
-        .r-cell { width: 45px; height: 45px; background: rgba(30, 41, 59, 0.5); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
-        .r-wall { background: #ef4444; }
+        .r-cell { 
+            width: 45px; 
+            height: 45px; 
+            background: rgba(30, 41, 59, 0.5); 
+            border-radius: 4px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 24px; 
+        }
+        .r-wall { 
+            background: #ef4444; 
+        }
 
-        textarea { width: 100%; height: 120px; background: #020617; color: #06b6d4; border: 1px solid #06b6d4; padding: 10px; font-family: monospace; border-radius: 8px; }
-        .btn { padding: 12px 20px; border-radius: 12px; border: none; cursor: pointer; font-weight: 900; transition: all 0.2s ease; }
-        .btn:hover { transform: translateY(-2px); }
-        .btn-blue { background: #06b6d4; color: white; }
-        .btn-check { background: #fbbf24; color: black; width: 100%; margin-top: 10px; }
-        .btn-autofill { background: #a855f7; color: white; }
+        textarea { 
+            width: 100%; 
+            height: 120px; 
+            background: #020617; 
+            color: #06b6d4; 
+            border: 1px solid #06b6d4; 
+            padding: 10px; 
+            font-family: monospace; 
+            border-radius: 8px; 
+        }
+        .btn { 
+            padding: 12px 20px; 
+            border-radius: 12px; 
+            border: none; 
+            cursor: pointer; 
+            font-weight: 900; 
+            transition: all 0.2s ease; 
+        }
+        .btn:hover { 
+            transform: translateY(-2px); 
+        }
+        .btn-blue { 
+            background: #06b6d4; 
+            color: white; 
+        }
+        .btn-check { 
+            background: #fbbf24; 
+            color: black; 
+            width: 100%; 
+            margin-top: 10px; 
+        }
+        .btn-autofill { 
+            background: #a855f7; 
+            color: white; 
+        }
         
-        #feedback { margin-top: 10px; font-weight: 800; text-align: center; min-height: 20px; }
+        #feedback { 
+            margin-top: 10px; 
+            font-weight: 800; 
+            text-align: center; 
+            min-height: 20px; 
+        }
 
-        .summary-card { text-align: left; color: #e2e8f0; }
-        .summary-row { display: flex; justify-content: space-between; margin: 10px 0; border-bottom: 1px solid rgba(148,163,184,0.1); padding-bottom: 5px; }
-        .badge-display { font-size: 48px; text-align: center; margin: 20px 0; color: #fbbf24; text-shadow: 0 0 20px rgba(251,191,36,0.4); }
-
-            /* AI Assistant Robot Styles */
-    #help-bot-icon {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 60px;
-        height: 60px;
-        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 28px;
-        cursor: pointer;
-        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
-        z-index: 999;
-        transition: all 0.3s ease;
-        border: 2px solid rgba(255, 255, 255, 0.2);
-        display: none; /* 默认隐藏，只在答题时显示 */
-    }
-
-    #help-bot-icon:hover {
-        transform: scale(1.1);
-        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
-    }
-
-    #help-bot-icon.pulsing {
-        animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-        0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
-        70% { box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
-    }
-
-    /* Hint Overlay Styles */
-    #hint-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(2, 6, 23, 0.95);
-        backdrop-filter: blur(10px);
-        z-index: 1000;
-        justify-content: center;
-        align-items: center;
-    }
-
-    #hint-overlay.active {
-        display: flex;
-    }
-
-    .hint-card {
-        width: min(600px, 90vw);
-        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-        border: 2px solid #3b82f6;
-        border-radius: 20px;
-        padding: 30px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-        position: relative;
-        animation: slideUp 0.3s ease-out;
-    }
-
-    @keyframes slideUp {
-        from { transform: translateY(30px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
-    }
-
-    .hint-header {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        margin-bottom: 25px;
-    }
-
-    .hint-robot-icon {
-        width: 50px;
-        height: 50px;
-        background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-    }
-
-    .hint-title {
-        color: #60a5fa;
-        font-size: 22px;
-        font-weight: 700;
-        margin: 0;
-    }
-
-    .hint-subtitle {
-        color: #93c5fd;
-        font-size: 14px;
-        margin-top: 5px;
-        font-family: 'Courier New', monospace;
-    }
-
-    .hint-content {
-        margin: 25px 0;
-    }
-
-    .hint-section {
-        background: rgba(30, 41, 59, 0.5);
-        border: 1px solid rgba(59, 130, 246, 0.3);
-        border-radius: 12px;
-        padding: 20px;
-        margin-bottom: 20px;
-    }
-
-    .hint-section-title {
-        color: #fbbf24;
-        font-size: 16px;
-        font-weight: 600;
-        margin-bottom: 12px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .hint-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .hint-item {
-        color: #e2e8f0;
-        padding: 8px 0;
-        padding-left: 25px;
-        position: relative;
-        line-height: 1.5;
-    }
-
-    .hint-item:before {
-        content: "💡";
-        position: absolute;
-        left: 0;
-        top: 8px;
-    }
-
-    .hint-item.unlocked {
-        color: #a7f3d0;
-    }
-
-    .hint-actions {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 30px;
-        gap: 15px;
-    }
-
-    .hint-btn {
-        padding: 12px 24px;
-        border-radius: 10px;
-        border: none;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        flex: 1;
-        text-align: center;
-    }
-
-    .hint-btn:hover {
-        transform: translateY(-2px);
-    }
-
-    .hint-btn.primary {
-        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-        color: white;
-    }
-
-    .hint-btn.secondary {
-        background: rgba(30, 41, 59, 0.8);
-        color: #e2e8f0;
-        border: 1px solid #4b5563;
-    }
+        .summary-card { 
+            text-align: left; 
+            color: #e2e8f0; 
+        }
+        .summary-row { 
+            display: flex; 
+            justify-content: space-between; 
+            margin: 10px 0; 
+            border-bottom: 1px solid rgba(148,163,184,0.1); 
+            padding-bottom: 5px; 
+        }
+        .badge-display { 
+            font-size: 48px; 
+            text-align: center; 
+            margin: 20px 0; 
+            color: #fbbf24; 
+            text-shadow: 0 0 20px rgba(251,191,36,0.4); 
+        }
     </style>
-
 </head>
 <body>
     <div class="stars" id="stars"></div>
@@ -436,7 +416,6 @@ permalink: /learninggame/home
             <div class="subtitle">Cadet Training Protocol // Sector Clearance Required</div>
         </div>
 
-        <!-- Progress Bar Component -->
         <div class="progress-bar-container">
             <div class="progress-header">STATION_INTEGRITY_MAP</div>
             <div class="progress-main">
@@ -503,65 +482,24 @@ permalink: /learninggame/home
         </div>
     </div>
 
-    <!-- AI Assistant Robot -->
-    <div id="help-bot-icon">🤖</div>
-
-    <!-- Hint Overlay -->
-    <div id="hint-overlay">
-        <div class="hint-card">
-            <div class="hint-header">
-                <div class="hint-robot-icon">🤖</div>
-                <div>
-                    <h2 class="hint-title" id="hint-title">AI Assistant</h2>
-                    <p class="hint-subtitle" id="hint-subtitle">Available hints for current question</p>
-                </div>
-            </div>
-            
-            <div class="hint-content">
-                <div class="hint-section">
-                    <h3 class="hint-section-title">Current Stop Overview</h3>
-                    <p id="hint-overview" style="color: #e2e8f0; line-height: 1.6; margin: 0;"></p>
-                </div>
-                
-                <div class="hint-section">
-                    <h3 class="hint-section-title">Step-by-Step Hints</h3>
-                    <ul class="hint-list" id="hint-steps"></ul>
-                </div>
-            </div>
-            
-            <div class="hint-actions">
-                <button class="hint-btn secondary" id="prevHintBtn">← Previous Hint</button>
-                <button class="hint-btn primary" id="closeHintBtn">Got It! Continue</button>
-                <button class="hint-btn secondary" id="nextHintBtn">Next Hint →</button>
-            </div>
-        </div>
-    </div>
-
 <script type="module">
-    // Import API configuration
     import { getRobopURI, fetchOptions } from '{{ "/assets/js/api/config.js" | relative_url }}?v=20260123_1';
 
     const robopURI = await getRobopURI();
 
-    // Existing robop endpoints (used by autofill)
     const API_URL = `${robopURI}/api/robop`;
-
-    // NEW pseudocode question bank endpoints
     const PSEUDOCODE_BANK_URL = `${robopURI}/api/pseudocode_bank`;
 
     window.API_URL = API_URL;
     window.PSEUDOCODE_BANK_URL = PSEUDOCODE_BANK_URL;
     window.authOptions = fetchOptions;
 
-    // Track the currently fetched pseudocode question (per sector run)
     let currentPseudo = {
         level: null,
         question_id: null,
         question: null
     };
 
-
-    // Star Field Initialization
     const starsContainer = document.getElementById('stars');
     for (let i = 0; i < 150; i++) {
         const star = document.createElement('div');
@@ -578,24 +516,13 @@ permalink: /learninggame/home
     const nextBtn = document.getElementById('nextBtn');
     const backBtn = document.getElementById('backBtn');
     const autofillBtn = document.getElementById('autofillBtn');
-        // AI Assistant Elements
-    const helpBotIcon = document.getElementById('help-bot-icon');
-    const hintOverlay = document.getElementById('hint-overlay');
-    const hintTitle = document.getElementById('hint-title');
-    const hintSubtitle = document.getElementById('hint-subtitle');
-    const hintOverview = document.getElementById('hint-overview');
-    const hintSteps = document.getElementById('hint-steps');
-    const prevHintBtn = document.getElementById('prevHintBtn');
-    const nextHintBtn = document.getElementById('nextHintBtn');
-    const closeHintBtn = document.getElementById('closeHintBtn');
 
-    // Scoring and Game State
     let moduleAttempts = [0, 0, 0]; 
     const weights = [0.5, 0.3, 0.2]; 
     let currentSectorNum = 0;
     let currentQuestion = 0;
     const completedSectors = new Set();
-    let usedAutofill = false; // Track if autofill was used
+    let usedAutofill = false;
 
     const mazeLayout = [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -620,219 +547,6 @@ permalink: /learninggame/home
         5: { start: [0,2], goal: [4,2], walls: [[2,1],[2,2],[2,3]] }
     };
 
-        // Teacher Data with hints (provided by Rishabh)
-    const teacherData = {
-        1: {
-            title: "Stop 1: Training",
-            msg: "Robot Code: Robot code is a pseudocode-style language with four commands—MOVE_FORWARD(), ROTATE_LEFT(), ROTATE_RIGHT(), and CAN_MOVE(direction)—used to control a robot through a maze. Pseudocode: Use plain-language, step-by-step logic (variables, conditionals, loops, and logical flow) to describe how your algorithm should work before worrying about strict programming syntax. Computational thinking: break the problem into small rules, test your logic, and iterate based on what you observe.",
-            hints: [
-                [
-                    "HINT 1: You need only one command for this task.",
-                    "HINT 2: Use the MOVE_FORWARD() command.",
-                    "HINT 3: Just write: MOVE_FORWARD()"
-                ],
-                [
-                    "HINT 1: Initialize sum ← 0 before the loop",
-                    "HINT 2: FOR EACH num IN nums, do sum ← sum + num",
-                    "HINT 3: After loop, RETURN sum / LENGTH(nums)"
-                ],
-                [
-                    "HINT 1: Binary is base-2 number system",
-                    "HINT 2: Each digit represents a power of 2",
-                    "HINT 3: 1101 = 1×8 + 1×4 + 0×2 + 1×1 = 13"
-                ]
-            ]
-        },
-        2: {
-            title: "Stop 2: Training",
-            msg: "Robot Code: Use simple, readable command blocks to control the robot and debug one movement decision at a time. Pseudocode: In the code runner, write College Board–level pseudocode solutions (conditionals, variables, algorithm development, and logical flow) and notice how different logical choices change the program's behavior as you progress through the maze. Computational thinking: practice structured problem-solving by tracing steps, checking edge cases, and improving your solution until it works.",
-            hints: [
-                [
-                    "HINT 1: This requires a rotation command, not a movement command.",
-                    "HINT 2: Use ROTATE_RIGHT() to turn the robot 90 degrees clockwise",
-                    "HINT 3: Just write: ROTATE_RIGHT()"
-                ],
-                [
-                    "HINT 1: Initialize count ← 0 before the loop",
-                    "HINT 2: FOR EACH value IN nums, check IF value > threshold",
-                    "HINT 3: When condition is true, do count ← count + 1",
-                    "HINT 4: RETURN count after the loop completes"
-                ],
-                [
-                    "HINT 1: AND logic requires both inputs to be true",
-                    "HINT 2: Truth table: true AND true = true, others = false",
-                    "HINT 3: Think of it like a strict requirement"
-                ]
-            ]
-        },
-        3: {
-            title: "Stop 3: Training",
-            msg: "Robot Code: Combine multiple commands (MOVE_FORWARD, ROTATE_LEFT, ROTATE_RIGHT) to navigate complex paths and use CAN_MOVE(direction) to check for obstacles before moving. Pseudocode: Apply variables and assignment operators to store values, then use conditional statements (IF-ELSE) to make decisions based on those values in your College Board–style solutions. Computational thinking: identify patterns in the maze, create reusable logic blocks, and test your algorithm with different scenarios to ensure it handles all possible paths.",
-            hints: [
-                [
-                    "HINT 1: You need to move forward twice.",
-                    "HINT 2: Use MOVE_FORWARD() two times in a row.",
-                    "HINT 3: Write: MOVE_FORWARD() MOVE_FORWARD()"
-                ],
-                [
-                    "HINT 1: Set max ← nums[1] (first element)",
-                    "HINT 2: Loop through remaining elements starting at index 2",
-                    "HINT 3: IF nums[i] > max, update max ← nums[i]",
-                    "HINT 4: RETURN max after checking all elements"
-                ],
-                [
-                    "HINT 1: Abstraction hides complex details",
-                    "HINT 2: It focuses on essential features only",
-                    "HINT 3: Like using a function without knowing implementation"
-                ]
-            ]
-        },
-        4: {
-            title: "Stop 4: Training",
-            msg: "Robot Code: Master complex navigation by chaining conditional checks with CAN_MOVE() and creating efficient movement sequences. Pseudocode: Implement loops (REPEAT and REPEAT UNTIL) to avoid repetitive code, and combine them with conditionals to create dynamic algorithms that adapt to changing conditions. Computational thinking: analyze the problem systematically, decompose it into smaller sub-problems, and optimize your solution by reducing redundant steps while maintaining correctness.",
-            hints: [
-                [
-                    "HINT 1: This requires two commands in sequence: move, then rotate",
-                    "HINT 2: First MOVE_FORWARD(), then ROTATE_LEFT()",
-                    "HINT 3: Write: MOVE_FORWARD() ROTATE_LEFT()"
-                ],
-                [
-                    "HINT 1: Use FOR i FROM 1 TO LENGTH(words) for index-based loop",
-                    "HINT 2: Check IF words[i] = target",
-                    "HINT 3: When match found, set words[i] ← replacement",
-                    "HINT 4: RETURN words at the end"
-                ],
-                [
-                    "HINT 1: IP stands for Internet Protocol",
-                    "HINT 2: It handles routing of data packets",
-                    "HINT 3: Like a postal system for internet data"
-                ]
-            ]
-        },
-        5: {
-            title: "Stop 5: Training",
-            msg: "Robot Code: Apply all four commands strategically to solve the most challenging maze configurations, planning your entire route before executing. Pseudocode: Create comprehensive algorithms using variables, conditionals, loops, and logical operators (AND, OR, NOT) that mirror real AP CSP exam questions. Computational thinking: demonstrate mastery by developing efficient, elegant solutions that show deep understanding of algorithm design, abstraction, and the relationship between pseudocode logic and actual program execution.",
-            hints: [
-                [
-                    "HINT 1: You need to move forward three times.",
-                    "HINT 2: Use MOVE_FORWARD() three times in a row.",
-                    "HINT 3: Write: MOVE_FORWARD() MOVE_FORWARD() MOVE_FORWARD()"
-                ],
-                [
-                    "HINT 1: Create evens ← empty list before loop",
-                    "HINT 2: FOR EACH num IN nums, check IF num MOD 2 = 0",
-                    "HINT 3: When num is even, use APPEND(evens, num)",
-                    "HINT 4: RETURN evens after processing all numbers"
-                ],
-                [
-                    "HINT 1: Heuristics are rule-of-thumb approaches",
-                    "HINT 2: They provide good-enough solutions quickly",
-                    "HINT 3: Like estimating instead of calculating exactly"
-                ]
-            ]
-        }
-    };
-
-    // AI Assistant State
-    let currentHintIndex = 0;
-    let currentHintLevel = 0;
-        // AI Assistant Functions
-    function showHint() {
-        if (!modal.classList.contains('active')) return;
-        
-        const sectorData = teacherData[currentSectorNum];
-        if (!sectorData) return;
-        
-        // Reset hint state
-        currentHintIndex = 0;
-        currentHintLevel = 0;
-        
-        // Update hint overlay content
-        hintTitle.textContent = `Sector ${currentSectorNum}: AI Assistant`;
-        hintSubtitle.textContent = `Question ${currentQuestion + 1} of 3`;
-        hintOverview.textContent = sectorData.msg;
-        
-        // Update hints based on current question
-        updateHintDisplay();
-        
-        // Show overlay
-        hintOverlay.classList.add('active');
-        
-        // Update button states
-        updateHintButtons();
-    }
-
-    function updateHintDisplay() {
-        const sectorData = teacherData[currentSectorNum];
-        if (!sectorData || !sectorData.hints[currentQuestion]) return;
-        
-        const hints = sectorData.hints[currentQuestion];
-        hintSteps.innerHTML = '';
-        
-        hints.forEach((hint, index) => {
-            const li = document.createElement('li');
-            li.className = `hint-item ${index <= currentHintLevel ? 'unlocked' : ''}`;
-            li.textContent = hint;
-            hintSteps.appendChild(li);
-        });
-    }
-
-    function updateHintButtons() {
-        const sectorData = teacherData[currentSectorNum];
-        if (!sectorData || !sectorData.hints[currentQuestion]) return;
-        
-        const hints = sectorData.hints[currentQuestion];
-        
-        // Previous button
-        prevHintBtn.disabled = currentHintLevel === 0;
-        prevHintBtn.style.opacity = prevHintBtn.disabled ? '0.5' : '1';
-        
-        // Next button
-        nextHintBtn.disabled = currentHintLevel >= hints.length - 1;
-        nextHintBtn.style.opacity = nextHintBtn.disabled ? '0.5' : '1';
-        
-        // Update close button text
-        closeHintBtn.textContent = currentHintLevel >= hints.length - 1 ? 
-            'Got It! Continue' : 'Hide Hints';
-    }
-
-    function nextHint() {
-        const sectorData = teacherData[currentSectorNum];
-        if (!sectorData || !sectorData.hints[currentQuestion]) return;
-        
-        const hints = sectorData.hints[currentQuestion];
-        if (currentHintLevel < hints.length - 1) {
-            currentHintLevel++;
-            updateHintDisplay();
-            updateHintButtons();
-        }
-    }
-
-    function prevHint() {
-        if (currentHintLevel > 0) {
-            currentHintLevel--;
-            updateHintDisplay();
-            updateHintButtons();
-        }
-    }
-
-    function closeHint() {
-        hintOverlay.classList.remove('active');
-        // Reset hint level for next time
-        currentHintLevel = 0;
-    }
-
-    // Add pulsing animation to bot icon when in question modal
-    function updateBotIconVisibility() {
-        if (modal.classList.contains('active') && currentQuestion < 3) {
-            helpBotIcon.style.display = 'flex';
-            helpBotIcon.classList.add('pulsing');
-        } else {
-            helpBotIcon.style.display = 'none';
-            helpBotIcon.classList.remove('pulsing');
-        }
-}
-    // Progress Bar Update Function
     function updateProgressBar() {
         const totalSectors = 5;
         const completedCount = completedSectors.size;
@@ -843,7 +557,7 @@ permalink: /learninggame/home
         document.getElementById('statLocked').textContent = `${5 - completedCount}`;
         
         const boxes = document.querySelectorAll('.progress-box');
-        const boxesPerSector = 3; // 15 boxes / 5 sectors = 3 boxes per sector
+        const boxesPerSector = 3;
         
         boxes.forEach((box, index) => {
             const sectorIndex = Math.floor(index / boxesPerSector);
@@ -861,8 +575,14 @@ permalink: /learninggame/home
             row.forEach((val, x) => {
                 const cell = document.createElement('div');
                 cell.className = 'cell ' + (val === 0 ? 'wall' : 'path');
-                if (val === 2) { cell.textContent = 'S'; cell.classList.add('start'); }
-                if (val === 3) { cell.textContent = 'E'; cell.classList.add('end'); }
+                if (val === 2) { 
+                    cell.textContent = 'S'; 
+                    cell.classList.add('start'); 
+                }
+                if (val === 3) { 
+                    cell.textContent = 'E'; 
+                    cell.classList.add('end'); 
+                }
                 if (val >= 4 && val <= 8) {
                     const sNum = val - 3;
                     cell.textContent = sNum;
@@ -870,7 +590,8 @@ permalink: /learninggame/home
                     if (completedSectors.has(sNum)) cell.classList.add('completed');
                 }
                 if (x === playerPos.x && y === playerPos.y) {
-                    const p = document.createElement('div'); p.className = 'player';
+                    const p = document.createElement('div'); 
+                    p.className = 'player';
                     cell.appendChild(p);
                 }
                 mazeEl.appendChild(cell);
@@ -892,7 +613,6 @@ permalink: /learninggame/home
         nextBtn.style.display = currentQuestion < 2 ? 'block' : 'none';
         autofillBtn.style.display = currentQuestion < 2 ? 'block' : 'none';
         backBtn.style.display = currentQuestion === 2 ? 'block' : 'none';
-        updateBotIconVisibility();
     }
 
     function renderRobotSim() {
@@ -937,7 +657,8 @@ permalink: /learninggame/home
                 if (rPos[0]<0||rPos[0]>4||rPos[1]<0||rPos[1]>4||level.walls.some(w=>w[0]===rPos[0]&&w[1]===rPos[1])) {
                     feedback.textContent = "💥 Crash! Resetting...";
                     feedback.style.color = "#ef4444";
-                    setTimeout(()=>updateRobotGrid(level.start, 0), 1000); return;
+                    setTimeout(()=>updateRobotGrid(level.start, 0), 1000); 
+                    return;
                 }
             }
             if (rPos[0] === level.goal[0] && rPos[1] === level.goal[1]) {
@@ -974,7 +695,6 @@ permalink: /learninggame/home
     }
 
     async function fetchRandomPseudocodeQuestion(levelNum) {
-        // levelNum should be 1..5
         const url = `${window.PSEUDOCODE_BANK_URL}/random?level=${encodeURIComponent(levelNum)}`;
 
         const res = await fetch(url, {
@@ -989,14 +709,12 @@ permalink: /learninggame/home
             throw new Error(msg);
         }
 
-        return data; // {success, level, question, question_id}
+        return data;
     }
 
-        async function renderPseudoCode() {
-        // Map sector (1..5) to difficulty level (1..5)
+    async function renderPseudoCode() {
         const levelNum = currentSectorNum;
 
-        // Show loading UI immediately
         mContent.innerHTML = `
             <p style="color:#e2e8f0; margin-bottom:10px;">Fetching a random pseudocode question (Level ${levelNum})...</p>
             <div style="margin-top:10px; background:#020617; padding:10px; border-radius:8px; font-family:monospace; font-size:12px; color:#06b6d4;">
@@ -1007,7 +725,7 @@ permalink: /learninggame/home
         try {
             const data = await fetchRandomPseudocodeQuestion(levelNum);
 
-            currentPseudo.level = data.level;           // e.g. "level3"
+            currentPseudo.level = data.level;
             currentPseudo.question_id = data.question_id;
             currentPseudo.question = data.question;
 
@@ -1052,13 +770,9 @@ permalink: /learninggame/home
         }
     }
 
-
     function pseudoToExport(codeRaw) {
-        // Very lightweight "export": turns pseudocode-ish lines into a JS-ish skeleton.
-        // Not meant to run. It's for display + debugging student logic.
         let code = (codeRaw || "").trim();
 
-        // Normalize arrows and common pseudocode tokens
         code = code.replaceAll("←", "=");
         code = code.replaceAll("≠", "!=");
 
@@ -1072,7 +786,6 @@ permalink: /learninggame/home
         for (let line of lines) {
             const lower = line.toLowerCase();
 
-            // map common pseudocode patterns to readable JS-ish comments
             if (lower.startsWith("input")) out.push(`  // ${line}`);
             else if (lower.startsWith("display") || lower.startsWith("print") || lower.startsWith("output")) out.push(`  // ${line}`);
             else if (lower.startsWith("if")) out.push(`  // ${line}`);
@@ -1094,7 +807,6 @@ permalink: /learninggame/home
         const exportBox = document.getElementById("pcExport");
         const output = document.getElementById("pcOutput");
 
-        // Basic minimum
         if (code.trim().length < 10) {
             feedback.style.color = "#fbbf24";
             feedback.textContent = "⚠️ Write a bit more pseudocode before checking.";
@@ -1103,11 +815,9 @@ permalink: /learninggame/home
             return;
         }
 
-        // 1) Export view
         const exported = pseudoToExport(code);
         if (exportBox) exportBox.textContent = exported;
 
-        // 2) Call backend checker
         feedback.style.color = "#06b6d4";
         feedback.textContent = "⏳ Checking your answer...";
 
@@ -1165,8 +875,6 @@ permalink: /learninggame/home
         }
     }
 
-
-
     function renderMCQ() {
         const qs = [
             {q:"What is 1101 in binary?", a:["13","11"], c:0},
@@ -1197,10 +905,9 @@ permalink: /learninggame/home
         });
     }
 
-    // AUTOFILL FUNCTIONALITY
     autofillBtn.onclick = async () => {
         try {
-            usedAutofill = true; // Mark that autofill was used
+            usedAutofill = true;
             feedback.textContent = '⏳ Fetching answer...';
             feedback.style.color = '#06b6d4';
             
@@ -1252,11 +959,9 @@ permalink: /learninggame/home
         let finalScore, earnedBadge;
         
         if (usedAutofill) {
-            // If autofill was used, automatically give 0 score and Participant badge
             finalScore = 0;
             earnedBadge = "Participant";
         } else {
-            // Normal scoring calculation
             let weightedSum = 0;
             const pts = moduleAttempts.map(a => Math.max(1, 6 - a));
             for (let i=0; i<3; i++) weightedSum += (pts[i]/5) * weights[i];
@@ -1287,7 +992,6 @@ permalink: /learninggame/home
         completedSectors.add(currentSectorNum);
         drawMaze();
         updateProgressBar();
-        updateBotIconVisibility();
     }
 
     function movePlayer(dx, dy) {
@@ -1306,7 +1010,7 @@ permalink: /learninggame/home
                 currentSectorNum = sNum; 
                 currentQuestion = 0; 
                 moduleAttempts = [0, 0, 0];
-                usedAutofill = false; // Reset autofill flag for new sector
+                usedAutofill = false;
                 setTimeout(() => { 
                     modal.classList.add('active'); 
                     showQuestion(); 
@@ -1320,7 +1024,6 @@ permalink: /learninggame/home
     nextBtn.onclick = () => { 
         currentQuestion++; 
         showQuestion(); 
-        updateBotIconVisibility();
     };
 
     document.addEventListener('keydown', e => {
@@ -1330,19 +1033,9 @@ permalink: /learninggame/home
         if (e.key === 'ArrowLeft') movePlayer(-1, 0);
         if (e.key === 'ArrowRight') movePlayer(1, 0);
     });
-        // Event Listeners for AI Assistant
-    helpBotIcon.addEventListener('click', showHint);
-    prevHintBtn.addEventListener('click', prevHint);
-    nextHintBtn.addEventListener('click', nextHint);
-    closeHintBtn.addEventListener('click', closeHint);
 
-    // Close hint overlay when clicking outside
-    hintOverlay.addEventListener('click', (e) => {
-        if (e.target === hintOverlay) {
-            closeHint();
-        }
-    });
-    // Initialize
     drawMaze();
     updateProgressBar();
-    updateBotIconVisibility(); 
+</script>
+</body>
+</html>
