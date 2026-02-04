@@ -230,7 +230,190 @@ permalink: /learninggame/home
         .summary-card { text-align: left; color: #e2e8f0; }
         .summary-row { display: flex; justify-content: space-between; margin: 10px 0; border-bottom: 1px solid rgba(148,163,184,0.1); padding-bottom: 5px; }
         .badge-display { font-size: 48px; text-align: center; margin: 20px 0; color: #fbbf24; text-shadow: 0 0 20px rgba(251,191,36,0.4); }
+
+            /* AI Assistant Robot Styles */
+    #help-bot-icon {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        cursor: pointer;
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        z-index: 999;
+        transition: all 0.3s ease;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        display: none; /* 默认隐藏，只在答题时显示 */
+    }
+
+    #help-bot-icon:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
+    }
+
+    #help-bot-icon.pulsing {
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+        70% { box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+    }
+
+    /* Hint Overlay Styles */
+    #hint-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(2, 6, 23, 0.95);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #hint-overlay.active {
+        display: flex;
+    }
+
+    .hint-card {
+        width: min(600px, 90vw);
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        border: 2px solid #3b82f6;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        position: relative;
+        animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+        from { transform: translateY(30px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    .hint-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .hint-robot-icon {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+    }
+
+    .hint-title {
+        color: #60a5fa;
+        font-size: 22px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .hint-subtitle {
+        color: #93c5fd;
+        font-size: 14px;
+        margin-top: 5px;
+        font-family: 'Courier New', monospace;
+    }
+
+    .hint-content {
+        margin: 25px 0;
+    }
+
+    .hint-section {
+        background: rgba(30, 41, 59, 0.5);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .hint-section-title {
+        color: #fbbf24;
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .hint-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .hint-item {
+        color: #e2e8f0;
+        padding: 8px 0;
+        padding-left: 25px;
+        position: relative;
+        line-height: 1.5;
+    }
+
+    .hint-item:before {
+        content: "💡";
+        position: absolute;
+        left: 0;
+        top: 8px;
+    }
+
+    .hint-item.unlocked {
+        color: #a7f3d0;
+    }
+
+    .hint-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        gap: 15px;
+    }
+
+    .hint-btn {
+        padding: 12px 24px;
+        border-radius: 10px;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        flex: 1;
+        text-align: center;
+    }
+
+    .hint-btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .hint-btn.primary {
+        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        color: white;
+    }
+
+    .hint-btn.secondary {
+        background: rgba(30, 41, 59, 0.8);
+        color: #e2e8f0;
+        border: 1px solid #4b5563;
+    }
     </style>
+
 </head>
 <body>
     <div class="stars" id="stars"></div>
@@ -311,6 +494,40 @@ permalink: /learninggame/home
         </div>
     </div>
 
+    <!-- AI Assistant Robot -->
+    <div id="help-bot-icon">🤖</div>
+
+    <!-- Hint Overlay -->
+    <div id="hint-overlay">
+        <div class="hint-card">
+            <div class="hint-header">
+                <div class="hint-robot-icon">🤖</div>
+                <div>
+                    <h2 class="hint-title" id="hint-title">AI Assistant</h2>
+                    <p class="hint-subtitle" id="hint-subtitle">Available hints for current question</p>
+                </div>
+            </div>
+            
+            <div class="hint-content">
+                <div class="hint-section">
+                    <h3 class="hint-section-title">Current Stop Overview</h3>
+                    <p id="hint-overview" style="color: #e2e8f0; line-height: 1.6; margin: 0;"></p>
+                </div>
+                
+                <div class="hint-section">
+                    <h3 class="hint-section-title">Step-by-Step Hints</h3>
+                    <ul class="hint-list" id="hint-steps"></ul>
+                </div>
+            </div>
+            
+            <div class="hint-actions">
+                <button class="hint-btn secondary" id="prevHintBtn">← Previous Hint</button>
+                <button class="hint-btn primary" id="closeHintBtn">Got It! Continue</button>
+                <button class="hint-btn secondary" id="nextHintBtn">Next Hint →</button>
+            </div>
+        </div>
+    </div>
+
 <script type="module">
     // Import API configuration
     import { getRobopURI, fetchOptions } from '{{ "/assets/js/api/config.js" | relative_url }}?v=20260123_1';
@@ -352,6 +569,16 @@ permalink: /learninggame/home
     const nextBtn = document.getElementById('nextBtn');
     const backBtn = document.getElementById('backBtn');
     const autofillBtn = document.getElementById('autofillBtn');
+        // AI Assistant Elements
+    const helpBotIcon = document.getElementById('help-bot-icon');
+    const hintOverlay = document.getElementById('hint-overlay');
+    const hintTitle = document.getElementById('hint-title');
+    const hintSubtitle = document.getElementById('hint-subtitle');
+    const hintOverview = document.getElementById('hint-overview');
+    const hintSteps = document.getElementById('hint-steps');
+    const prevHintBtn = document.getElementById('prevHintBtn');
+    const nextHintBtn = document.getElementById('nextHintBtn');
+    const closeHintBtn = document.getElementById('closeHintBtn');
 
     // Scoring and Game State
     let moduleAttempts = [0, 0, 0]; 
@@ -384,6 +611,218 @@ permalink: /learninggame/home
         5: { start: [0,2], goal: [4,2], walls: [[2,1],[2,2],[2,3]] }
     };
 
+        // Teacher Data with hints (provided by Rishabh)
+    const teacherData = {
+        1: {
+            title: "Stop 1: Training",
+            msg: "Robot Code: Robot code is a pseudocode-style language with four commands—MOVE_FORWARD(), ROTATE_LEFT(), ROTATE_RIGHT(), and CAN_MOVE(direction)—used to control a robot through a maze. Pseudocode: Use plain-language, step-by-step logic (variables, conditionals, loops, and logical flow) to describe how your algorithm should work before worrying about strict programming syntax. Computational thinking: break the problem into small rules, test your logic, and iterate based on what you observe.",
+            hints: [
+                [
+                    "HINT 1: You need only one command for this task.",
+                    "HINT 2: Use the MOVE_FORWARD() command.",
+                    "HINT 3: Just write: MOVE_FORWARD()"
+                ],
+                [
+                    "HINT 1: Initialize sum ← 0 before the loop",
+                    "HINT 2: FOR EACH num IN nums, do sum ← sum + num",
+                    "HINT 3: After loop, RETURN sum / LENGTH(nums)"
+                ],
+                [
+                    "HINT 1: Binary is base-2 number system",
+                    "HINT 2: Each digit represents a power of 2",
+                    "HINT 3: 1101 = 1×8 + 1×4 + 0×2 + 1×1 = 13"
+                ]
+            ]
+        },
+        2: {
+            title: "Stop 2: Training",
+            msg: "Robot Code: Use simple, readable command blocks to control the robot and debug one movement decision at a time. Pseudocode: In the code runner, write College Board–level pseudocode solutions (conditionals, variables, algorithm development, and logical flow) and notice how different logical choices change the program's behavior as you progress through the maze. Computational thinking: practice structured problem-solving by tracing steps, checking edge cases, and improving your solution until it works.",
+            hints: [
+                [
+                    "HINT 1: This requires a rotation command, not a movement command.",
+                    "HINT 2: Use ROTATE_RIGHT() to turn the robot 90 degrees clockwise",
+                    "HINT 3: Just write: ROTATE_RIGHT()"
+                ],
+                [
+                    "HINT 1: Initialize count ← 0 before the loop",
+                    "HINT 2: FOR EACH value IN nums, check IF value > threshold",
+                    "HINT 3: When condition is true, do count ← count + 1",
+                    "HINT 4: RETURN count after the loop completes"
+                ],
+                [
+                    "HINT 1: AND logic requires both inputs to be true",
+                    "HINT 2: Truth table: true AND true = true, others = false",
+                    "HINT 3: Think of it like a strict requirement"
+                ]
+            ]
+        },
+        3: {
+            title: "Stop 3: Training",
+            msg: "Robot Code: Combine multiple commands (MOVE_FORWARD, ROTATE_LEFT, ROTATE_RIGHT) to navigate complex paths and use CAN_MOVE(direction) to check for obstacles before moving. Pseudocode: Apply variables and assignment operators to store values, then use conditional statements (IF-ELSE) to make decisions based on those values in your College Board–style solutions. Computational thinking: identify patterns in the maze, create reusable logic blocks, and test your algorithm with different scenarios to ensure it handles all possible paths.",
+            hints: [
+                [
+                    "HINT 1: You need to move forward twice.",
+                    "HINT 2: Use MOVE_FORWARD() two times in a row.",
+                    "HINT 3: Write: MOVE_FORWARD() MOVE_FORWARD()"
+                ],
+                [
+                    "HINT 1: Set max ← nums[1] (first element)",
+                    "HINT 2: Loop through remaining elements starting at index 2",
+                    "HINT 3: IF nums[i] > max, update max ← nums[i]",
+                    "HINT 4: RETURN max after checking all elements"
+                ],
+                [
+                    "HINT 1: Abstraction hides complex details",
+                    "HINT 2: It focuses on essential features only",
+                    "HINT 3: Like using a function without knowing implementation"
+                ]
+            ]
+        },
+        4: {
+            title: "Stop 4: Training",
+            msg: "Robot Code: Master complex navigation by chaining conditional checks with CAN_MOVE() and creating efficient movement sequences. Pseudocode: Implement loops (REPEAT and REPEAT UNTIL) to avoid repetitive code, and combine them with conditionals to create dynamic algorithms that adapt to changing conditions. Computational thinking: analyze the problem systematically, decompose it into smaller sub-problems, and optimize your solution by reducing redundant steps while maintaining correctness.",
+            hints: [
+                [
+                    "HINT 1: This requires two commands in sequence: move, then rotate",
+                    "HINT 2: First MOVE_FORWARD(), then ROTATE_LEFT()",
+                    "HINT 3: Write: MOVE_FORWARD() ROTATE_LEFT()"
+                ],
+                [
+                    "HINT 1: Use FOR i FROM 1 TO LENGTH(words) for index-based loop",
+                    "HINT 2: Check IF words[i] = target",
+                    "HINT 3: When match found, set words[i] ← replacement",
+                    "HINT 4: RETURN words at the end"
+                ],
+                [
+                    "HINT 1: IP stands for Internet Protocol",
+                    "HINT 2: It handles routing of data packets",
+                    "HINT 3: Like a postal system for internet data"
+                ]
+            ]
+        },
+        5: {
+            title: "Stop 5: Training",
+            msg: "Robot Code: Apply all four commands strategically to solve the most challenging maze configurations, planning your entire route before executing. Pseudocode: Create comprehensive algorithms using variables, conditionals, loops, and logical operators (AND, OR, NOT) that mirror real AP CSP exam questions. Computational thinking: demonstrate mastery by developing efficient, elegant solutions that show deep understanding of algorithm design, abstraction, and the relationship between pseudocode logic and actual program execution.",
+            hints: [
+                [
+                    "HINT 1: You need to move forward three times.",
+                    "HINT 2: Use MOVE_FORWARD() three times in a row.",
+                    "HINT 3: Write: MOVE_FORWARD() MOVE_FORWARD() MOVE_FORWARD()"
+                ],
+                [
+                    "HINT 1: Create evens ← empty list before loop",
+                    "HINT 2: FOR EACH num IN nums, check IF num MOD 2 = 0",
+                    "HINT 3: When num is even, use APPEND(evens, num)",
+                    "HINT 4: RETURN evens after processing all numbers"
+                ],
+                [
+                    "HINT 1: Heuristics are rule-of-thumb approaches",
+                    "HINT 2: They provide good-enough solutions quickly",
+                    "HINT 3: Like estimating instead of calculating exactly"
+                ]
+            ]
+        }
+    };
+
+    // AI Assistant State
+    let currentHintIndex = 0;
+    let currentHintLevel = 0;
+        // AI Assistant Functions
+    function showHint() {
+        if (!modal.classList.contains('active')) return;
+        
+        const sectorData = teacherData[currentSectorNum];
+        if (!sectorData) return;
+        
+        // Reset hint state
+        currentHintIndex = 0;
+        currentHintLevel = 0;
+        
+        // Update hint overlay content
+        hintTitle.textContent = `Sector ${currentSectorNum}: AI Assistant`;
+        hintSubtitle.textContent = `Question ${currentQuestion + 1} of 3`;
+        hintOverview.textContent = sectorData.msg;
+        
+        // Update hints based on current question
+        updateHintDisplay();
+        
+        // Show overlay
+        hintOverlay.classList.add('active');
+        
+        // Update button states
+        updateHintButtons();
+    }
+
+    function updateHintDisplay() {
+        const sectorData = teacherData[currentSectorNum];
+        if (!sectorData || !sectorData.hints[currentQuestion]) return;
+        
+        const hints = sectorData.hints[currentQuestion];
+        hintSteps.innerHTML = '';
+        
+        hints.forEach((hint, index) => {
+            const li = document.createElement('li');
+            li.className = `hint-item ${index <= currentHintLevel ? 'unlocked' : ''}`;
+            li.textContent = hint;
+            hintSteps.appendChild(li);
+        });
+    }
+
+    function updateHintButtons() {
+        const sectorData = teacherData[currentSectorNum];
+        if (!sectorData || !sectorData.hints[currentQuestion]) return;
+        
+        const hints = sectorData.hints[currentQuestion];
+        
+        // Previous button
+        prevHintBtn.disabled = currentHintLevel === 0;
+        prevHintBtn.style.opacity = prevHintBtn.disabled ? '0.5' : '1';
+        
+        // Next button
+        nextHintBtn.disabled = currentHintLevel >= hints.length - 1;
+        nextHintBtn.style.opacity = nextHintBtn.disabled ? '0.5' : '1';
+        
+        // Update close button text
+        closeHintBtn.textContent = currentHintLevel >= hints.length - 1 ? 
+            'Got It! Continue' : 'Hide Hints';
+    }
+
+    function nextHint() {
+        const sectorData = teacherData[currentSectorNum];
+        if (!sectorData || !sectorData.hints[currentQuestion]) return;
+        
+        const hints = sectorData.hints[currentQuestion];
+        if (currentHintLevel < hints.length - 1) {
+            currentHintLevel++;
+            updateHintDisplay();
+            updateHintButtons();
+        }
+    }
+
+    function prevHint() {
+        if (currentHintLevel > 0) {
+            currentHintLevel--;
+            updateHintDisplay();
+            updateHintButtons();
+        }
+    }
+
+    function closeHint() {
+        hintOverlay.classList.remove('active');
+        // Reset hint level for next time
+        currentHintLevel = 0;
+    }
+
+    // Add pulsing animation to bot icon when in question modal
+    function updateBotIconVisibility() {
+        if (modal.classList.contains('active') && currentQuestion < 3) {
+            helpBotIcon.style.display = 'flex';
+            helpBotIcon.classList.add('pulsing');
+        } else {
+            helpBotIcon.style.display = 'none';
+            helpBotIcon.classList.remove('pulsing');
+        }
+}
     // Progress Bar Update Function
     function updateProgressBar() {
         const totalSectors = 5;
@@ -444,6 +883,7 @@ permalink: /learninggame/home
         nextBtn.style.display = currentQuestion < 2 ? 'block' : 'none';
         autofillBtn.style.display = currentQuestion < 2 ? 'block' : 'none';
         backBtn.style.display = currentQuestion === 2 ? 'block' : 'none';
+        updateBotIconVisibility();
     }
 
     function renderRobotSim() {
@@ -838,6 +1278,7 @@ permalink: /learninggame/home
         completedSectors.add(currentSectorNum);
         drawMaze();
         updateProgressBar();
+        updateBotIconVisibility();
     }
 
     function movePlayer(dx, dy) {
@@ -870,6 +1311,7 @@ permalink: /learninggame/home
     nextBtn.onclick = () => { 
         currentQuestion++; 
         showQuestion(); 
+        updateBotIconVisibility();
     };
 
     document.addEventListener('keydown', e => {
@@ -879,10 +1321,19 @@ permalink: /learninggame/home
         if (e.key === 'ArrowLeft') movePlayer(-1, 0);
         if (e.key === 'ArrowRight') movePlayer(1, 0);
     });
+        // Event Listeners for AI Assistant
+    helpBotIcon.addEventListener('click', showHint);
+    prevHintBtn.addEventListener('click', prevHint);
+    nextHintBtn.addEventListener('click', nextHint);
+    closeHintBtn.addEventListener('click', closeHint);
 
+    // Close hint overlay when clicking outside
+    hintOverlay.addEventListener('click', (e) => {
+        if (e.target === hintOverlay) {
+            closeHint();
+        }
+    });
     // Initialize
     drawMaze();
     updateProgressBar();
-</script>
-</body>
-</html>
+    updateBotIconVisibility(); 
