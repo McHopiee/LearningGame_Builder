@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Maze - Homescreen
-authors: Anika, Cyrus, Rishabh, Jaynee, Lillian, Avantika, Meryl, Rebecca
+authors: Anika, Cyrus, Rishabh, Jaynee, Lillian, Avantika
 permalink: /learninggame/home
 ---
 
@@ -267,35 +267,42 @@ permalink: /learninggame/home
         100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
     }
 
-    /* Hint Overlay Styles */
+   /* Hint Overlay Styles */
     #hint-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(2, 6, 23, 0.95);
-        backdrop-filter: blur(10px);
-        z-index: 1000;
-        justify-content: center;
-        align-items: center;
-    }
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 350px;   
+    height: calc(100vh - 40px);
+    max-height: 90vh;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(59, 130, 246, 0.4);
+    border-radius: 16px;
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.25);
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 0;
+}
 
     #hint-overlay.active {
         display: flex;
     }
 
     .hint-card {
-        width: min(600px, 90vw);
-        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-        border: 2px solid #3b82f6;
-        border-radius: 20px;
-        padding: 30px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-        position: relative;
-        animation: slideUp 0.3s ease-out;
-    }
+    width: 100%;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border: none;
+    border-radius: 14px;
+    padding: 20px;
+    position: relative;
+    animation: slideRight 0.3s ease-out;
+    box-shadow: none;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
 
     @keyframes slideUp {
         from { transform: translateY(30px); opacity: 0; }
