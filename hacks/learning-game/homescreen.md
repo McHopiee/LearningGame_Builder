@@ -204,7 +204,7 @@ permalink: /learninggame/home
         }
 
         .question-modal {
-            display: none; position: absolute; inset: 0; z-index: 100;
+            display: none; position: absolute; inset: 0; z-index: 90;
             justify-content: center; align-items: center;
             background: rgba(2, 6, 23, 0.92); backdrop-filter: blur(14px);
         }
@@ -281,7 +281,7 @@ permalink: /learninggame/home
     border: 2px solid rgba(59, 130, 246, 0.4);
     border-radius: 16px;
     box-shadow: 0 0 40px rgba(59, 130, 246, 0.25);
-    z-index: 1000;
+    z-index: 2;
     overflow-y: auto;
     padding: 0;
 }
