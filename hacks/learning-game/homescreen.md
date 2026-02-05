@@ -384,24 +384,245 @@ permalink: /learninggame/home
             min-height: 20px; 
         }
 
-        .summary-card { 
-            text-align: left; 
-            color: #e2e8f0; 
+        .summary-card { text-align: left; color: #e2e8f0; }
+        .summary-row { display: flex; justify-content: space-between; margin: 10px 0; border-bottom: 1px solid rgba(148,163,184,0.1); padding-bottom: 5px; }
+        .badge-display { font-size: 48px; text-align: center; margin: 20px 0; color: #fbbf24; text-shadow: 0 0 20px rgba(251,191,36,0.4); }
+
+            /* AI Assistant Robot Styles */
+    #help-bot-icon {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        cursor: pointer;
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        z-index: 999;
+        transition: all 0.3s ease;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        display: none; /* 默认隐藏，只在答题时显示 */
+    }
+
+    #help-bot-icon:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
+    }
+
+    #help-bot-icon.pulsing {
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+        70% { box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+    }
+
+    /* Hint Overlay Styles */
+    #hint-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(2, 6, 23, 0.95);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #hint-overlay.active {
+        display: flex;
+    }
+
+    .hint-card {
+        width: min(600px, 90vw);
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        border: 2px solid #3b82f6;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        position: relative;
+        animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+        from { transform: translateY(30px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    .hint-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .hint-robot-icon {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+    }
+
+    .hint-title {
+        color: #60a5fa;
+        font-size: 22px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .hint-subtitle {
+        color: #93c5fd;
+        font-size: 14px;
+        margin-top: 5px;
+        font-family: 'Courier New', monospace;
+    }
+
+    .hint-content {
+        margin: 25px 0;
+    }
+
+    .hint-section {
+        background: rgba(30, 41, 59, 0.5);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .hint-section-title {
+        color: #fbbf24;
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .hint-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .hint-item {
+        color: #e2e8f0;
+        padding: 8px 0;
+        padding-left: 25px;
+        position: relative;
+        line-height: 1.5;
+    }
+
+    .hint-item:before {
+        content: "💡";
+        position: absolute;
+        left: 0;
+        top: 8px;
+    }
+
+    .hint-item.unlocked {
+        color: #a7f3d0;
+    }
+
+    .hint-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        gap: 15px;
+    }
+
+    .hint-btn {
+        padding: 12px 24px;
+        border-radius: 10px;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        flex: 1;
+        text-align: center;
+    }
+
+    .hint-btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .hint-btn.primary {
+        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        color: white;
+    }
+
+    .hint-btn.secondary {
+        background: rgba(30, 41, 59, 0.8);
+        color: #e2e8f0;
+        border: 1px solid #4b5563;
+    }
+        /* Sector Module Progress (Robot / Pseudocode / MCQ) */
+        .sector-progress {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0 18px 0;
         }
-        .summary-row { 
-            display: flex; 
-            justify-content: space-between; 
-            margin: 10px 0; 
-            border-bottom: 1px solid rgba(148,163,184,0.1); 
-            padding-bottom: 5px; 
+
+        .sector-step {
+            flex: 1;
+            position: relative;
+            padding: 10px 12px;
+            border-radius: 14px;
+            border: 1px solid rgba(6,182,212,0.25);
+            background: rgba(2,6,23,0.5);
+            color: rgba(103,232,249,0.65);
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
-        .badge-display { 
-            font-size: 48px; 
-            text-align: center; 
-            margin: 20px 0; 
-            color: #fbbf24; 
-            text-shadow: 0 0 20px rgba(251,191,36,0.4); 
+
+        .sector-step::before {
+            content: "";
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 0%;
+            background: linear-gradient(90deg, rgba(16,185,129,0.35), rgba(6,182,212,0.25));
+            transition: width 220ms ease;
         }
+
+        .sector-step.active {
+            color: #e2e8f0;
+            border-color: rgba(16,185,129,0.55);
+            box-shadow: 0 0 16px rgba(16,185,129,0.18);
+        }
+
+        .sector-step.active::before { width: 100%; }
+
+        .sector-step.completed {
+            color: #e2e8f0;
+            border-color: rgba(16,185,129,0.55);
+        }
+
+        .sector-step.completed::before { width: 100%; }
+
+        .sector-step span {
+            position: relative; /* keep text above the ::before fill */
+            z-index: 1;
+        }
+
     </style>
 </head>
 <body>
@@ -468,6 +689,12 @@ permalink: /learninggame/home
                         <h2 id="mTitle" style="color: #06b6d4; text-transform: uppercase;">Sector 1</h2>
                         <p id="mSubtitle" style="color: rgba(103,232,249,0.7); font-family: monospace; font-size: 12px;">Navigation Task</p>
                     </div>
+                </div>
+                <!-- Sector Module Progress -->
+                <div class="sector-progress" id="sectorProgress">
+                <div class="sector-step" data-step="0"><span>Robot Code</span></div>
+                <div class="sector-step" data-step="1"><span>Pseudocode</span></div>
+                <div class="sector-step" data-step="2"><span>MCQ</span></div>
                 </div>
 
                 <div id="moduleContent"></div>
@@ -605,6 +832,7 @@ permalink: /learninggame/home
         feedback.textContent = '';
         nextBtn.disabled = true;
         nextBtn.style.opacity = "0.5";
+        updateSectorModuleProgress();
 
         if (currentQuestion === 0) renderRobotSim();
         else if (currentQuestion === 1) await renderPseudoCode();
@@ -693,6 +921,18 @@ permalink: /learninggame/home
             }
         }
     }
+
+    function updateSectorModuleProgress() {
+        const steps = document.querySelectorAll('#sectorProgress .sector-step');
+        steps.forEach((el) => {
+            const step = Number(el.dataset.step);
+            el.classList.remove('active', 'completed');
+
+            if (step < currentQuestion) el.classList.add('completed');
+            if (step === currentQuestion) el.classList.add('active');
+        });
+    }
+
 
     async function fetchRandomPseudocodeQuestion(levelNum) {
         const url = `${window.PSEUDOCODE_BANK_URL}/random?level=${encodeURIComponent(levelNum)}`;
