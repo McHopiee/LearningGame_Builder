@@ -13,34 +13,16 @@ permalink: /learninggame/home
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        body {
+         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #020617 0%, #0f172a 50%, #1e1b4b 100%);
-            min-height: 100vh;
-            width: 100vw;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            overflow-x: hidden;
-            overflow-y: auto;
-            position: relative;
-            padding: 20px 0;
+            height: 100vh; width: 100vw; display: flex; 
+            justify-content: center; align-items: center;
+            overflow: hidden; position: relative;
         }
 
-        .stars { 
-            position: fixed; 
-            inset: 0; 
-            overflow: hidden; 
-            z-index: 0; 
-        }
-        .star { 
-            position: absolute; 
-            width: 2px; 
-            height: 2px; 
-            background: white; 
-            border-radius: 50%; 
-            animation: twinkle 3s infinite; 
-        }
+        .stars { position: fixed; inset: 0; overflow: hidden; z-index: 0; }
+        .star { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; animation: twinkle 3s infinite; }
 
         @keyframes twinkle {
             0%, 100% { opacity: 0.3; }
@@ -48,77 +30,36 @@ permalink: /learninggame/home
         }
 
         body::before {
-            content: ''; 
-            position: fixed; 
-            top: 10%; 
-            left: 10%; 
-            width: 500px; 
-            height: 500px;
+            content: ''; position: fixed; top: 10%; left: 10%; width: 500px; height: 500px;
             background: radial-gradient(circle, rgba(6,182,212,0.15), transparent 70%);
-            filter: blur(80px); 
-            z-index: 0;
+            filter: blur(80px); z-index: 0;
         }
 
         body::after {
-            content: ''; 
-            position: fixed; 
-            bottom: 10%; 
-            right: 10%; 
-            width: 500px; 
-            height: 500px;
+            content: ''; position: fixed; bottom: 10%; right: 10%; width: 500px; height: 500px;
             background: radial-gradient(circle, rgba(168,85,247,0.15), transparent 70%);
-            filter: blur(80px); 
-            z-index: 0;
+            filter: blur(80px); z-index: 0;
         }
 
         .container {
-            position: relative; 
-            width: 90vw; 
-            max-width: 900px;
-            min-height: min-content;
-            background: rgba(15, 23, 42, 0.85); 
-            backdrop-filter: blur(20px);
-            border-radius: 24px; 
-            border: 2px solid rgba(6,182,212,0.4);
-            box-shadow: 0 0 60px rgba(6,182,212,0.25); 
-            overflow: visible;
-            z-index: 1; 
-            display: flex; 
-            flex-direction: column;
-            margin: 20px 0;
+            position: relative; width: 90vw; max-width: 900px; height: 90vh; max-height: 850px;
+            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px);
+            border-radius: 24px; border: 2px solid rgba(6,182,212,0.4);
+            box-shadow: 0 0 60px rgba(6,182,212,0.25); overflow: hidden;
+            z-index: 1; display: flex; flex-direction: column;
         }
 
         .title-section {
-            position: relative; 
-            width: 100%; 
-            background: rgba(15,23,42,0.95);
-            padding: 15px 20px; 
-            border-bottom: 2px solid rgba(6,182,212,0.3);
-            z-index: 50; 
-            flex-shrink: 0;
+            position: relative; width: 100%; background: rgba(15,23,42,0.95);
+            padding: 15px 20px; border-bottom: 2px solid rgba(6,182,212,0.3);
+            z-index: 50; flex-shrink: 0;
         }
 
-        .title-header { 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 12px; 
-            margin-bottom: 6px; 
-        }
-        .title { 
-            color: #06b6d4; 
-            font-size: 24px; 
-            font-weight: 900; 
-            text-transform: uppercase; 
-            letter-spacing: 4px; 
-        }
-        .subtitle { 
-            text-align: center; 
-            color: rgba(103,232,249,0.7); 
-            font-size: 12px; 
-            font-family: 'Courier New', monospace; 
-        }
+        .title-header { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 6px; }
+        .title { color: #06b6d4; font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: 4px; }
+        .subtitle { text-align: center; color: rgba(103,232,249,0.7); font-size: 12px; font-family: 'Courier New', monospace; }
 
+        /* Progress Bar Styles */
         .progress-bar-container {
             background: rgba(2, 6, 23, 0.6);
             padding: 12px 20px;
@@ -163,7 +104,6 @@ permalink: /learninggame/home
             display: flex;
             gap: 6px;
             margin-bottom: 8px;
-            flex-wrap: wrap;
         }
 
         .progress-box {
@@ -173,7 +113,6 @@ permalink: /learninggame/home
             border: 1px solid rgba(6,182,212,0.3);
             border-radius: 3px;
             transition: all 0.3s ease;
-            flex-shrink: 0;
         }
 
         .progress-box.completed {
@@ -210,13 +149,15 @@ permalink: /learninggame/home
         }
 
         .maze-container {
+            flex-grow: 1; 
             width: 100%; 
             display: flex; 
             flex-direction: column;
-            justify-content: flex-start; 
+            justify-content: center; 
             align-items: center; 
             padding: 12px 20px 20px 20px;
-            flex-shrink: 0;
+            min-height: 0;
+            overflow: hidden;
         }
 
         .maze {
@@ -224,6 +165,7 @@ permalink: /learninggame/home
             max-width: 750px;
             height: auto;
             aspect-ratio: 15 / 11;
+            max-height: 550px;
             background: rgba(2, 6, 23, 0.5); 
             backdrop-filter: blur(10px);
             border-radius: 20px; 
@@ -233,55 +175,25 @@ permalink: /learninggame/home
             grid-template-rows: repeat(11, 1fr);
             padding: 8px; 
             gap: 3px; 
-            margin: 0 auto 15px auto;
+            margin: 0 auto;
         }
 
-        .cell { 
-            border: 1px solid rgba(6,182,212,0.08); 
-            border-radius: 2px; 
-            position: relative; 
-        }
-        .wall { 
-            background: linear-gradient(135deg, #1e293b 0%, #334155 100%); 
-        }
-        .path { 
-            background: rgba(30, 41, 59, 0.3); 
-        }
+        .cell { border: 1px solid rgba(6,182,212,0.08); border-radius: 2px; position: relative; }
+        .wall { background: linear-gradient(135deg, #1e293b 0%, #334155 100%); }
+        .path { background: rgba(30, 41, 59, 0.3); }
         .player {
             background: radial-gradient(circle, #06b6d4 0%, #3b82f6 100%);
-            border-radius: 50%; 
-            box-shadow: 0 0 20px rgba(6,182,212,0.8);
-            width: 80%; 
-            height: 80%; 
-            margin: 10%; 
-            z-index: 20; 
-            position: absolute;
+            border-radius: 50%; box-shadow: 0 0 20px rgba(6,182,212,0.8);
+            width: 80%; height: 80%; margin: 10%; z-index: 20; position: absolute;
         }
         .sector {
             background: linear-gradient(135deg, rgba(251,191,36,0.3) 0%, rgba(217,119,6,0.3) 100%);
-            border-radius: 50%; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            color: #fbbf24; 
-            font-weight: 900; 
-            font-size: 14px; 
-            width: 90%; 
-            height: 90%; 
-            margin: 5%;
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            color: #fbbf24; font-weight: 900; font-size: 14px; width: 90%; height: 90%; margin: 5%;
         }
-        .completed { 
-            background: #10b981 !important; 
-            color: white; 
-        }
-        .start { 
-            background: rgba(16,185,129,0.3); 
-            color: #10b981; 
-        }
-        .end { 
-            background: rgba(168,85,247,0.3); 
-            color: #a855f7; 
-        }
+        .completed { background: #10b981 !important; color: white; }
+        .start { background: rgba(16,185,129,0.3); color: #10b981; }
+        .end { background: rgba(168,85,247,0.3); color: #a855f7; }
 
         .controls-hint {
             color: rgba(103,232,249,0.6);
@@ -292,118 +204,34 @@ permalink: /learninggame/home
         }
 
         .question-modal {
-            display: none; 
-            position: fixed; 
-            inset: 0; 
-            z-index: 100;
-            justify-content: center; 
-            align-items: center;
-            background: rgba(2, 6, 23, 0.92); 
-            backdrop-filter: blur(14px);
-            overflow-y: auto;
-            padding: 20px;
+            display: none; position: absolute; inset: 0; z-index: 100;
+            justify-content: center; align-items: center;
+            background: rgba(2, 6, 23, 0.92); backdrop-filter: blur(14px);
         }
-        .question-modal.active { 
-            display: flex; 
-        }
-        .question-card { 
-            width: min(720px, 92vw); 
-            background: #1e293b; 
-            border: 1px solid #06b6d4; 
-            border-radius: 24px; 
-            padding: 30px; 
-            position: relative;
-            margin: auto 0;
-        }
+        .question-modal.active { display: flex; }
+        .question-card { width: min(720px, 92vw); background: #1e293b; border: 1px solid #06b6d4; border-radius: 24px; padding: 30px; position: relative; }
         
         .robot-grid {
-            display: grid; 
-            grid-template-columns: repeat(5, 45px); 
-            grid-template-rows: repeat(5, 45px);
-            gap: 4px; 
-            background: #0f172a; 
-            padding: 10px; 
-            border-radius: 8px; 
-            margin: 10px auto; 
-            justify-content: center;
+            display: grid; grid-template-columns: repeat(5, 45px); grid-template-rows: repeat(5, 45px);
+            gap: 4px; background: #0f172a; padding: 10px; border-radius: 8px; margin: 10px auto; justify-content: center;
         }
-        .r-cell { 
-            width: 45px; 
-            height: 45px; 
-            background: rgba(30, 41, 59, 0.5); 
-            border-radius: 4px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 24px; 
-        }
-        .r-wall { 
-            background: #ef4444; 
-        }
+        .r-cell { width: 45px; height: 45px; background: rgba(30, 41, 59, 0.5); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .r-wall { background: #ef4444; }
 
-        textarea { 
-            width: 100%; 
-            height: 120px; 
-            background: #020617; 
-            color: #06b6d4; 
-            border: 1px solid #06b6d4; 
-            padding: 10px; 
-            font-family: monospace; 
-            border-radius: 8px; 
-        }
-        .btn { 
-            padding: 12px 20px; 
-            border-radius: 12px; 
-            border: none; 
-            cursor: pointer; 
-            font-weight: 900; 
-            transition: all 0.2s ease; 
-        }
-        .btn:hover { 
-            transform: translateY(-2px); 
-        }
-        .btn-blue { 
-            background: #06b6d4; 
-            color: white; 
-        }
-        .btn-check { 
-            background: #fbbf24; 
-            color: black; 
-            width: 100%; 
-            margin-top: 10px; 
-        }
-        .btn-autofill { 
-            background: #a855f7; 
-            color: white; 
-        }
+        textarea { width: 100%; height: 120px; background: #020617; color: #06b6d4; border: 1px solid #06b6d4; padding: 10px; font-family: monospace; border-radius: 8px; }
+        .btn { padding: 12px 20px; border-radius: 12px; border: none; cursor: pointer; font-weight: 900; transition: all 0.2s ease; }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-blue { background: #06b6d4; color: white; }
+        .btn-check { background: #fbbf24; color: black; width: 100%; margin-top: 10px; }
+        .btn-autofill { background: #a855f7; color: white; }
         
-        #feedback { 
-            margin-top: 10px; 
-            font-weight: 800; 
-            text-align: center; 
-            min-height: 20px; 
-        }
+        #feedback { margin-top: 10px; font-weight: 800; text-align: center; min-height: 20px; }
 
-        .summary-card { 
-            text-align: left; 
-            color: #e2e8f0; 
-        }
-        .summary-row { 
-            display: flex; 
-            justify-content: space-between; 
-            margin: 10px 0; 
-            border-bottom: 1px solid rgba(148,163,184,0.1); 
-            padding-bottom: 5px; 
-        }
-        .badge-display { 
-            font-size: 48px; 
-            text-align: center; 
-            margin: 20px 0; 
-            color: #fbbf24; 
-            text-shadow: 0 0 20px rgba(251,191,36,0.4); 
-        }
+        .summary-card { text-align: left; color: #e2e8f0; }
+        .summary-row { display: flex; justify-content: space-between; margin: 10px 0; border-bottom: 1px solid rgba(148,163,184,0.1); padding-bottom: 5px; }
+        .badge-display { font-size: 48px; text-align: center; margin: 20px 0; color: #fbbf24; text-shadow: 0 0 20px rgba(251,191,36,0.4); }
 
-                    /* AI Assistant Robot Styles */
+            /* AI Assistant Robot Styles */
     #help-bot-icon {
         position: fixed;
         bottom: 30px;
@@ -585,6 +413,7 @@ permalink: /learninggame/home
         border: 1px solid #4b5563;
     }
     </style>
+
 </head>
 <body>
     <div class="stars" id="stars"></div>
@@ -598,6 +427,7 @@ permalink: /learninggame/home
             <div class="subtitle">Cadet Training Protocol // Sector Clearance Required</div>
         </div>
 
+        <!-- Progress Bar Component -->
         <div class="progress-bar-container">
             <div class="progress-header">STATION_INTEGRITY_MAP</div>
             <div class="progress-main">
@@ -663,6 +493,7 @@ permalink: /learninggame/home
             </div>
         </div>
     </div>
+
     <!-- AI Assistant Robot -->
     <div id="help-bot-icon">🤖</div>
 
@@ -697,25 +528,31 @@ permalink: /learninggame/home
         </div>
     </div>
 
-
 <script type="module">
+    // Import API configuration
     import { getRobopURI, fetchOptions } from '{{ "/assets/js/api/config.js" | relative_url }}?v=20260123_1';
 
     const robopURI = await getRobopURI();
 
+    // Existing robop endpoints (used by autofill)
     const API_URL = `${robopURI}/api/robop`;
+
+    // NEW pseudocode question bank endpoints
     const PSEUDOCODE_BANK_URL = `${robopURI}/api/pseudocode_bank`;
 
     window.API_URL = API_URL;
     window.PSEUDOCODE_BANK_URL = PSEUDOCODE_BANK_URL;
     window.authOptions = fetchOptions;
 
+    // Track the currently fetched pseudocode question (per sector run)
     let currentPseudo = {
         level: null,
         question_id: null,
         question: null
     };
 
+
+    // Star Field Initialization
     const starsContainer = document.getElementById('stars');
     for (let i = 0; i < 150; i++) {
         const star = document.createElement('div');
@@ -732,7 +569,7 @@ permalink: /learninggame/home
     const nextBtn = document.getElementById('nextBtn');
     const backBtn = document.getElementById('backBtn');
     const autofillBtn = document.getElementById('autofillBtn');
-         // AI Assistant Elements
+        // AI Assistant Elements
     const helpBotIcon = document.getElementById('help-bot-icon');
     const hintOverlay = document.getElementById('hint-overlay');
     const hintTitle = document.getElementById('hint-title');
@@ -741,18 +578,19 @@ permalink: /learninggame/home
     const hintSteps = document.getElementById('hint-steps');
     const prevHintBtn = document.getElementById('prevHintBtn');
     const nextHintBtn = document.getElementById('nextHintBtn');
-    const closeHintBtn = 
+    const closeHintBtn = document.getElementById('closeHintBtn');
 
+    // Scoring and Game State
     let moduleAttempts = [0, 0, 0]; 
     const weights = [0.5, 0.3, 0.2]; 
     let currentSectorNum = 0;
     let currentQuestion = 0;
     const completedSectors = new Set();
-    let usedAutofill = false;
+    let usedAutofill = false; // Track if autofill was used
 
     const mazeLayout = [
-        [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-        [2,1,1,1,4,1,1,1,5,1,1,1,6,1,0], 
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [2,1,1,1,4,1,1,1,5,1,1,1,6,1,1], 
         [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],
         [0,1,1,1,1,1,1,1,1,1,1,1,1,1,0], 
         [0,1,0,1,0,1,0,1,0,1,0,1,0,1,0],
@@ -772,7 +610,7 @@ permalink: /learninggame/home
         4: { start: [0,0], goal: [4,0], walls: [[0,1],[1,1],[2,1]] },
         5: { start: [0,2], goal: [4,2], walls: [[2,1],[2,2],[2,3]] }
     };
-    
+
         // Teacher Data with hints (provided by Rishabh)
     const teacherData = {
         1: {
@@ -985,6 +823,7 @@ permalink: /learninggame/home
             helpBotIcon.classList.remove('pulsing');
         }
 }
+    // Progress Bar Update Function
     function updateProgressBar() {
         const totalSectors = 5;
         const completedCount = completedSectors.size;
@@ -995,7 +834,7 @@ permalink: /learninggame/home
         document.getElementById('statLocked').textContent = `${5 - completedCount}`;
         
         const boxes = document.querySelectorAll('.progress-box');
-        const boxesPerSector = 3;
+        const boxesPerSector = 3; // 15 boxes / 5 sectors = 3 boxes per sector
         
         boxes.forEach((box, index) => {
             const sectorIndex = Math.floor(index / boxesPerSector);
@@ -1013,14 +852,8 @@ permalink: /learninggame/home
             row.forEach((val, x) => {
                 const cell = document.createElement('div');
                 cell.className = 'cell ' + (val === 0 ? 'wall' : 'path');
-                if (val === 2) { 
-                    cell.textContent = 'S'; 
-                    cell.classList.add('start'); 
-                }
-                if (val === 3) { 
-                    cell.textContent = 'E'; 
-                    cell.classList.add('end'); 
-                }
+                if (val === 2) { cell.textContent = 'S'; cell.classList.add('start'); }
+                if (val === 3) { cell.textContent = 'E'; cell.classList.add('end'); }
                 if (val >= 4 && val <= 8) {
                     const sNum = val - 3;
                     cell.textContent = sNum;
@@ -1028,8 +861,7 @@ permalink: /learninggame/home
                     if (completedSectors.has(sNum)) cell.classList.add('completed');
                 }
                 if (x === playerPos.x && y === playerPos.y) {
-                    const p = document.createElement('div'); 
-                    p.className = 'player';
+                    const p = document.createElement('div'); p.className = 'player';
                     cell.appendChild(p);
                 }
                 mazeEl.appendChild(cell);
@@ -1096,8 +928,7 @@ permalink: /learninggame/home
                 if (rPos[0]<0||rPos[0]>4||rPos[1]<0||rPos[1]>4||level.walls.some(w=>w[0]===rPos[0]&&w[1]===rPos[1])) {
                     feedback.textContent = "💥 Crash! Resetting...";
                     feedback.style.color = "#ef4444";
-                    setTimeout(()=>updateRobotGrid(level.start, 0), 1000); 
-                    return;
+                    setTimeout(()=>updateRobotGrid(level.start, 0), 1000); return;
                 }
             }
             if (rPos[0] === level.goal[0] && rPos[1] === level.goal[1]) {
@@ -1134,6 +965,7 @@ permalink: /learninggame/home
     }
 
     async function fetchRandomPseudocodeQuestion(levelNum) {
+        // levelNum should be 1..5
         const url = `${window.PSEUDOCODE_BANK_URL}/random?level=${encodeURIComponent(levelNum)}`;
 
         const res = await fetch(url, {
@@ -1148,12 +980,14 @@ permalink: /learninggame/home
             throw new Error(msg);
         }
 
-        return data;
+        return data; // {success, level, question, question_id}
     }
 
-    async function renderPseudoCode() {
+        async function renderPseudoCode() {
+        // Map sector (1..5) to difficulty level (1..5)
         const levelNum = currentSectorNum;
 
+        // Show loading UI immediately
         mContent.innerHTML = `
             <p style="color:#e2e8f0; margin-bottom:10px;">Fetching a random pseudocode question (Level ${levelNum})...</p>
             <div style="margin-top:10px; background:#020617; padding:10px; border-radius:8px; font-family:monospace; font-size:12px; color:#06b6d4;">
@@ -1164,7 +998,7 @@ permalink: /learninggame/home
         try {
             const data = await fetchRandomPseudocodeQuestion(levelNum);
 
-            currentPseudo.level = data.level;
+            currentPseudo.level = data.level;           // e.g. "level3"
             currentPseudo.question_id = data.question_id;
             currentPseudo.question = data.question;
 
@@ -1209,9 +1043,13 @@ permalink: /learninggame/home
         }
     }
 
+
     function pseudoToExport(codeRaw) {
+        // Very lightweight "export": turns pseudocode-ish lines into a JS-ish skeleton.
+        // Not meant to run. It's for display + debugging student logic.
         let code = (codeRaw || "").trim();
 
+        // Normalize arrows and common pseudocode tokens
         code = code.replaceAll("←", "=");
         code = code.replaceAll("≠", "!=");
 
@@ -1225,6 +1063,7 @@ permalink: /learninggame/home
         for (let line of lines) {
             const lower = line.toLowerCase();
 
+            // map common pseudocode patterns to readable JS-ish comments
             if (lower.startsWith("input")) out.push(`  // ${line}`);
             else if (lower.startsWith("display") || lower.startsWith("print") || lower.startsWith("output")) out.push(`  // ${line}`);
             else if (lower.startsWith("if")) out.push(`  // ${line}`);
@@ -1246,6 +1085,7 @@ permalink: /learninggame/home
         const exportBox = document.getElementById("pcExport");
         const output = document.getElementById("pcOutput");
 
+        // Basic minimum
         if (code.trim().length < 10) {
             feedback.style.color = "#fbbf24";
             feedback.textContent = "⚠️ Write a bit more pseudocode before checking.";
@@ -1254,9 +1094,11 @@ permalink: /learninggame/home
             return;
         }
 
+        // 1) Export view
         const exported = pseudoToExport(code);
         if (exportBox) exportBox.textContent = exported;
 
+        // 2) Call backend checker
         feedback.style.color = "#06b6d4";
         feedback.textContent = "⏳ Checking your answer...";
 
@@ -1314,6 +1156,8 @@ permalink: /learninggame/home
         }
     }
 
+
+
     function renderMCQ() {
         const qs = [
             {q:"What is 1101 in binary?", a:["13","11"], c:0},
@@ -1344,9 +1188,10 @@ permalink: /learninggame/home
         });
     }
 
+    // AUTOFILL FUNCTIONALITY
     autofillBtn.onclick = async () => {
         try {
-            usedAutofill = true;
+            usedAutofill = true; // Mark that autofill was used
             feedback.textContent = '⏳ Fetching answer...';
             feedback.style.color = '#06b6d4';
             
@@ -1398,9 +1243,11 @@ permalink: /learninggame/home
         let finalScore, earnedBadge;
         
         if (usedAutofill) {
+            // If autofill was used, automatically give 0 score and Participant badge
             finalScore = 0;
             earnedBadge = "Participant";
         } else {
+            // Normal scoring calculation
             let weightedSum = 0;
             const pts = moduleAttempts.map(a => Math.max(1, 6 - a));
             for (let i=0; i<3; i++) weightedSum += (pts[i]/5) * weights[i];
@@ -1450,7 +1297,7 @@ permalink: /learninggame/home
                 currentSectorNum = sNum; 
                 currentQuestion = 0; 
                 moduleAttempts = [0, 0, 0];
-                usedAutofill = false;
+                usedAutofill = false; // Reset autofill flag for new sector
                 setTimeout(() => { 
                     modal.classList.add('active'); 
                     showQuestion(); 
@@ -1474,7 +1321,7 @@ permalink: /learninggame/home
         if (e.key === 'ArrowLeft') movePlayer(-1, 0);
         if (e.key === 'ArrowRight') movePlayer(1, 0);
     });
-            // Event Listeners for AI Assistant
+        // Event Listeners for AI Assistant
     helpBotIcon.addEventListener('click', showHint);
     prevHintBtn.addEventListener('click', prevHint);
     nextHintBtn.addEventListener('click', nextHint);
@@ -1486,7 +1333,7 @@ permalink: /learninggame/home
             closeHint();
         }
     });
-
+    // Initialize
     drawMaze();
     updateProgressBar();
-    <updateBotIconVisibility(); 
+    updateBotIconVisibility(); 
