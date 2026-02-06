@@ -231,24 +231,23 @@ permalink: /learninggame/home-ai
         .summary-row { display: flex; justify-content: space-between; margin: 10px 0; border-bottom: 1px solid rgba(148,163,184,0.1); padding-bottom: 5px; }
         .badge-display { font-size: 48px; text-align: center; margin: 20px 0; color: #fbbf24; text-shadow: 0 0 20px rgba(251,191,36,0.4); }
 
-        #help-bot-icon {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            cursor: pointer;
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
-            z-index: 999;
-            transition: all 0.3s ease;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            display: none;
+       #help-bot-icon {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        cursor: pointer;
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        z-index: 999;
+        transition: all 0.3s ease;
+        border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
         #help-bot-icon:hover {
@@ -282,9 +281,12 @@ permalink: /learninggame/home-ai
             z-index: 1000;
             overflow: hidden;
             padding: 0;
-            display: flex;
             flex-direction: column;
         }
+
+#hint-overlay.active {
+    display: flex;
+}
 
         #hint-overlay.active {
             display: flex;
@@ -1119,14 +1121,12 @@ permalink: /learninggame/home-ai
     }
 
     function updateBotIconVisibility() {
-        if (modal.classList.contains('active') && currentQuestion < 3) {
-            helpBotIcon.style.display = 'flex';
-            helpBotIcon.classList.add('pulsing');
-        } else {
-            helpBotIcon.style.display = 'none';
-            helpBotIcon.classList.remove('pulsing');
-        }
+    if (modal.classList.contains('active') && currentQuestion < 3) {
+        helpBotIcon.classList.add('pulsing');
+    } else {
+        helpBotIcon.classList.remove('pulsing');
     }
+}
 
     // ========== EVENT LISTENERS ==========
 
@@ -1654,6 +1654,7 @@ permalink: /learninggame/home-ai
     drawMaze();
     updateProgressBar();
     updateBotIconVisibility();
+    helpBotIcon.style.display = 'flex';
 </script>
 </body>
 </html> 
