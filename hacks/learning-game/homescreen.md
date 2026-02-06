@@ -861,11 +861,10 @@ permalink: /learninggame/home-ai
         5: { start: [0,2], goal: [4,2], walls: [[2,1],[2,2],[2,3]] }
     };
 
-        // Teacher Data with hints (provided by Rishabh)
     const teacherData = {
         1: {
             title: "Stop 1: Training",
-            msg: "Robot Code: Robot code is a pseudocode-style language with four commands—MOVE_FORWARD(), ROTATE_LEFT(), ROTATE_RIGHT(), and CAN_MOVE(direction)—used to control a robot through a maze. Pseudocode: Use plain-language, step-by-step logic (variables, conditionals, loops, and logical flow) to describe how your algorithm should work before worrying about strict programming syntax. Computational thinking: break the problem into small rules, test your logic, and iterate based on what you observe.",
+            msg: "Robot code is a pseudocode-style language with four commands—MOVE_FORWARD(), ROTATE_LEFT(), ROTATE_RIGHT(), and CAN_MOVE(direction)—used to control a robot through a maze. Pseudocode: Use plain-language, step-by-step logic (variables, conditionals, loops, and logical flow) to describe how your algorithm should work before worrying about strict programming syntax. Computational thinking: break the problem into small rules, test your logic, and iterate based on what you observe.",
             hints: [
                 [
                     "HINT 1: You need only one command for this task.",
@@ -974,33 +973,111 @@ permalink: /learninggame/home-ai
         }
     };
 
-    // AI Assistant State
-    let currentHintIndex = 0;
-    let currentHintLevel = 0;
-        // AI Assistant Functions
-    function showHint() {
+
+    // ========== AI CHAT FUNCTIONS ==========
+
+    async function sendMessageToAI(userMessage) {
+        try {
+            const response = await fetch(`${API_URL}/ai_chat`, {
+                ...window.authOptions,
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    sector_id: currentSectorNum,
+                    question_num: currentQuestion,
+                    user_message: userMessage,
+                    conversation_history: conversationHistory
+                })
+            });
+
+            const data = await response.json();
+            
+            if (!response.ok || !data.success) {
+                throw new Error(data.message || 'Failed to get AI response');
+            }
+
+            return data.ai_response;
+        } catch (error) {
+            console.error('AI Chat Error:', error);
+            return "Sorry, I'm having trouble connecting right now. Please try again! 🤖";
+        }
+    }
+
+    function addChatMessage(content, isAI = true) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chat-message ${isAI ? 'message-ai' : 'message-user'}`;
+        
+        messageDiv.innerHTML = `
+            <div class="message-sender">${isAI ? 'AI Assistant 🤖' : 'You'}</div>
+            <div class="message-content">${content}</div>
+        `;
+        
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        conversationHistory.push({
+            role: isAI ? 'assistant' : 'user',
+            content: content
+        });
+        
+        if (conversationHistory.length > 20) {
+            conversationHistory = conversationHistory.slice(-20);
+        }
+    }
+
+    async function handleSendMessage() {
+        const message = chatInput.value.trim();
+        if (!message) return;
+        
+        addChatMessage(message, false);
+        chatInput.value = '';
+        
+        typingIndicator.classList.add('active');
+        sendChatBtn.disabled = true;
+        
+        try {
+            const aiResponse = await sendMessageToAI(message);
+            typingIndicator.classList.remove('active');
+            addChatMessage(aiResponse, true);
+        } catch (error) {
+            typingIndicator.classList.remove('active');
+            addChatMessage("I encountered an error. Please try again! 🤖", true);
+        } finally {
+            sendChatBtn.disabled = false;
+            chatInput.focus();
+        }
+    }
+
+    function resetChatForNewQuestion() {
+        conversationHistory = [];
+        chatMessages.innerHTML = `
+            <div class="chat-message message-ai">
+                <div class="message-sender">AI Assistant 🤖</div>
+                <div class="message-content">Hi! I'm here to help you with Sector ${currentSectorNum}, Question ${currentQuestion + 1}. Ask me anything! 🌟</div>
+            </div>
+        `;
+    }
+
+    // ========== HINT FUNCTIONS ==========
+
+    function showAIAssistant() {
         if (!modal.classList.contains('active')) return;
         
         const sectorData = teacherData[currentSectorNum];
         if (!sectorData) return;
         
-        // Reset hint state
-        currentHintIndex = 0;
         currentHintLevel = 0;
         
-        // Update hint overlay content
-        hintTitle.textContent = `Sector ${currentSectorNum}: AI Assistant`;
+        hintTitle.textContent = `Sector ${currentSectorNum} AI Assistant`;
         hintSubtitle.textContent = `Question ${currentQuestion + 1} of 3`;
         hintOverview.textContent = sectorData.msg;
         
-        // Update hints based on current question
         updateHintDisplay();
-        
-        // Show overlay
         hintOverlay.classList.add('active');
-        
-        // Update button states
-        updateHintButtons();
+    }
+
+    function closeAIAssistant() {
+        hintOverlay.classList.remove('active');
     }
 
     function updateHintDisplay() {
@@ -1016,25 +1093,11 @@ permalink: /learninggame/home-ai
             li.textContent = hint;
             hintSteps.appendChild(li);
         });
-    }
-
-    function updateHintButtons() {
-        const sectorData = teacherData[currentSectorNum];
-        if (!sectorData || !sectorData.hints[currentQuestion]) return;
         
-        const hints = sectorData.hints[currentQuestion];
-        
-        // Previous button
         prevHintBtn.disabled = currentHintLevel === 0;
         prevHintBtn.style.opacity = prevHintBtn.disabled ? '0.5' : '1';
-        
-        // Next button
         nextHintBtn.disabled = currentHintLevel >= hints.length - 1;
         nextHintBtn.style.opacity = nextHintBtn.disabled ? '0.5' : '1';
-        
-        // Update close button text
-        closeHintBtn.textContent = currentHintLevel >= hints.length - 1 ? 
-            'Got It! Continue' : 'Hide Hints';
     }
 
     function nextHint() {
@@ -1045,7 +1108,6 @@ permalink: /learninggame/home-ai
         if (currentHintLevel < hints.length - 1) {
             currentHintLevel++;
             updateHintDisplay();
-            updateHintButtons();
         }
     }
 
@@ -1053,17 +1115,9 @@ permalink: /learninggame/home-ai
         if (currentHintLevel > 0) {
             currentHintLevel--;
             updateHintDisplay();
-            updateHintButtons();
         }
     }
 
-    function closeHint() {
-        hintOverlay.classList.remove('active');
-        // Reset hint level for next time
-        currentHintLevel = 0;
-    }
-
-    // Add pulsing animation to bot icon when in question modal
     function updateBotIconVisibility() {
         if (modal.classList.contains('active') && currentQuestion < 3) {
             helpBotIcon.style.display = 'flex';
@@ -1072,7 +1126,28 @@ permalink: /learninggame/home-ai
             helpBotIcon.style.display = 'none';
             helpBotIcon.classList.remove('pulsing');
         }
-}
+    }
+
+    // ========== EVENT LISTENERS ==========
+
+    sendChatBtn.addEventListener('click', handleSendMessage);
+    
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSendMessage();
+        }
+    });
+
+    chatInput.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = Math.min(this.scrollHeight, 60) + 'px';
+    });
+
+    helpBotIcon.addEventListener('click', showAIAssistant);
+    closeAiBtn.addEventListener('click', closeAIAssistant);
+    prevHintBtn.addEventListener('click', prevHint);
+    nextHintBtn.addEventListener('click', nextHint);
     // Progress Bar Update Function
     function updateProgressBar() {
         const totalSectors = 5;
@@ -1125,6 +1200,8 @@ permalink: /learninggame/home-ai
         feedback.textContent = '';
         nextBtn.disabled = true;
         nextBtn.style.opacity = "0.5";
+
+        resetChatForNewQuestion();
 
         if (currentQuestion === 0) renderRobotSim();
         else if (currentQuestion === 1) await renderPseudoCode();
@@ -1529,12 +1606,13 @@ permalink: /learninggame/home-ai
         drawMaze();
         updateProgressBar();
         updateBotIconVisibility();
+        conversationHistory = [];
     }
 
     function movePlayer(dx, dy) {
         const nx = playerPos.x + dx, ny = playerPos.y + dy;
         if (ny >= 0 && ny < mazeLayout.length && nx >= 0 && nx < mazeLayout[0].length && mazeLayout[ny][nx] !== 0) {
-            playerPos.x = nx; 
+            playerPos.x = nx;
             playerPos.y = ny;
             drawMaze();
             const val = mazeLayout[ny][nx];
@@ -1542,15 +1620,16 @@ permalink: /learninggame/home-ai
                 const sNum = val - 3;
                 if (sNum > 1 && !completedSectors.has(sNum - 1)) {
                     alert("⚠️ Complete previous sector first!");
-                    return; 
+                    return;
                 }
-                currentSectorNum = sNum; 
-                currentQuestion = 0; 
+                currentSectorNum = sNum;
+                currentQuestion = 0;
                 moduleAttempts = [0, 0, 0];
-                usedAutofill = false; // Reset autofill flag for new sector
-                setTimeout(() => { 
-                    modal.classList.add('active'); 
-                    showQuestion(); 
+                usedAutofill = false;
+                conversationHistory = [];
+                setTimeout(() => {
+                    modal.classList.add('active');
+                    showQuestion();
                 }, 100);
             } else if (val === 3) {
                 alert("🎉 Congratulations! You've reached the end!");
