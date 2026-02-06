@@ -1440,39 +1440,20 @@ permalink: /learninggame/home
     }
 
     // AUTOFILL FUNCTIONALITY
-    // AUTOFILL FUNCTIONALITY
     autofillBtn.onclick = async () => {
         try {
             usedAutofill = true; // Mark that autofill was used
             feedback.textContent = '⏳ Fetching answer...';
             feedback.style.color = '#06b6d4';
-
-            // ✅ IMPORTANT: if we are on PSEUDOCODE module, use the pseudocode bank question_id
-            if (currentQuestion === 1 && !currentPseudo.question_id) {
-                feedback.textContent = '⚠️ Pseudocode question not loaded yet. Try again in a second.';
-                feedback.style.color = '#fbbf24';
-                return;
-            }
-
-            // ✅ Send different payload depending on which module you're on
-            const payload =
-                (currentQuestion === 1)
-                    ? {
-                        // pseudocode bank autofill
-                        question_id: currentPseudo.question_id,
-                        level: currentPseudo.level
-                    }
-                    : {
-                        // sector autofill (robot + mcq)
-                        sector_id: currentSectorNum,
-                        question_num: currentQuestion
-                    };
-
+            
             const response = await fetch(`${window.API_URL}/autofill`, {
                 ...window.authOptions,
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body: JSON.stringify({
+                    sector_id: currentSectorNum,
+                    question_num: currentQuestion
+                })
             });
 
             if (!response.ok) {
@@ -1480,7 +1461,7 @@ permalink: /learninggame/home
             }
 
             const data = await response.json();
-
+            
             if (data.success) {
                 if (currentQuestion === 0) {
                     document.getElementById('rcInput').value = data.answer;
@@ -1488,7 +1469,7 @@ permalink: /learninggame/home
                     feedback.style.color = '#a855f7';
                 } else if (currentQuestion === 1) {
                     document.getElementById('pcCode').value = data.answer;
-                    feedback.textContent = '✨ Answer filled! Click "Generate + Check Answer" to check.';
+                    feedback.textContent = '✨ Answer filled! Click "Validate" to check.';
                     feedback.style.color = '#a855f7';
                 } else if (currentQuestion === 2) {
                     const buttons = mContent.querySelectorAll('.btn');
@@ -1508,7 +1489,6 @@ permalink: /learninggame/home
             feedback.style.color = '#ef4444';
         }
     };
-
 
     backBtn.onclick = async () => {
         let finalScore, earnedBadge;
