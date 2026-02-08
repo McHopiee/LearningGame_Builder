@@ -1015,7 +1015,7 @@ permalink: /learninggame/home-ai
 
     async function updateBackendBadges(id, s, m) {
         try {
-            await fetch(`${robopURI}/api/badges/award`, {
+            await fetch(`${robopURI}/api/robop/assign_badge`, {
                 ...window.authOptions,
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -1760,9 +1760,9 @@ permalink: /learninggame/home-ai
         mContent.innerHTML = `
             <div class="summary-card">
                 <h3 style="color:#fbbf24; margin-bottom:10px;">SECTOR RESULTS</h3>
-                ${usedAutofill ? '<p style="color:#a855f7; margin-bottom:10px; text-align:center;">⚠️ Autofill was used - Participant badge awarded</p>' : ''}
+                
                 <div class="summary-row"><span>Total Score:</span><span>${Math.round(finalScore)}%</span></div>
-                <div class="badge-display">${earnedBadge === "Gold" ? "🥇" : earnedBadge === "Silver" ? "🥈" : earnedBadge === "Bronze" ? "🥉" : "🎖️"}<div style="font-size:14px;">${earnedBadge} Badge</div></div>
+                
                 <button class="btn btn-blue" id="finalCloseBtn" style="width:100%">Continue</button>
             </div>`;
         document.getElementById('finalCloseBtn').onclick = closeSector;
