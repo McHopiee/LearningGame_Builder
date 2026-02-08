@@ -1013,16 +1013,24 @@ permalink: /learninggame/home-ai
         setTimeout(() => flyer.remove(), 850);
     }
 
-    async function updateBackendBadges(id, s, m) {
+   
+  async function updateBackendBadges(id, s, m) {
         try {
             await fetch(`${robopURI}/api/robop/assign_badge`, {
                 ...window.authOptions,
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ badge_id: id, sector: s, module: m })
+                body: JSON.stringify({ 
+                    badge_name: id,
+                    sector_id: s,
+                    module_id: m,
+                    attempts: moduleAttempts[m], // Sends attempts for THIS specific module
+                    used_autofill: usedAutofill  // Sends whether autofill was used in this sector
+                })
             });
         } catch (e) { console.warn("Backend not ready: Mocking badge save."); }
     }
+
 
     // --- END BADGE SYSTEM LOGIC ---
     const teacherData = {
@@ -1747,14 +1755,14 @@ permalink: /learninggame/home-ai
             const pts = moduleAttempts.map(a => Math.max(1, 6 - a));
             for (let i=0; i<3; i++) weightedSum += (pts[i]/5) * weights[i];
             finalScore = weightedSum * 100;
-            const badgeRules = [{name: "Gold", threshold: 95}, {name: "Silver", threshold: 80}, {name: "Bronze", threshold: 65}, {name: "Participant", threshold: 0}];
-            earnedBadge = "Participant";
-            for (let r of badgeRules) { 
+            //nst badgeRules = [{name: "Gold", threshold: 95}, {name: "Silver", threshold: 80}, {name: "Bronze", threshold: 65}, {name: "Participant", threshold: 0}];
+            //eaedBadge = "Participant";
+            /*r (let r of badgeRules) { 
                 if (finalScore >= r.threshold) { 
                     earnedBadge = r.name; 
                     break; 
                 } 
-            }
+            }*/
         }
         
         mContent.innerHTML = `
