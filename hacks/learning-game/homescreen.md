@@ -29,6 +29,60 @@ permalink: /learninggame/home-ai
             50% { opacity: 1; }
         }
 
+ /* --- BADGE SYSTEM STYLES --- */
+        .badge-shelf {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(6, 182, 212, 0.2);
+            min-height: 40px;
+            flex-wrap: wrap;
+        }
+
+        .badge-icon-small {
+            width: 28px;
+            height: 28px;
+            background: rgba(6, 182, 212, 0.2);
+            border: 1px solid rgba(6, 182, 212, 0.5);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .badge-award-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 40px;
+            border-radius: 30px;
+            border: 2px solid #fbbf24;
+            text-align: center;
+            box-shadow: 0 0 80px rgba(251, 191, 36, 0.3);
+            width: 320px;
+        }
+
+        .badge-award-modal h2 { color: #fbbf24; letter-spacing: 2px; margin-bottom: 15px; }
+        
+        #badgeAwardIconBig { font-size: 70px; margin: 20px 0; display: block; filter: drop-shadow(0 0 15px rgba(251,191,36,0.5)); }
+
+        .flying-badge {
+            position: fixed;
+            z-index: 3000;
+            font-size: 30px;
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+        /* --- END BADGE SYSTEM STYLES --- */
+
         body::before {
             content: ''; position: fixed; top: 10%; left: 10%; width: 500px; height: 500px;
             background: radial-gradient(circle, rgba(6,182,212,0.15), transparent 70%);
@@ -648,6 +702,14 @@ permalink: /learninggame/home-ai
 <body>
     <div class="stars" id="stars"></div>
 
+<!-- NEW: CENTERED BADGE POPUP -->
+    <div id="badgeAwardModal" class="badge-award-modal">
+        <h2 id="badgeAwardTitle">MODULE MASTER!</h2>
+        <span id="badgeAwardIconBig">🏆</span>
+        <p id="badgeAwardName" style="color: rgba(103,232,249,0.8); font-size: 14px; margin-bottom: 25px;">Logic Training Complete</p>
+        <button class="btn btn-blue" id="claimBadgeBtn" style="width: 100%;">Claim Badge</button>
+    </div>
+
     <div class="container">
         <div class="title-section">
             <div class="title-header">
@@ -681,6 +743,13 @@ permalink: /learninggame/home-ai
                 <div class="progress-box"></div>
                 <div class="progress-box"></div>
             </div>
+
+
+             <!-- NEW: CUMULATIVE BADGE LIST NEAR PROGRESS BAR -->
+            <div class="badge-shelf" id="badgeShelf">
+                 <span style="color: rgba(103,232,249,0.3); font-size: 9px; letter-spacing: 1px;">EARNED_BADGES: [EMPTY]</span>
+            </div>
+
             <div class="progress-stats">
                 <div class="stat-item">
                     <span class="stat-value" id="statSectors">0/5</span>
@@ -798,6 +867,14 @@ permalink: /learninggame/home-ai
         question: null
     };
 
+// --- BADGE SYSTEM DATA ---
+    let badgesEarned = []; // List of IDs e.g., ["S1-M0"]
+    const badgeIcons = ["🤖", "📜", "🧠"]; // Robot, Pseudo, MCQ
+    const badgeNames = ["Logic Pilot", "Syntax Architect", "Theory Master"];
+    const badgeShelf = document.getElementById('badgeShelf');
+    const badgeModal = document.getElementById('badgeAwardModal');
+    const claimBtn = document.getElementById('claimBadgeBtn');
+
     const starsContainer = document.getElementById('stars');
     for (let i = 0; i < 150; i++) {
         const star = document.createElement('div');
@@ -862,7 +939,92 @@ permalink: /learninggame/home-ai
         4: { start: [0,0], goal: [4,0], walls: [[0,1],[1,1],[2,1]] },
         5: { start: [0,2], goal: [4,2], walls: [[2,1],[2,2],[2,3]] }
     };
+  // --- NEW: BADGE SYSTEM LOGIC (AP CSP PT REQUIREMENTS) ---
 
+    /**
+     * Procedure: awardBadge(sector, module)
+     * Handles the logic of selecting the badge, showing the modal, and starting animation.
+     */
+    function awardBadge(s, m) {
+        const id = `S${s}-M${m}`;
+        
+        // Selection: Check if badge is already earned
+        if (badgesEarned.includes(id)) return;
+
+        // Visual setup
+        document.getElementById('badgeAwardIconBig').textContent = badgeIcons[m];
+        document.getElementById('badgeAwardTitle').textContent = `${badgeNames[m].toUpperCase()} EARNED!`;
+        document.getElementById('badgeAwardName').textContent = `Sector ${s} Module Completed Successfully.`;
+        
+        badgeModal.style.display = 'block';
+
+        claimBtn.onclick = () => {
+            badgesEarned.push(id);
+            badgeModal.style.display = 'none';
+            animateBadgeToShelf(badgeIcons[m]);
+            updateBadgeUI(); // Call iteration procedure
+            
+            // Backend Update (Transactional Data Placeholder)
+            updateBackendBadges(id, s, m);
+        };
+    }
+
+    /**
+     * Procedure: updateBadgeUI()
+     * Uses Iteration to update the icons in the progress bar area.
+     */
+    function updateBadgeUI() {
+        if (badgesEarned.length === 0) return;
+        badgeShelf.innerHTML = ''; // Clear the empty placeholder
+        
+        // Iteration: Loop through the list of earned badges
+        badgesEarned.forEach(badgeId => {
+            const m = parseInt(badgeId.split('-M')[1]);
+            const el = document.createElement('div');
+            el.className = 'badge-icon-small';
+            el.textContent = badgeIcons[m];
+            el.title = badgeId;
+            badgeShelf.appendChild(el);
+        });
+    }
+
+    /**
+     * Procedure: animateBadgeToShelf(icon)
+     * Handles the "Fly" animation from center to top shelf.
+     */
+    function animateBadgeToShelf(icon) {
+        const flyer = document.createElement('div');
+        flyer.className = 'flying-badge';
+        flyer.textContent = icon;
+        flyer.style.left = '50%';
+        flyer.style.top = '50%';
+        flyer.style.transform = 'translate(-50%, -50%)';
+        document.body.appendChild(flyer);
+
+        const targetRect = badgeShelf.getBoundingClientRect();
+
+        setTimeout(() => {
+            flyer.style.left = targetRect.left + (badgesEarned.length * 20) + 'px';
+            flyer.style.top = (targetRect.top + 10) + 'px';
+            flyer.style.transform = 'scale(0.4)';
+            flyer.style.opacity = '0';
+        }, 50);
+
+        setTimeout(() => flyer.remove(), 850);
+    }
+
+    async function updateBackendBadges(id, s, m) {
+        try {
+            await fetch(`${robopURI}/api/badges/award`, {
+                ...window.authOptions,
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ badge_id: id, sector: s, module: m })
+            });
+        } catch (e) { console.warn("Backend not ready: Mocking badge save."); }
+    }
+
+    // --- END BADGE SYSTEM LOGIC ---
     const teacherData = {
         1: {
             title: "Stop 1: Training",
@@ -1263,6 +1425,8 @@ permalink: /learninggame/home-ai
                 feedback.textContent = "✅ Goal reached!";
                 nextBtn.disabled = false; 
                 nextBtn.style.opacity = "1";
+                 // AWARD BADGE
+                awardBadge(currentSectorNum, 0);
             } else { 
                 feedback.style.color = "#fbbf24";
                 feedback.textContent = "⚠️ Short of target. Try again."; 
@@ -1462,6 +1626,8 @@ permalink: /learninggame/home-ai
                 }
                 nextBtn.disabled = false;
                 nextBtn.style.opacity = "1";
+                 // AWARD BADGE
+                awardBadge(currentSectorNum, 1);
             } else {
                 feedback.style.color = "#fbbf24";
                 feedback.textContent = "⚠️ Not quite. Fix what’s missing and check again.";
@@ -1506,6 +1672,8 @@ permalink: /learninggame/home-ai
                     feedback.textContent="✅ Correct!"; 
                     backBtn.disabled=false; 
                     backBtn.style.opacity="1"; 
+                     // AWARD BADGE
+                    awardBadge(currentSectorNum, 2);
                 } else { 
                     feedback.style.color="#ef4444";
                     feedback.textContent="❌ Try again."; 
@@ -1654,6 +1822,7 @@ permalink: /learninggame/home-ai
     drawMaze();
     updateProgressBar();
     updateBotIconVisibility();
+    updateBadgeUI();
     helpBotIcon.style.display = 'flex';
 </script>
 </body>
