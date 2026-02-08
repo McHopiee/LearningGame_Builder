@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Maze - AI Enhanced
-authors: Anika, Cyrus, Rishabh, Jaynee, Lillian, Avantika
+authors: Anika, Cyrus, Rishabh, Jaynee, Lillian, Avantika, Meryl
 permalink: /learninggame/home-ai
 ---
 
@@ -112,6 +112,25 @@ permalink: /learninggame/home-ai
         .title-header { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 6px; }
         .title { color: #06b6d4; font-size: 24px; font-weight: 900; text-transform: uppercase; letter-spacing: 4px; }
         .subtitle { text-align: center; color: rgba(103,232,249,0.7); font-size: 12px; font-family: 'Courier New', monospace; }
+
+        /* Styling for badge counts (Lower Right corner) */
+        .badge-icon-small {
+            position: relative; /* Necessary for absolute positioning of the count */
+        }
+
+        .badge-count-tag {
+            position: absolute;
+            bottom: -4px;
+            right: -4px;
+            background: #ef4444;
+            color: white;
+            font-size: 9px;
+            padding: 1px 4px;
+            border-radius: 10px;
+            font-weight: bold;
+            border: 1px solid #0f172a;
+            line-height: 1;
+        }
 
         /* Progress Bar Styles */
         .progress-bar-container {
@@ -973,21 +992,75 @@ permalink: /learninggame/home-ai
      * Procedure: updateBadgeUI()
      * Uses Iteration to update the icons in the progress bar area.
      */
-    function updateBadgeUI() {
-        if (badgesEarned.length === 0) return;
-        badgeShelf.innerHTML = ''; // Clear the empty placeholder
-        
-        // Iteration: Loop through the list of earned badges
-        badgesEarned.forEach(badgeId => {
-            const m = parseInt(badgeId.split('-M')[1]);
-            const el = document.createElement('div');
-            el.className = 'badge-icon-small';
-            el.textContent = badgeIcons[m];
-            el.title = badgeId;
-            badgeShelf.appendChild(el);
-        });
-    }
+   /**
+ * Procedure: updateBadgeUI()
+ * Satisfies AP CSP PT: Uses a List, Iteration, and Selection to process complex data.
+ */
+async function updateBadgeUI() {
+    try {
+        // 1. LIST: Fetching the list of badge objects from the backend
+        const response = await fetch(`${robopURI}/api/robop/fetch_badges`, window.authOptions);
+        if (!response.ok) return;
+        const badges = await response.json(); // This is our List
 
+        badgeShelf.innerHTML = ''; // Clear placeholder
+
+        // 2. DATA STORAGE: Object to store counts for grouping
+        // Mapping: Type -> { icon: string, count: number }
+        const summary = {
+            "Autofill Whiz": { icon: "⚡", count: 0 },
+            "Platinum": { icon: "💎", count: 0 },
+            "Gold": { icon: "🥇", count: 0 },
+            "Silver": { icon: "🥈", count: 0 },
+            "Participation": { icon: "🎖️", count: 0 }
+        };
+
+        // 3. ITERATION: Loop through the list of badges earned
+        for (let i = 0; i < badges.length; i++) {
+            const b = badges[i];
+
+            // 4. SELECTION: Decision logic to group badges based on attempts and autofill
+            if (b.autofill === true || b.autofill === "true") {
+                summary["Autofill Whiz"].count++;
+            } else if (b.attempts === 1) {
+                summary["Platinum"].count++;
+            } else if (b.attempts === 2) {
+                summary["Gold"].count++;
+            } else if (b.attempts === 3) {
+                summary["Silver"].count++;
+            } else {
+                summary["Participation"].count++;
+            }
+        }
+
+        // 5. RENDERING: Iterating through our summary to build the UI
+        Object.keys(summary).forEach(key => {
+            const data = summary[key];
+            if (data.count > 0) {
+                const el = document.createElement('div');
+                el.className = 'badge-icon-small';
+                el.textContent = data.icon;
+                el.title = `${key}: ${data.count}`;
+
+                // Add the count bubble in the lower right
+                const countTag = document.createElement('span');
+                countTag.className = 'badge-count-tag';
+                countTag.textContent = data.count;
+                el.appendChild(countTag);
+
+                badgeShelf.appendChild(el);
+            }
+        });
+
+        // Fallback if no badges exist
+        if (badges.length === 0) {
+            badgeShelf.innerHTML = '<span style="color: rgba(103,232,249,0.3); font-size: 9px;">EARNED_BADGES: [EMPTY]</span>';
+        }
+
+    } catch (error) {
+        console.error("Error updating badge UI:", error);
+    }
+}
     /**
      * Procedure: animateBadgeToShelf(icon)
      * Handles the "Fly" animation from center to top shelf.
@@ -1013,16 +1086,24 @@ permalink: /learninggame/home-ai
         setTimeout(() => flyer.remove(), 850);
     }
 
-    async function updateBackendBadges(id, s, m) {
+   
+  async function updateBackendBadges(id, s, m) {
         try {
-            await fetch(`${robopURI}/api/badges/award`, {
+            await fetch(`${robopURI}/api/robop/assign_badge`, {
                 ...window.authOptions,
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ badge_id: id, sector: s, module: m })
+                body: JSON.stringify({ 
+                    badge_name: id,
+                    sector_id: s,
+                    module_id: m,
+                    attempts: moduleAttempts[m], // Sends attempts for THIS specific module
+                    used_autofill: usedAutofill  // Sends whether autofill was used in this sector
+                })
             });
         } catch (e) { console.warn("Backend not ready: Mocking badge save."); }
     }
+
 
     // --- END BADGE SYSTEM LOGIC ---
     const teacherData = {
@@ -1747,22 +1828,22 @@ permalink: /learninggame/home-ai
             const pts = moduleAttempts.map(a => Math.max(1, 6 - a));
             for (let i=0; i<3; i++) weightedSum += (pts[i]/5) * weights[i];
             finalScore = weightedSum * 100;
-            const badgeRules = [{name: "Gold", threshold: 95}, {name: "Silver", threshold: 80}, {name: "Bronze", threshold: 65}, {name: "Participant", threshold: 0}];
-            earnedBadge = "Participant";
-            for (let r of badgeRules) { 
+            //nst badgeRules = [{name: "Gold", threshold: 95}, {name: "Silver", threshold: 80}, {name: "Bronze", threshold: 65}, {name: "Participant", threshold: 0}];
+            //eaedBadge = "Participant";
+            /*r (let r of badgeRules) { 
                 if (finalScore >= r.threshold) { 
                     earnedBadge = r.name; 
                     break; 
                 } 
-            }
+            }*/
         }
         
         mContent.innerHTML = `
             <div class="summary-card">
                 <h3 style="color:#fbbf24; margin-bottom:10px;">SECTOR RESULTS</h3>
-                ${usedAutofill ? '<p style="color:#a855f7; margin-bottom:10px; text-align:center;">⚠️ Autofill was used - Participant badge awarded</p>' : ''}
+                
                 <div class="summary-row"><span>Total Score:</span><span>${Math.round(finalScore)}%</span></div>
-                <div class="badge-display">${earnedBadge === "Gold" ? "🥇" : earnedBadge === "Silver" ? "🥈" : earnedBadge === "Bronze" ? "🥉" : "🎖️"}<div style="font-size:14px;">${earnedBadge} Badge</div></div>
+                
                 <button class="btn btn-blue" id="finalCloseBtn" style="width:100%">Continue</button>
             </div>`;
         document.getElementById('finalCloseBtn').onclick = closeSector;
