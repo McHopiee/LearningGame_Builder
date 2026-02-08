@@ -381,7 +381,7 @@ permalink: /learninggame/gameteacher
             videoEl.srcObject = null;
         }
         if (videoObjectUrl) {
-            URL.revokeObjectURLgi(videoObjectUrl);
+            URL.revokeObjectURL(videoObjectUrl);
             videoObjectUrl = null;
         }
     }
