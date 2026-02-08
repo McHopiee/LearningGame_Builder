@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: base
 title: Maze - Ending Page
 authors: Rishabh
 permalink: /learninggame/ending/

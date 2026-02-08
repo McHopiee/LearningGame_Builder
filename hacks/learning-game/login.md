@@ -611,7 +611,7 @@ async function handleRegister(event) {
     // success
     setSession(githubId, data.user);
     showMessage("✅ Access granted. Welcome cadet.", "success");
-    setTimeout(() => window.location.href = "/learninggame/home", 800);
+    setTimeout(() => window.location.href = "{{site.baseurl}}/learninggame/home", 800);
 
   } catch (error) {
     hideLoading();
@@ -633,7 +633,7 @@ async function handleRegister(event) {
   });
 
   function continueToGame() {
-    window.location.href = '/learninggame/character';
+    window.location.href = '{{site.baseurl}}/learninggame/home';
   }
 
   async function signOut() {
