@@ -891,6 +891,7 @@ permalink: /learninggame/home-ai
     const badgeIcons = ["🤖", "📜", "🧠"]; // Robot, Pseudo, MCQ
     const badgeNames = ["Logic Pilot", "Syntax Architect", "Theory Master"];
     const badgeShelf = document.getElementById('badgeShelf');
+    let userProgress = null;
     const badgeModal = document.getElementById('badgeAwardModal');
     const claimBtn = document.getElementById('claimBadgeBtn');
 
@@ -1852,6 +1853,7 @@ async function updateBadgeUI() {
     function closeSector() {
         modal.classList.remove('active');
         completedSectors.add(currentSectorNum);
+        saveProgress(currentSectorNum, 2, finalScore || 0);
         drawMaze();
         updateProgressBar();
         updateBotIconVisibility();
@@ -1916,6 +1918,7 @@ async function updateBadgeUI() {
     updateBotIconVisibility();
     updateBadgeUI();
     helpBotIcon.style.display = 'flex';
+    loadProgress();
 </script>
 </body>
 </html>
