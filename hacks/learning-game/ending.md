@@ -195,7 +195,7 @@ disable_login_script: true
               'Python needs a colon after function headers.',
               'Make sure the print line is indented under the function.'
             ],
-            answer: 'Add a colon after def greet(name): and keep the print line indented inside the function.'
+            answer: "def greet(name):\n    print('Hello ' + name)\n\ngreet('Ada')"
           }
         ],
         intermediate: [
@@ -211,7 +211,7 @@ disable_login_script: true
               'To skip the first item, start the range at 1.',
               'Keep the end as len(nums) so you still include the last item.'
             ],
-            answer: 'Change range(0, len(nums)) to range(1, len(nums)) so the loop skips index 0.'
+            answer: "nums = [2, 4, 6, 8]\nfor i in range(1, len(nums)):\n    print(nums[i])\nprint('done')"
           }
         ],
         hard: [
@@ -227,7 +227,7 @@ disable_login_script: true
               'Check len(scores) before dividing.',
               'Return 0 or None for the empty case.'
             ],
-            answer: 'Add a guard: if not scores: return 0 (or None) before dividing by len(scores).'
+            answer: "def average(scores):\n    if not scores:\n        return 0\n    total = 0\n    for s in scores:\n        total += s\n    return total / len(scores)\n\nprint(average([]))"
           }
         ]
       };
@@ -345,7 +345,7 @@ disable_login_script: true
           chatHintCount += 1;
           return rolePrefix() + ' Hint ' + chatHintCount + ' of 3: ' + hint;
         }
-        return rolePrefix() + ' Answer: ' + (currentDebugProblem.answer || 'No answer available.');
+        return rolePrefix() + ' Answer (code):\n' + (currentDebugProblem.answer || 'No answer available.');
       }
 
       function runPythonRequest(code, callback) {
